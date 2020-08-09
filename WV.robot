@@ -46,7 +46,11 @@ Ensure user can able to logout in direct login
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Login
+    Click Element    id=edit-name
+    Input Text    id=edit-name    ${user_name}
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    ${password}
+    Click Element    xpath=//div[@class='login-form__submit']//button
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
     Mouse Over    xpath=xpath=.//li[@class='welcomesponsor']
@@ -61,7 +65,7 @@ Direct login with exit user
     Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
     Click Element    id=edit-pass
-    Input Text    id=edit-pass    ${passowrd}
+    Input Text    id=edit-pass    ${password}
     Click Element    xpath=//div[@class='login-form__submit']//button
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
@@ -81,8 +85,7 @@ SI flow login with exit user
     Rescue child campaign
     SI login
     ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
-    Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"
-    
+    Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"    
     
 Hungree one time campaign
     #Local browser launch
@@ -103,8 +106,8 @@ Logo and home page banner loaded check
     Run Keyword If    'True'!='${check_homepag_banner_section_status}'    Fail    "Home page banner section not display properly"
 
 Header main menu list verification
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
     Run Keyword If    '${headermenu_list}'!='${rightside_menu_list}'    Fail    "Header menu list size are mismatch"
     ${myworld_menus_name}=    Get Text    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[1]/a
@@ -207,8 +210,10 @@ Calculation amount
     [Return]    ${total_amt}
 
 Login
+    Click Element   xpath=//input[@id='edit-login-custom-returning-customer-name']
     Input Text    xpath=//input[@id='edit-login-custom-returning-customer-name']    ${user_name}
-    Input Text    xpath=//input[@id='edit-login-custom-returning-customer-password']    ${password
+    Click Element   xpath=//input[@id='edit-login-custom-returning-customer-password']
+    Input Text    xpath=//input[@id='edit-login-custom-returning-customer-password']    ${password}
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
 View cart proceed button
