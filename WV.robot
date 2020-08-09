@@ -8,7 +8,6 @@ ${baseurl}        https://prod.worldvision.in/
 ${browser}        chrome
 ${rightside_menu_list}    7
 ${edu_child_amt}    4000
-${val}            000
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
 ${user_name}      ${9600185121}
@@ -17,23 +16,11 @@ ${txt}            Hunger Free
 @{homepage_header_menu_txt}    ABOUT US    CHILD SPONSORSHIP    WAYS TO GIVE    GET INVOLVED    PARTNERSHIPS    MEDIA
 
 *** Test Cases ***
-Check
-    Local browser launch
-    FOR    ${INDEX}    IN RANGE    2    7
-        ${header_menus_name}=    Get Text    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[${INDEX}]/span
-        Log To Console    Menus text:${header_menus_name}
-    #Sleep    10s
-    #Continue For Loop If    '${header_menus_name}'=='ABOUT US'
-    #Continue For Loop If    '${header_menus_name}'=='CHILD SPONSORSHIP'
-    #Continue For Loop If    '${header_menus_name}'=='WAYS TO GIVE'
-    #Continue For Loop If    '${header_menus_name}'=='GET INVOLVED'
-    #Continue For Loop If    '${header_menus_name}'=='PARTNERSHIPS'
-    #Continue For Loop If    '${header_menus_name}'=='MEDIA'
-    END
+
 
 Normal Login validation
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
@@ -46,8 +33,8 @@ Normal Login validation
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter password only try to login 'Invalid Credentials' error msg not display"
 
 Valid username Invalid password
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
@@ -57,8 +44,8 @@ Valid username Invalid password
     Clear Element Text    id=edit-name
 
 Invalid username and valid password
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-pass
     Input Text    id=edit-pass    ${passowrd}
@@ -68,60 +55,60 @@ Invalid username and valid password
     Clear Element Text    id=edit-pass
 
 Hungree one time campaign
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     One time Hunger Free campaign
 
 Educate children campaign
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Educate children campaign with checkout flow
 
 Logo and home page banner loaded check
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Element Should Be Visible    xpath=.//div[@class='header_new_logo']/div/a/img
     Sleep    4s
     ${check_homepag_banner_section_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='slideshow_content area wv-pos-relative']/div[1]/div)[1]/div/div[@class='gavias_sliderlayer rev_slider_wrapper fullwidthbanner-container']
     Run Keyword If    'True'!='${check_homepag_banner_section_status}'    Fail    "Home page banner section not display properly"
 
 Header main menu list verification
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
     Run Keyword If    '${headermenu_list}'!='${rightside_menu_list}'    Fail    "Header menu list size are mismatch"
     ${myworld_menus_name}=    Get Text    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[1]/a
     Log To Console    Header menu list size is:${headermenu_list}
     Run Keyword If    '${myworld_menus_name}'!='MY WORLD'    Fail    "My world menu text are different"
-    FOR    ${INDEX}    IN    2    ${headermenu_list}
+    FOR    ${INDEX}    IN RANGE    2    ${headermenu_list}
         ${header_menus_name}=    Get Text    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[${INDEX}]/span
-        Log To Console    Menus text:${header_menus_name}
+        #Log To Console    Menus text:${header_menus_name}
     #Sleep    10s
-    #Continue For Loop If    '${header_menus_name}'=='ABOUT US'
-    #Continue For Loop If    '${header_menus_name}'=='CHILD SPONSORSHIP'
-    #Continue For Loop If    '${header_menus_name}'=='WAYS TO GIVE'
-    #Continue For Loop If    '${header_menus_name}'=='GET INVOLVED'
-    #Continue For Loop If    '${header_menus_name}'=='PARTNERSHIPS'
-    #Continue For Loop If    '${header_menus_name}'=='MEDIA'
+      Continue For Loop If    '${header_menus_name}'=='ABOUT US'
+     Continue For Loop If    '${header_menus_name}'=='CHILD SPONSORSHIP'
+     Continue For Loop If    '${header_menus_name}'=='WAYS TO GIVE'
+     Continue For Loop If    '${header_menus_name}'=='GET INVOLVED'
+     Continue For Loop If    '${header_menus_name}'=='PARTNERSHIPS'
+     Continue For Loop If    '${header_menus_name}'=='MEDIA'
     END
 
 Search
-    #Jenkins browser launch
+    Jenkins browser launch
     Click Element    xpath=.//span[@class='Sub_head_search']
     Input Text    id=edit-search-api-fulltext    ksngjdsnfjksdfj
     Click Element    id=edit-submit-wv-custom-search
     Element Should Be Visible    xpath=.//h3[@class='wv_sugg_search']
 
 Header and footer verification
-    #Jenkins browser launch
+    Jenkins browser launch
     Element Should Be Visible    xpath=.//header[@id='header']
     Sleep    4s
     Execute JavaScript    window.scrollTo(0, document.body.scrollHeight)
     Element Should Be Visible    xpath=.//footer
 
 Multiple deletion
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     One time Hunger Free campaign
     Educate children campaign with checkout flow
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
@@ -133,8 +120,8 @@ Multiple deletion
     Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display"
 
 To add child to a cart
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Sleep    15s
     Execute Javascript    window.scrollTo(0, 600)
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead darkHeader']
@@ -164,9 +151,6 @@ To add child to a cart
     Run Keyword If    '${view_cart_total_amt}'!='${edu_camp+child_camp_total_amt}'    Fail    "View cart page total amount and child+educate campaign amount are mismatch"
     Click Element    xpath=.//input[@id='edit-checkout']
 
-SI Flow
-    Local browser launch
-    #Jenkins browser launch
 
 *** Keywords ***
 Jenkins browser launch
