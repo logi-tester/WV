@@ -16,22 +16,6 @@ ${txt}            Hunger Free
 @{homepage_header_menu_txt}    ABOUT US    CHILD SPONSORSHIP    WAYS TO GIVE    GET INVOLVED    PARTNERSHIPS    MEDIA
 
 *** Test Cases ***
-
-
-Normal Login validation
-    #Local browser launch
-    Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
-    Click Element    id=edit-name
-    Input Text    id=edit-name    ${user_name}
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
-    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter username only try to login 'Invalid Credentials' error msg not display"
-    Clear Element Text    id=edit-name
-    Click Element    id=edit-pass
-    Input Text    id=edit-pass    ${password}
-    ${pswd_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
-    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter password only try to login 'Invalid Credentials' error msg not display"
-
 Valid username Invalid password
     #Local browser launch
     Jenkins browser launch
@@ -48,7 +32,7 @@ Invalid username and valid password
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-pass
-    Input Text    id=edit-pass    ${passowrd}
+    Input Text    id=edit-pass    ${password}
     Click Element    xpath=//div[@class='login-form__submit']//button
     ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter password only try to login 'Invalid Credentials' error msg not display"
@@ -125,7 +109,7 @@ To add child to a cart
     Sleep    15s
     Execute Javascript    window.scrollTo(0, 600)
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead darkHeader']
-    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer section not displayed"
+    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
     Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
     ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
     ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
@@ -154,7 +138,7 @@ To add child to a cart
 
 *** Keywords ***
 Jenkins browser launch
-    Set Selenium Speed    1s
+    Set Selenium Speed    .5s
     ${chrome_options} =    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
     Call Method    ${chrome_options}    add_argument    headless
     Call Method    ${chrome_options}    add_argument    disable-gpu
@@ -162,7 +146,7 @@ Jenkins browser launch
     Create WebDriver    Chrome    chrome_options=${chrome_options}
     Go To    ${baseurl}
     Maximize Browser Window
-    Set Browser Implicit Wait    15s
+    Set Browser Implicit Wait    60s
 
 Local browser launch
     Set Selenium Speed    .5s
