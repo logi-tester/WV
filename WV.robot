@@ -128,7 +128,7 @@ To add child to a cart
     Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
     ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
     Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
-    Educate children campaign
+    Educate children campaign with checkout flow
     ${view_cart_total_amt}=    Get Text    xpath=.//div[@class='order-total-line order-total-line__total']/span[2]
     Log To Console    View cart total amount:${view_cart_total_amt}
     ${edu_camp+child_camp_total_amt}=    Calculation amount    ${sel_child_amt}    ${edu_child_amt}
