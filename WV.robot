@@ -53,7 +53,7 @@ Ensure user can able to logout in direct login
     Click Element    xpath=//div[@class='login-form__submit']//button
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
-    Mouse Over    xpath=xpath=.//li[@class='welcomesponsor']
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
     ${ensure_prelogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[contains(text(),'Login')]
     Run Keyword If    'True'!='${ensure_prelogin_page}'    Fail    "User can't able to logout in direct login"
@@ -225,7 +225,7 @@ SI login
     Click Element    xpath=.//input[@id='exampleInputPassword1']
     Input Text    xpath=.//input[@id='exampleInputPassword1']    ${password}
     Click Element    id=si_login_btn
-    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=
+    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
     
 Educate children campaign with checkout flow
