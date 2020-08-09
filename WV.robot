@@ -12,8 +12,12 @@ ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
 ${user_name}      ${9600185121}
 ${password}       ${123456}
-${txt}            Hunger Free
-@{homepage_header_menu_txt}    ABOUT US    CHILD SPONSORSHIP    WAYS TO GIVE    GET INVOLVED    PARTNERSHIPS    MEDIA
+${addon_val}      100
+${checkout_payment_list_no}    4
+@{homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
+@{checkout_payment_list_text}    Powered by CC Avenue    Powered by AXIS BANK    POWERED BY HDFC BANK
+@{SI_payment_list_text}    NET BANKING    Indian credit card
+@{postlogin_homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
 
 *** Test Cases ***
 Valid username Invalid password
@@ -38,6 +42,47 @@ Invalid username and valid password
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter password only try to login 'Invalid Credentials' error msg not display"
     Clear Element Text    id=edit-pass
 
+Ensure user can able to logout in direct login
+    #Local browser launch
+    Jenkins browser launch
+    Login
+    ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
+    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
+    Mouse Over    xpath=xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
+    ${ensure_prelogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[contains(text(),'Login')]
+    Run Keyword If    'True'!='${ensure_prelogin_page}'    Fail    "User can't able to logout in direct login"
+    
+Direct login with exit user
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    ${user_name}
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    ${passowrd}
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
+    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
+
+Checkoutflow login with exit user
+    #Local browser launch
+    Jenkins browser launch
+    One time Hunger Free campaign
+    View cart proceed button
+    Login
+    ${checkoutflow_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']
+    Run Keyword If    'True'!='${checkoutflow_postlogin_page}'    Fail    "Exist user can't able to login for Checkout Flow"
+    
+SI flow login with exit user
+    #Local browser launch
+    Jenkins browser launch
+    Rescue child campaign
+    SI login
+    ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
+    Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"
+    
+    
 Hungree one time campaign
     #Local browser launch
     Jenkins browser launch
@@ -57,23 +102,15 @@ Logo and home page banner loaded check
     Run Keyword If    'True'!='${check_homepag_banner_section_status}'    Fail    "Home page banner section not display properly"
 
 Header main menu list verification
-    #Local browser launch
-    Jenkins browser launch
+    Local browser launch
+    #Jenkins browser launch
     ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
     Run Keyword If    '${headermenu_list}'!='${rightside_menu_list}'    Fail    "Header menu list size are mismatch"
     ${myworld_menus_name}=    Get Text    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[1]/a
-    Log To Console    Header menu list size is:${headermenu_list}
     Run Keyword If    '${myworld_menus_name}'!='MY WORLD'    Fail    "My world menu text are different"
-    FOR    ${INDEX}    IN RANGE    2    ${headermenu_list}
-        ${header_menus_name}=    Get Text    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[${INDEX}]/span
-        #Log To Console    Menus text:${header_menus_name}
-    #Sleep    10s
-      Continue For Loop If    '${header_menus_name}'=='ABOUT US'
-     Continue For Loop If    '${header_menus_name}'=='CHILD SPONSORSHIP'
-     Continue For Loop If    '${header_menus_name}'=='WAYS TO GIVE'
-     Continue For Loop If    '${header_menus_name}'=='GET INVOLVED'
-     Continue For Loop If    '${header_menus_name}'=='PARTNERSHIPS'
-     Continue For Loop If    '${header_menus_name}'=='MEDIA'
+    FOR    ${menu_txt}    IN    @{homepage_header_menu_txt}
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin home page ${menu_txt} text are mismatch"
     END
 
 Search
@@ -128,12 +165,6 @@ To add child to a cart
     Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
     ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
     Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
-    Educate children campaign with checkout flow
-    ${view_cart_total_amt}=    Get Text    xpath=.//div[@class='order-total-line order-total-line__total']/span[2]
-    Log To Console    View cart total amount:${view_cart_total_amt}
-    ${edu_camp+child_camp_total_amt}=    Calculation amount    ${sel_child_amt}    ${edu_child_amt}
-    Run Keyword If    '${view_cart_total_amt}'!='${edu_camp+child_camp_total_amt}'    Fail    "View cart page total amount and child+educate campaign amount are mismatch"
-    Click Element    xpath=.//input[@id='edit-checkout']
 
 
 *** Keywords ***
