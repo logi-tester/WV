@@ -45,6 +45,7 @@ Invalid username and valid password
 Ensure user can able to logout in direct login
     #Local browser launch
     Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
     Login
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
@@ -166,7 +167,22 @@ To add child to a cart
     ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
     Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
 
-
+Check Add-on added in view cart page
+    #Local browser launch
+    Jenkins browser launch
+    Educate children campaign with checkout flow
+    ${check_addon_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='prdt_tle']
+    Run Keyword If    'True'!='${check_addon_viewcart}'    Fail    "Viewcart page 'My Body My Rights' add-on not display
+    Click Element    xpath=.//label[@for='edit-form-field-field-product-add-on-s-add-to-ca-0-field-product-add-on-s-add-to-ca-value']
+    ${Chck_addon_added_or_not}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'My BODY')]
+    Run Keyword If    'True'!='${Chck_addon_added_or_not}'    Fail    "After click Add-on not display in view cart page"
+    ${hungercamp_amt+Add_on_amt}=    Evaluate    ${edu_child_amt}+${addon_val}
+    ${convert_int_to_string_val}=    Convert To String    ${hungercamp_amt+Add_on_amt}
+    ${hungercamp_amt+Add_on_amt_final_val}=    Replace String    ${convert_int_to_string_val}    4    4,
+    Log To Console    Viewcart final total amount:${hungercamp_amt+Add_on_amt_final_val}
+    ${chck_total_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='order-total-line order-total-line__total']/span[@class='order-total-line-value'][contains(.,'₹${hungercamp_amt+Add_on_amt_final_val}')]
+    Run Keyword If    'True'!='${chck_total_amt_viewcart}'    Fail    "In view cart page campaign amoutn and add-on amount of total amount are differ"
+    
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -194,7 +210,19 @@ Login
     Input Text    xpath=//input[@id='edit-login-custom-returning-customer-name']    ${user_name}
     Input Text    xpath=//input[@id='edit-login-custom-returning-customer-password']    ${password
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
-
+    
+View cart proceed button
+    Click Element    xpath=.//input[@id='edit-checkout']
+    
+SI login
+    Click Element    xpath=.//input[@id='exampleInputEmail1']
+    Input Text    xpath=.//input[@id='exampleInputEmail1']    ${user_name}
+    Click Element    xpath=.//input[@id='exampleInputPassword1']
+    Input Text    xpath=.//input[@id='exampleInputPassword1']    ${password}
+    Click Element    id=si_login_btn
+    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=
+    Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
+    
 Educate children campaign with checkout flow
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Educate Children')])[1]
