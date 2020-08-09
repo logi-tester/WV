@@ -144,8 +144,8 @@ Jenkins browser launch
     Call Method    ${chrome_options}    add_argument    disable-gpu
     Call Method    ${chrome_options}    add_argument    no-sandbox
     Create WebDriver    Chrome    chrome_options=${chrome_options}
+    Set Window Size    1920    1080
     Go To    ${baseurl}
-    Maximize Browser Window
     Set Browser Implicit Wait    60s
 
 Local browser launch
