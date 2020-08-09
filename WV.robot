@@ -278,10 +278,4 @@ Rescue child campaign
     ${rescue_child_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    xpath=.//button[@class='btn btn-primary si_modal_btn']
-    Click Element    xpath=.//input[@id='exampleInputEmail1']
-    Input Text    xpath=.//input[@id='exampleInputEmail1']    ${user_name}
-    Click Element    xpath=.//input[@id='exampleInputPassword1']
-    Input Text    xpath=.//input[@id='exampleInputPassword1']    ${password}
-    Click Element    id=si_login_btn
-    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=
-    Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
+   
