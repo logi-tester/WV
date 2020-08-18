@@ -24,6 +24,8 @@ ${checkout_payment_list_no}    4
 @{Aboutus_submenu_txt}    Who We Are    How We Work    Where We Work    Our History    Our Accountability    Careers    Contact Us
 @{Childsponsorship_submenu_txt}    How Sponsorship Works    Sponsor a Child    Stories of Change    Partners Speak    FAQs    Child Protection Policy
 @{Get_involved}    Events    Volunteer
+@{Media_submenu_txt}    Press Releases    News Articles    Blog    Publication
+@{Partnership_submenu_txt}    Corporate
 
 *** Test Cases ***
 Valid username Invalid password
@@ -130,7 +132,9 @@ Search
     Click Element    xpath=.//span[@class='Sub_head_search']
     Input Text    id=edit-search-api-fulltext    ksngjdsnfjksdfj
     Click Element    id=edit-submit-wv-custom-search
-    Element Should Be Visible    xpath=.//h3[@class='wv_sugg_search']
+    ${search_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//h3[@class='wv_sugg_search']
+    Run Keyword If    'True'!='${search_status}'    Fail    "Search funcationality not working"
+    
 
 Header and footer verification
     Jenkins browser launch
@@ -170,6 +174,28 @@ Get involved submenu list verification
         Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Get Involved')]
         ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Get Involved')]/div//ul/li/a[contains(.,'${menu_txt}')]
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Get Involved submenu ${menu_txt} text are mismatch"
+    END
+    
+Media submenu list verification
+    Local browser launch
+    #Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='4'    Fail    "Media sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Media_submenu_txt}
+        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Media submenu ${menu_txt} text are mismatch"
+    END
+
+Partnership submenu list verification
+    Local browser launch
+    #Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Partnerships')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='1'    Fail    "Partnerships sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Partnership_submenu_txt}
+        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Partnerships')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Partnerships')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Partnerships submenu ${menu_txt} text are mismatch"
     END
     
 Multiple deletion
