@@ -97,12 +97,14 @@ Hungree one time campaign
     #Local browser launch
     Jenkins browser launch
     One time Hunger Free campaign
-
+    Delete view cart campaign
+    
 Educate children campaign
     #Local browser launch
     Jenkins browser launch
     Educate children campaign with checkout flow
-
+    Delete view cart campaign
+    
 Logo and home page banner loaded check
     #Local browser launch
     Jenkins browser launch
@@ -138,8 +140,8 @@ Header and footer verification
     Element Should Be Visible    xpath=.//footer
     
 Aboutus submenu list verification
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]/div//ul/li
     Run Keyword If    '${headermenu_list}'!='7'    Fail    "About us sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Aboutus_submenu_txt}
@@ -294,6 +296,11 @@ Calculation amount
     ${total_amt}=    Evaluate    ${child_amt}+${edu_camp_amt}
     [Return]    ${total_amt}
 
+Delete view cart campaign
+    Click Element    xpath=(.//a[@class='remove-btn'])[1]
+    ${gift_cart_msg}=    Get Text    xpath=.//div[@class='Empty_basket_Content']/h1
+    Run Keyword If    '${gift_cart_msg}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display"
+    
 Login
     Click Element   xpath=//input[@id='edit-login-custom-returning-customer-name']
     Input Text    xpath=//input[@id='edit-login-custom-returning-customer-name']    ${user_name}
@@ -349,14 +356,14 @@ One time Hunger Free campaign
     Click Element    xpath=.//div[@class='add-to-cart-section']
     ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     ${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
-    #Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input valid']
+    ${input_val}=    Get Text    xpath=.//input[@name='manualCart[0][amount]']
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
     Click Element    xpath=//a[@class='view_cart']
     ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${split_Hunger_name_with_rightside}[0]')]
     Run Keyword If    'True'!='${hunger_camp_viewcart}'    Fail    "Hunger Free campaign not display in view cart page"
-    ${replace_val}=    Replace String    ${hunger_free_camp_amt}    1    1,
+    ${replace_val}=    Replace String    ${input_val}    1    1,
     ${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val}')]
     Run Keyword If    'True'!='${hunger_camp_amt_viewcart}'    Fail    "Hunger Free campaign amount are not display/mismatch in view cart page"
 
