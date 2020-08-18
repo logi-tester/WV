@@ -177,8 +177,8 @@ Get involved submenu list verification
     END
     
 Media submenu list verification
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]/div//ul/li
     Run Keyword If    '${headermenu_list}'!='4'    Fail    "Media sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Media_submenu_txt}
@@ -188,8 +188,8 @@ Media submenu list verification
     END
 
 Partnership submenu list verification
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Partnerships')]/div//ul/li
     Run Keyword If    '${headermenu_list}'!='1'    Fail    "Partnerships sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Partnership_submenu_txt}
