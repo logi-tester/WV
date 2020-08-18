@@ -7,17 +7,23 @@ Library           String
 ${baseurl}        https://prod.worldvision.in/
 ${browser}        chrome
 ${rightside_menu_list}    7
+${postlogin_menu_list}    6
 ${edu_child_amt}    4000
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
-${user_name}      ${9600185121}
-${password}       ${123456}
+${user_name}      9600185121
+${password}       123456
 ${addon_val}      100
+${real_gift_enter_val}    1000
 ${checkout_payment_list_no}    4
 @{homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
 @{checkout_payment_list_text}    Powered by CC Avenue    Powered by AXIS BANK    POWERED BY HDFC BANK
 @{SI_payment_list_text}    NET BANKING    Indian credit card
-@{postlogin_homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
+@{postlogin_homepage_header_menu_txt_list}    My World    My Child    My Campaign    Tax Receipts    Ways to Give    Explore More
+@{postlogin_homepage_header_chck_menu_txt}    My World    My Child    My Campaign    Tax Receipts
+@{Aboutus_submenu_txt}    Who We Are    How We Work    Where We Work    Our History    Our Accountability    Careers    Contact Us
+@{Childsponsorship_submenu_txt}    How Sponsorship Works    Sponsor a Child    Stories of Change    Partners Speak    FAQs    Child Protection Policy
+@{Get_involved}    Events    Volunteer
 
 *** Test Cases ***
 Valid username Invalid password
@@ -130,7 +136,40 @@ Header and footer verification
     Sleep    4s
     Execute JavaScript    window.scrollTo(0, document.body.scrollHeight)
     Element Should Be Visible    xpath=.//footer
+    
+Aboutus submenu list verification
+    Local browser launch
+    #Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='7'    Fail    "About us sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Aboutus_submenu_txt}
+        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin About us submenu ${menu_txt} text are mismatch"
+    END
 
+Child Sponsorship submenu list verification
+    #Local browser launch
+    Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Child Sponsorship')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='6'    Fail    "Child Sponsorship sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Childsponsorship_submenu_txt}
+        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Child Sponsorship')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Child Sponsorship')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Child Sponsorship submenu ${menu_txt} text are mismatch"
+    END
+
+Get involved submenu list verification
+    #Local browser launch
+    Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Get Involved')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='2'    Fail    "Get involved sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Get_involved}
+        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Get Involved')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Get Involved')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Get Involved submenu ${menu_txt} text are mismatch"
+    END
+    
 Multiple deletion
     #Local browser launch
     Jenkins browser launch
@@ -170,6 +209,37 @@ To add child to a cart
     ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
     Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
 
+Checkout Flow payment gateway list and text check
+    #Local browser launch
+    Jenkins browser launch
+    One time Hunger Free campaign
+    View cart proceed button
+    Login
+    ${checkoutflow_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']
+    Run Keyword If    'True'!='${checkoutflow_postlogin_page}'    Fail    "Checkout postlogin page not display"
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    4!=${checkout_payment_list}    Fail    "Checkout flow payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Payment Gateway ${bank_txt} text is mismatch'
+    END
+    #nedd to check campaign details
+
+SI Flow payment gateway list and text check
+    #Local browser launch
+    Jenkins browser launch
+    Rescue child campaign
+    SI login
+    ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
+    Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "SI post login page not display"
+    ${SI_payment_list}=    Get Element Count    xpath=.//div[@class='payment-main-content']/div
+    Run Keyword If    2!=${SI_payment_list}    Fail    "SI Flow payment gateway list mismatch"
+    FOR    ${SI_payment_txt}    IN    @{SI_payment_list_text}
+        ${SI_payment_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']/div[contains(.,'${SI_payment_txt}')]
+        Run Keyword If    'True'!='${SI_payment_txt}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
+    END
+    #nedd to check campaign details
+    
 Check Add-on added in view cart page
     #Local browser launch
     Jenkins browser launch
@@ -185,7 +255,22 @@ Check Add-on added in view cart page
     Log To Console    Viewcart final total amount:${hungercamp_amt+Add_on_amt_final_val}
     ${chck_total_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='order-total-line order-total-line__total']/span[@class='order-total-line-value'][contains(.,'₹${hungercamp_amt+Add_on_amt_final_val}')]
     Run Keyword If    'True'!='${chck_total_amt_viewcart}'    Fail    "In view cart page campaign amoutn and add-on amount of total amount are differ"
-    
+ 
+ Post login menus check
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    ${postloginheadermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li
+    Run Keyword If    '${postloginheadermenu_list}'!='${postlogin_menu_list}'    Fail    "Post login header main menu list size are mismatch"
+    ${ways_to_give_menus_name}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[5]/span
+    Run Keyword If    '${ways_to_give_menus_name}'!='WAYS TO GIVE'    Fail    "Ways to givr menu text are different"
+    ${explore_menu_txt}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[6]/span
+    Run Keyword If    '${explore_menu_txt}'!='EXPLORE MORE'    Fail    "Explore more menu text are different"
+    FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/a[contains(.,'${postlogin_menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin home page ${menu_txt} text are mismatch"
+    END   
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -218,6 +303,11 @@ Login
     
 View cart proceed button
     Click Element    xpath=.//input[@id='edit-checkout']
+  
+Direct login
+    Input Text    id=edit-name    ${user_name}
+    Input Text    id=edit-pass    ${password}
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
 SI login
     Click Element    xpath=.//input[@id='exampleInputEmail1']
