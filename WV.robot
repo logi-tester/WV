@@ -133,7 +133,7 @@ Search
     Input Text    id=edit-search-api-fulltext    ksngjdsnfjksdfj
     Click Element    id=edit-submit-wv-custom-search
     ${search_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//h3[@class='wv_sugg_search']
-    Run Keyword If    'True'!='${search_status}'    Fail    "Search funcationality not working"
+    Run Keyword If    'True'!='${search_status}'    Fail    "When enter irrelevant data 'No Result Found' text not display"
     
 
 Header and footer verification
