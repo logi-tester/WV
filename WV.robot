@@ -95,6 +95,87 @@ SI flow login with exit user
     ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
     Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"    
     
+Just post login check hungerfree campaign
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
+    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not found"
+    #${Hungerfree_label_amt}=    Run Keyword If    'True'=='${hunger_free_label_chck}'    Get Text    xpath=.//div[@class='chld-items    ']//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
+    ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
+    ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
+    ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
+    Log To Console    After remove string get Final amt:${final_label_amt}
+    Mouse Over    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
+    Click Element    xpath=.//div[@class='add-to-cart-section']
+    ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
+    ${get_input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
+    Log To Console    Hunger campaign get input amount:${get_input_val}
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
+    Click Element    xpath=//a[@class='view_cart']
+    ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${split_Hunger_name_with_rightside}[0]')]
+    Run Keyword If    'True'!='${hunger_camp_viewcart}'    Fail    "Hunger Free campaign not display in view cart page"
+    ${replace_val}=    Replace String    ${get_input_val}    1    1,
+    ${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val}')]
+    Run Keyword If    'True'!='${hunger_camp_amt_viewcart}'    Fail    "Hunger Free campaign amount are not display/mismatch in view cart page"
+    View cart proceed button
+    CCavenue payment success flow
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
+    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
+    #${convert_hunger_amt_int}=    Convert To Integer    ${final_label_amt}
+    #${convert_hunger_get_amt_int}=    Convert To Integer    ${get_input_val}
+    Log To Console    Hunger campaign get input amount:${get_input_val}
+    ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${get_input_val}
+    Log To Console    After success hunger campaign final amount:${add_label_amt+input_amt}
+    ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
+    ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
+    ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
+    Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
+
+Just pre login check hungerfree campaign
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
+    #${Hungerfree_label_amt}=    Run Keyword If    'True'=='${hunger_free_label_chck}'    Get Text    xpath=.//div[@class='chld-items    ']//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
+    ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
+    ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
+    ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
+    Log To Console    After remove string get Final amt:${final_label_amt}
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
+    ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
+    Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
+    ${hunger_get_input_val}=    One time Hunger Free campaign
+    View cart proceed button
+    CCavenue payment success flow
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
+    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
+    ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${hunger_get_input_val}
+    Log To Console    After success hunger campaign final amount:${add_label_amt+input_amt}
+    ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
+    ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
+    ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
+    Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
+
 Hungree one time campaign
     #Local browser launch
     Jenkins browser launch
@@ -284,6 +365,112 @@ Check Add-on added in view cart page
     ${chck_total_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='order-total-line order-total-line__total']/span[@class='order-total-line-value'][contains(.,'₹${hungercamp_amt+Add_on_amt_final_val}')]
     Run Keyword If    'True'!='${chck_total_amt_viewcart}'    Fail    "In view cart page campaign amoutn and add-on amount of total amount are differ"
  
+ Child add from child rotator and payment success ccavenue
+    #Local browser launch
+    Jenkins browser launch
+    ${child_display_banner}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='myCarousel']
+    Run Keyword If    'True'!='${child_display_banner}'    Fail    "Home banner section child rotator not display"
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
+    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
+    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
+    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
+    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
+    Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
+    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
+    Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
+    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Home page banner section selected child and sponsor successs child image are not match"
+    Click Element    xpath=.//a[@class='view_detailed']
+    ${by_spec_child_count}=    Get Element Count    xpath=//div[@class='row mychilddet']/div/div
+    Run Keyword If    ${by_spec_child_count}<1    Fail    "No child in By specifics page"
+    Mouse Over    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='bySpecHoverContent']
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='bySpecHoverContent']/input
+    ${byspec_child_name}=    Get Text    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='childproduct']//div[@class='inner_banner_pledge_content']/h2
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='com_emergency_flood row']/span[2]/div/label
+    ${get_byspec_child_amt}=    Get Element Attribute    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='com_emergency_flood row']/span[2]/div/label    for
+    ${add_symbol_to_amt}=    Replace String    ${get_byspec_child_amt}    2    2,
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='SIpatent']//input
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='siNonShow']//div[@class='kl_flood_sub_or_sec']/input
+    Click Element    xpath=(.//a[@class='view_cart'])[1]
+    ${chck_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${child_name}')]
+    Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
+    ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
+    Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
+    ${chck_byspec_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${byspec_child_name}')]
+    Run Keyword If    'True'!='${chck_byspec_child_name}'    Fail    "By spec choosed child not display in view cart page"
+    ${chck_byspec_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${add_symbol_to_amt}')]
+    Run Keyword If    'True'!='${chck_byspec_child_amt}'    Fail    "By spec choosed child amount are mismatch in view cart page"
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+ 
+ Ensure overview campaign label in Hosh menu
+    #Local browser launch
+    Jenkins browser launch
+    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
+    ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
+    Run Keyword If    ${overview_menus_list}!=11    Fail    "In Overview page menu list are mismatch"
+    Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[1]//h3
+    ${chck_banner_image}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='views-field views-field-field-banner-image']
+    #Click Element    xpath=.//a[@class='real-gifts-btn']
+    #Select Window    https://www.hopetoshine.in/
+    #${hosh_url}=    Get Location
+    #Log To Console    Hosh url is:${hosh_url}
+    #Select Window    URL=https://prod.worldvision.in/real-gifts
+    #${wv_url}=    Get Location
+    #Log To Console    WV url is:${wv_url}
+    Click Element    xpath=//div[@class='gbl_tabbed_menu']/ul/li[2]
+    Mouse Over    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='IMGSec_cover']
+    Click Element    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='Gift_add giftBtn']
+    Ensure default amount in educational need
+    Error default value and check button disable
+    View cart page
+    Delete view cart campaign
+
+Ensure overview campaign label in Back to school
+    #Local browser launch
+    Jenkins browser launch
+    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
+    ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
+    Run Keyword If    ${overview_menus_list}!=11    Fail    "In Overview page menu list are mismatch"
+    Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[3]//h3
+    Click Element    xpath=//div[@class='gbl_tabbed_menu']/ul/li[2]
+    Mouse Over    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='IMGSec_cover']
+    Click Element    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='Gift_add giftBtn']
+    Ensure default amount in educational need
+    Error default value and check button disable
+    View cart page
+    Delete view cart campaign
+
+Ensure overview campaign label in Gift catalog
+    #Local browser launch
+    Jenkins browser launch
+    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
+    ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
+    Run Keyword If    ${overview_menus_list}!=11    Fail    "In Overview page menu list are mismatch"
+    Click Element    xpath=(.//div[@class='views-element-container']//a)[1]
+    Execute JavaScript    window.scrollTo(0, 100)
+    Sleep    5s
+    Mouse Over    xpath=.//div[@class='gift-catelogue']/div[1]//div[@class='item-image']
+    Click Element    xpath=.//div[@class='gift-catelogue']/div[1]//input[@class='button--add-to-cart button realGiftsSponsor']
+    ${chck_sidediv_enable}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav'])[1]
+    Run Keyword If    'True'!='${chck_sidediv_enable}'    Fail    "Side section information tab not display"
+    ${chck_val_sidebar}=    Get Text    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='price'])[1]
+    ${replace_priceval_spl_symbol}=    Replace String    ${chck_val_sidebar}    ,    ${EMPTY}
+    ${final_replace_val}=    Remove String    ${replace_priceval_spl_symbol}    X    ${EMPTY}
+    ${actual}=    Strip String    ${final_replace_val}${SPACE}
+    ${get_val_addtocart_button}=    Get Element Attribute    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]    value
+    ${remove_curlybrace}=    Fetch From Left    ${get_val_addtocart_button}    )
+    ${again_remove_curlybrace}=    Remove String    ${remove_curlybrace}    (    ${EMPTY}
+    ${expected}=    Strip String    ${SPACE}${again_remove_curlybrace}
+    Run Keyword If    '${actual}'!='${expected}'    Fail    "Gift Catalog label amount and 'Add to Cart' button amount are mismatch"
+    
  Post login menus check
     #Local browser launch
     Jenkins browser launch
@@ -350,6 +537,23 @@ SI login
     Click Element    id=si_login_btn
     ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
+
+CCavenue payment success flow
+    #Wait Until Element Is Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by AXIS BANK')]
+    #Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by AXIS BANK')]/preceding-sibling::input
+    #Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/preceding-sibling::input
+    #Sleep    4s
+    ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
+    Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
+    Click Element    xpath=.//input[@id='edit-actions-next']
+    #${order_id}=    Get Text    xpath=.//span[@class='order-value']
+    #Log To Console    Order id:${order_id}
+    Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
+    Select From List By Value    id=netBankingBank    AvenuesTest
+    Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
+    Click Element    xpath=.//input[@type='submit']
+    ${payment_success_msg}=    Get Text    xpath=.//div[@class='payment-success-message']/h3
+    Run Keyword If    'PAYMENT SUCCESSFULL'!='${payment_success_msg}'    Fail    "Payment successful page not display"
     
 Educate children campaign with checkout flow
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
@@ -382,7 +586,7 @@ One time Hunger Free campaign
     Click Element    xpath=.//div[@class='add-to-cart-section']
     ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     ${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
-    ${input_val}=    Get Text    xpath=.//input[@name='manualCart[0][amount]']
+    ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
@@ -392,7 +596,8 @@ One time Hunger Free campaign
     ${replace_val}=    Replace String    ${input_val}    1    1,
     ${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val}')]
     Run Keyword If    'True'!='${hunger_camp_amt_viewcart}'    Fail    "Hunger Free campaign amount are not display/mismatch in view cart page"
-
+    [Return]    ${input_val}
+    
 Rescue child campaign
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Rescue Children')])[1]
