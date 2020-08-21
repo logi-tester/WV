@@ -4,7 +4,7 @@ Library           SeleniumLibrary
 Library           String
 
 *** Variables ***
-${baseurl}        https://prod.worldvision.in/
+${baseurl}        https://uat.worldvision.in/
 ${browser}        chrome
 ${rightside_menu_list}    7
 ${postlogin_menu_list}    6
@@ -54,17 +54,11 @@ Ensure user can able to logout in direct login
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Click Element    id=edit-name
-    Input Text    id=edit-name    ${user_name}
-    Click Element    id=edit-pass
-    Input Text    id=edit-pass    ${password}
-    Click Element    xpath=//div[@class='login-form__submit']//button
-    ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
-    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Exist user can't able to login for direct login"
+    Direct login
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
-    ${ensure_prelogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[contains(text(),'Login')]
-    Run Keyword If    'True'!='${ensure_prelogin_page}'    Fail    "User can't able to logout in direct login"
+    ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
+    Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
     
 Direct login with exit user
     #Local browser launch
@@ -345,7 +339,7 @@ SI Flow payment gateway list and text check
     Run Keyword If    2!=${SI_payment_list}    Fail    "SI Flow payment gateway list mismatch"
     FOR    ${SI_payment_txt}    IN    @{SI_payment_list_text}
         ${SI_payment_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']/div[contains(.,'${SI_payment_txt}')]
-        Run Keyword If    'True'!='${SI_payment_txt}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
+        Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
     END
     #nedd to check campaign details
     
