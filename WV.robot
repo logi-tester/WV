@@ -170,6 +170,33 @@ Just pre login check hungerfree campaign
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
 
+Tax receipt page
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=.//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/a[contains(.,'Tax Receipts')]
+    ${chk_disable_download_Btn}=    Run Keyword And Return Status    Click Element    xpath=.//a[@class='downloadpdf']
+    Run Keyword If    'True'!='${chk_disable_download_Btn}'    Fail    "Tax receipts page by default 'Download Tax Receipt' button is enable"
+    Click Element    xpath=.//input[@id='edit-created-min']
+    Select From List By Label    xpath=.//select[@class='ui-datepicker-month']    Jan
+    Select From List By Label    xpath=.//select[@class='ui-datepicker-year']    2020
+    ${get_date_count}=    Get Element Count    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a
+    FOR    ${index}    IN RANGE    1    ${get_date_count}
+        ${get_date_txt}=    Get Text    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
+        ${sub_date_}=    Subtract date
+        #${today_date}=    Today date
+        Run Keyword If    '${get_date_txt}'=='${sub_date_}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
+    END
+    Click Element    xpath=.//input[@id='edit-created-max']
+    ${get_count_date}=    Get Element Count    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a
+    FOR    ${index}    IN RANGE    1    ${get_count_date}
+        ${get_txt_date}=    Get Text    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
+        ${today_date}=    Today date
+        Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
+    END
+    Click Element    id=generate_tax
+    
 Hungree one time campaign
     #Local browser launch
     Jenkins browser launch
@@ -239,7 +266,18 @@ Child Sponsorship submenu list verification
         ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Child Sponsorship')]/div//ul/li/a[contains(.,'${menu_txt}')]
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Child Sponsorship submenu ${menu_txt} text are mismatch"
     END
-
+    
+Ways to give submenu list verification
+    #Local browser launch
+    Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Ways to Give')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='12'    Fail    "Ways to give sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Ways_to_give}
+        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Ways to Give')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Ways to Give')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Ways to give submenu ${menu_txt} text are mismatch"
+    END
+    
 Get involved submenu list verification
     #Local browser launch
     Jenkins browser launch
@@ -312,21 +350,7 @@ To add child to a cart
     ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
     Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
 
-Checkout Flow payment gateway list and text check
-    #Local browser launch
-    Jenkins browser launch
-    One time Hunger Free campaign
-    View cart proceed button
-    Login
-    ${checkoutflow_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']
-    Run Keyword If    'True'!='${checkoutflow_postlogin_page}'    Fail    "Checkout postlogin page not display"
-    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
-    Run Keyword If    4!=${checkout_payment_list}    Fail    "Checkout flow payment list are mismatch"
-    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Payment Gateway ${bank_txt} text is mismatch'
-    END
-    #nedd to check campaign details
+
 
 SI Flow payment gateway list and text check
     #Local browser launch
@@ -401,6 +425,56 @@ Check Add-on added in view cart page
     Login
     CCavenue payment success flow
  
+ Child add from child rotator and add extra child from add another child way
+    #Local browser launch
+    Jenkins browser launch
+    ${child_display_banner}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='myCarousel']
+    Run Keyword If    'True'!='${child_display_banner}'    Fail    "Home banner section child rotator not display"
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
+    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
+    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
+    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
+    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
+    Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
+    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
+    Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
+    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Home page banner section selected child and sponsor successs child image are not match"
+    Click Element    xpath=.//a[@class='view_detailed']
+    ${by_spec_child_count}=    Get Element Count    xpath=//div[@class='row mychilddet']/div/div
+    Run Keyword If    ${by_spec_child_count}<1    Fail    "No child in By specifics page"
+    Mouse Over    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='bySpecHoverContent']
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='bySpecHoverContent']/input
+    ${byspec_child_name}=    Get Text    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='childproduct']//div[@class='inner_banner_pledge_content']/h2
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='com_emergency_flood row']/span[2]/div/label
+    ${get_byspec_child_amt}=    Get Element Attribute    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='com_emergency_flood row']/span[2]/div/label    for
+    ${add_symbol_to_amt}=    Replace String    ${get_byspec_child_amt}    2    2,
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='SIpatent']//input
+    Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='siNonShow']//div[@class='kl_flood_sub_or_sec']/input
+    Click Element    xpath=(.//a[@class='view_cart'])[1]
+    ${chck_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${child_name}')]
+    Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
+    ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
+    Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
+    ${chck_byspec_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${byspec_child_name}')]
+    Run Keyword If    'True'!='${chck_byspec_child_name}'    Fail    "By spec choosed child not display in view cart page"
+    ${chck_byspec_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${add_symbol_to_amt}')]
+    Run Keyword If    'True'!='${chck_byspec_child_amt}'    Fail    "By spec choosed child amount are mismatch in view cart page"
+    View cart proceed button
+    Login
+    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div[4]
+    ${check_visible_sponsor_child_checkout_gateway}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//table/tbody/tr/td[1][contains(.,'${child_name}')]
+    Run Keyword If    'True'!='${check_visible_sponsor_child_checkout_gateway}'    Fail    "Selected child name not displayed in checckout payement gateway"
+    ${check_visible_byspec_child_name_checkout_gateway}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//table/tbody/tr/td[1][contains(.,'${byspec_child_name}')]
+    Run Keyword If    'True'!='${check_visible_byspec_child_name_checkout_gateway}'    Fail    "Selected By spec child name not displayed in checckout payement gateway"
+    Click Element    xpath=(.//div[@id='offpay']//label)[1]
+    Click Element    xpath=.//span[@class='offline_pay_btn']
+    ${check_thq_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='thanks_description']/h1
+    Run Keyword If    'True'!='${check_thq_page}'    Fail    "After payment through UPI 'Thank You' page text not display"
+    
  Ensure overview campaign label in Hosh menu
     #Local browser launch
     Jenkins browser launch
@@ -479,7 +553,107 @@ Ensure overview campaign label in Gift catalog
     FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}
         ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/a[contains(.,'${postlogin_menu_txt}')]
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin home page ${menu_txt} text are mismatch"
-    END   
+    END  
+    
+Post login ways to give submenu list verification
+    #Local browser launch
+    Jenkins browser launch
+    ${headermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]/div//ul/li
+    Run Keyword If    '${headermenu_list}'!='12'    Fail    "Ways to give sub menu list size are mismatch"
+    FOR    ${menu_txt}    IN    @{Ways_to_give}
+        Mouse Over    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin Ways to give submenu ${menu_txt} text are mismatch"
+    END
+    
+Checkout flow Other passport holder payment gateways list
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
+    Run Keyword If    'True'!='${other}'    Fail    "By default Other passport holder not clicked"
+    One time Hunger Free campaign
+    View cart proceed button
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
+    END
+    
+Checkout flow Indian passport holder payment gateways list
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    Click Element    xpath=.//label[@for='indctzn']
+    Scroll Element Into View    id=edit-submit
+    Click Element    id=edit-submit
+    Educate children campaign with checkout flow
+    View cart proceed button
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    5!=${checkout_payment_list}    Fail    "Checkout flow Indian passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Indian passport holder Payment Gateway ${bank_txt} text is mismatch'
+    END
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_ind_passport}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Indian passport holder Payment Gateway ${bank_txt} text is mismatch'
+    END
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    ${indn}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
+    Run Keyword If    'True'!='${indn}'    Fail    "Change to indian passport holder but not changed"
+    #Back to change other passport holder
+    Click Element    xpath=.//label[@for='othctzn']
+    Scroll Element Into View    id=edit-submit
+    Click Element    id=edit-submit
+ 
+Max val alert in view cart page
+    #Local browser launch
+    Jenkins browser launch
+    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
+    Sleep    10s
+    Click Element    xpath=.//div[@class='add-to-cart-section']
+    ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
+    #${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
+    Clear Element Text    xpath=.//input[@name='manualCart[0][amount]']
+    Input Text    xpath=.//input[@name='manualCart[0][amount]']    500000
+    ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
+    #Educate children campaign with checkout flow
+    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'Educate Children')])[1]
+    Sleep    10s
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Click Element    id=ChkForSI
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    600000
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']1
+    Click Element    xpath=//a[@class='view_cart']
+    ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='max-amount']
+    Run Keyword If    'True'!='${max_erro_msg}'    Fail    "Total amount reach 10k but 'Maximum Amount Payable' alert msg not display"
+    ${proceed_btn_disable}=    Run Keyword And Return Status    Click Element    id=edit-actions
+    Run Keyword If    'False'!='${proceed_btn_disable}'    Fail    "Max alert msg display but Proceed button is enable"
+    
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -601,3 +775,13 @@ Rescue child campaign
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    xpath=.//button[@class='btn btn-primary si_modal_btn']
    
+Subtract date
+    ${CurrentDate}=    Get Current Date    result_format=%Y-%m-%d
+    ${date}=    Subtract Time From Date    ${CurrentDate}    3days
+    ${sub_time}=    Convert Date    ${date}    datetime
+    [Return]    ${sub_time.day}
+
+Today date
+    ${CurrentDate}=    Get Current Date    result_format=%Y-%m-%d
+    ${datetime}=    Convert Date    ${CurrentDate}    datetime
+    [Return]    ${datetime.day}
