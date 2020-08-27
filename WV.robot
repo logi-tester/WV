@@ -3,6 +3,7 @@ Test Teardown     Close Browser
 Library           SeleniumLibrary
 Library           String
 Library           DateTime
+Library           BuiltIn
 
 *** Variables ***
 ${baseurl}        https://uat.worldvision.in/
@@ -186,15 +187,16 @@ Tax receipt page
     FOR    ${index}    IN RANGE    1    ${get_date_count}
         ${get_date_txt}=    Get Text    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         ${sub_date_}=    Subtract date
-        #${today_date}=    Today date
         Run Keyword If    '${get_date_txt}'=='${sub_date_}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
+        Exit For Loop If    '${get_date_txt}'=='${sub_date_}'
     END
     Click Element    xpath=.//input[@id='edit-created-max']
     ${get_count_date}=    Get Element Count    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a
     FOR    ${index}    IN RANGE    1    ${get_count_date}
         ${get_txt_date}=    Get Text    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         ${today_date}=    Today date
-        Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
+        Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index_today}]
+        Exit For Loop If    '${get_txt_date}'=='${today_date}'
     END
     Click Element    id=generate_tax
     
