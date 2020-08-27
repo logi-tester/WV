@@ -2,6 +2,7 @@
 Test Teardown     Close Browser
 Library           SeleniumLibrary
 Library           String
+Library           DateTime
 
 *** Variables ***
 ${baseurl}        https://uat.worldvision.in/
@@ -23,6 +24,7 @@ ${checkout_payment_list_no}    4
 @{postlogin_homepage_header_chck_menu_txt}    My World    My Child    My Campaign    Tax Receipts
 @{Aboutus_submenu_txt}    Who We Are    How We Work    Where We Work    Our History    Our Accountability    Careers    Contact Us
 @{Childsponsorship_submenu_txt}    How Sponsorship Works    Sponsor a Child    Stories of Change    Partners Speak    FAQs    Child Protection Policy
+@{Ways_to_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Rescue Children    Save Malnourished Children    Where Most Needed
 @{Get_involved}    Events    Volunteer
 @{Media_submenu_txt}    Press Releases    News Articles    Blog    Publication
 @{Partnership_submenu_txt}    Corporate
@@ -103,7 +105,7 @@ Just post login check hungerfree campaign
     ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
     ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
     ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
-    Log To Console    After remove string get Final amt:${final_label_amt}
+    Log To Console    Before hunger free label amount:${final_label_amt}
     Mouse Over    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
     Click Element    xpath=.//div[@class='add-to-cart-section']
@@ -127,14 +129,12 @@ Just post login check hungerfree campaign
     Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
     Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
-    #${convert_hunger_amt_int}=    Convert To Integer    ${final_label_amt}
-    #${convert_hunger_get_amt_int}=    Convert To Integer    ${get_input_val}
-    Log To Console    Hunger campaign get input amount:${get_input_val}
     ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${get_input_val}
-    Log To Console    After success hunger campaign final amount:${add_label_amt+input_amt}
+    Log To Console    Before hunger label amount + hunger free input value:${add_label_amt+input_amt}
     ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
     ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
+    Log To Console    Overall hunger free label amount:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
 
 Just pre login check hungerfree campaign
@@ -146,16 +146,16 @@ Just pre login check hungerfree campaign
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
     Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
-    #${Hungerfree_label_amt}=    Run Keyword If    'True'=='${hunger_free_label_chck}'    Get Text    xpath=.//div[@class='chld-items    ']//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
     ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
     ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
     ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
-    Log To Console    After remove string get Final amt:${final_label_amt}
+    Log To Console    Before hunger free label amount:${final_label_amt}
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
     ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
     Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
     ${hunger_get_input_val}=    One time Hunger Free campaign
+    Log To Console    Hunger campaign get input amount:${hunger_get_input_val}
     View cart proceed button
     CCavenue payment success flow
     Click Element    xpath=.//li[@class='post_lgn']/a
@@ -164,10 +164,11 @@ Just pre login check hungerfree campaign
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]
     Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
     ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${hunger_get_input_val}
-    Log To Console    After success hunger campaign final amount:${add_label_amt+input_amt}
+    Log To Console    Before hunger label amount + hunger free input value:${add_label_amt+input_amt}
     ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
     ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
+    Log To Console    Overall final hunger free label val:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
 
 Tax receipt page
