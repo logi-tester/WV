@@ -21,6 +21,7 @@ ${checkout_payment_list_no}    4
 @{homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
 @{checkout_payment_list_text}    Powered by CC Avenue    Powered by AXIS BANK    POWERED BY HDFC BANK
 @{SI_payment_list_text}    NET BANKING    Indian credit card
+@{checkout_payment_list_ind_passport}    Debit Card/Net banking/Wallets/Amex    Amazon Pay    International credit card    Indian credit cards    Offline Payment
 @{postlogin_homepage_header_menu_txt_list}    My World    My Child    My Campaign    Tax Receipts    Ways to Give    Explore More
 @{postlogin_homepage_header_chck_menu_txt}    My World    My Child    My Campaign    Tax Receipts
 @{Aboutus_submenu_txt}    Who We Are    How We Work    Where We Work    Our History    Our Accountability    Careers    Contact Us
@@ -159,6 +160,7 @@ Just pre login check hungerfree campaign
     ${hunger_get_input_val}=    One time Hunger Free campaign
     Log To Console    Hunger campaign get input amount:${hunger_get_input_val}
     View cart proceed button
+    Login
     CCavenue payment success flow
     Click Element    xpath=.//li[@class='post_lgn']/a
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
@@ -562,6 +564,8 @@ Ensure overview campaign label in Gift catalog
 Post login ways to give submenu list verification
     #Local browser launch
     Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
     ${headermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]/div//ul/li
     Run Keyword If    '${headermenu_list}'!='12'    Fail    "Ways to give sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Ways_to_give}
