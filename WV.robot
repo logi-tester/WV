@@ -98,7 +98,7 @@ SI flow login with exit user
     Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"    
  
 To sponsor a Educate Children Campaign using Checkout flow
-    #Local browser launch
+    #Local browser launch    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
@@ -126,7 +126,7 @@ To sponsor a Save Malnourished Children Campaign using Checkout flow
     View cart proceed button
     Login
     CCavenue payment success flow
-
+    
 To sponsor a Childhood Rescue Campaign using Checkout flow
     #Local browser launch
     Jenkins browser launch
@@ -1002,6 +1002,8 @@ Checkout flow campaign
     Click Element    id=ChkForSI
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     Click Element    xpath=//a[@class='view_cart']
+    ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
+    Log To Console    View cart page campaign amount:${view_cart_amount}
     [Return]    ${camp_name}    ${final_val}
 
 SI flow campaign
@@ -1104,3 +1106,49 @@ Remove symbol
     [Arguments]    ${val}    ${sysmbol}
     ${output}=    Remove String    ${val}    ${sysmbol}
     [Return]    ${output}
+
+CCAvenue payment failure flow
+    ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
+    Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
+    Click Element    xpath=.//input[@id='edit-actions-next']
+    #${order_id}=    Get Text    xpath=.//span[@class='order-value']
+    #Log To Console    Order id:${order_id}
+    Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
+    Select From List By Value    id=netBankingBank    AvenuesTest
+    Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
+    Select From List By Value    xpath=.//select[@name='PAID']    N
+    Click Element    xpath=.//input[@type='submit']
+    ${payment_success_msg}=    Get Text    xpath=.//div[@class='content block-content']/div/h3/span
+    Log To Console    Payment failure text:${payment_success_msg}
+    Run Keyword If    'PAYMENT FAILED'!='${payment_success_msg}'    Fail    "Payment Failure page not display"
+
+Payment failure check in home page banner
+    ${get_payment_failure_txt}=    Get Text    xpath=.//div[@class='swiper-wrapper']/div/div/p
+    Run Keyword If    '${banner_failure_txt}'!='${get_payment_failure_txt}'    Fail    After payment failure, failure section info not display in banner section
+
+Check child duplicate
+    Local browser launch
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
+    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    ${get_src}=    Get Element Attribute    xpath=(.//*[@class='child_sponsor_image']/img)[1]    src
+    Log To Console    Src value is:${get_src}
+    Reload Page
+    ${get_child_count}=    Get Element Count    xpath=.//*[@class='child_sponsor_image']/img
+    ${chceck}=    Evaluate    ${get_child_count}+1
+    FOR    ${index}    IN RANGE    1    ${chceck}
+        ${currentselece_child_src}=    Get Element Attribute    xpath=(.//*[@class='child_sponsor_image']/img)[${index}]    src
+        Run Keyword If    '${currentselece_child_src}'=='${get_src}'    Fail    "Child are duplicate"
+    END
+
+Check allow auto debit select default in child rotator
+    ${get_count}=    Get Element Count    xpath=.//div[starts-with(@class,'item')]//label[@class='chkSIlabel']/parent::label/following-sibling::div[contains(@style,'display: none')]
+    Run Keyword If    ${get_count}>0    Fail    Some one child is not have default 'Alllow Auto Debit' not checked
+
+9600 should select defaulty
+    ${get_child_count}=    Get Element Count    xpath=.//*[@class='child_sponsor_image']/img
+    ${chceck}=    Evaluate    ${get_child_count}+1
+    FOR    ${index}    IN RANGE    1    ${chceck}
+        ${active_default_label}=    Get Element Attribute    xpath=(//div[starts-with(@class,'item')]//div[@class='stepwizard-row setup-panel']//div[4]//div[1]//label)[${index}]    class
+        Run Keyword If    '${active_default_label}'!='active'    Fail    "Some one child not have default amount '9,600' choosed"
+    END
