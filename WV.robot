@@ -27,12 +27,12 @@ ${checkout_payment_list_no}    4
 @{postlogin_homepage_header_chck_menu_txt}    My World    My Child    My Campaign    Tax Receipts
 @{Aboutus_submenu_txt}    Who We Are    How We Work    Where We Work    Our History    Our Accountability    Careers    Contact Us
 @{Childsponsorship_submenu_txt}    How Sponsorship Works    Sponsor a Child    Stories of Change    Partners Speak    FAQs    Child Protection Policy
-@{Ways_to_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Rescue Children    Save Malnourished Children    Where Most Needed
+@{Ways_to_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
 @{Get_involved}    Events    Volunteer
 @{Media_submenu_txt}    Press Releases    News Articles    Blog    Publication
 @{Partnership_submenu_txt}    Corporate
 @{post_login_my_world_submenu_txt}
-@{post_login_waysto_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Rescue Children    Save Malnourished Children    Where Most Needed
+@{post_login_waysto_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
 
 
 *** Test Cases ***
@@ -641,7 +641,7 @@ Check Add-on added in view cart page
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
     ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
-    Run Keyword If    ${overview_menus_list}!=11    Fail    "In Overview page menu list are mismatch"
+    Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
     Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[1]//h3
     ${chck_banner_image}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='views-field views-field-field-banner-image']
     #Click Element    xpath=.//a[@class='real-gifts-btn']
@@ -665,7 +665,7 @@ Ensure overview campaign label in Back to school
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
     ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
-    Run Keyword If    ${overview_menus_list}!=11    Fail    "In Overview page menu list are mismatch"
+    Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
     Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[3]//h3
     Click Element    xpath=//div[@class='gbl_tabbed_menu']/ul/li[2]
     Mouse Over    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='IMGSec_cover']
@@ -681,7 +681,7 @@ Ensure overview campaign label in Gift catalog
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
     ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
-    Run Keyword If    ${overview_menus_list}!=11    Fail    "In Overview page menu list are mismatch"
+    Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
     Click Element    xpath=(.//div[@class='views-element-container']//a)[1]
     Execute JavaScript    window.scrollTo(0, 100)
     Sleep    5s
@@ -1051,7 +1051,7 @@ One time Hunger Free campaign
     
 Rescue child campaign
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Rescue Children')])[1]
+    Click Element    xpath=(.//li/a[contains(.,'Childhood Rescue')])[1]
     Sleep    10s
     Click Element    xpath=.//div[@class='item-image']//img
     ${rescue_child_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
