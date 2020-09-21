@@ -836,6 +836,10 @@ Checkout flow Indian passport holder payment gateways list
 Max val alert in view cart page
     #Local browser launch
     Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
+    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
     Sleep    10s
@@ -849,6 +853,7 @@ Max val alert in view cart page
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
+    Click Element    xpath=//a[@class='view_cart']
     #Educate children campaign with checkout flow
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Educate Children')])[1]
