@@ -97,6 +97,90 @@ SI flow login with exit user
     ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
     Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"    
  
+To verify child rotator
+    #Local browser launch
+    Jenkins browser launch
+    ${get_child_count}=    Get Element Count    xpath=.//*[@class='child_sponsor_image']/img
+    Run Keyword If    ${get_child_count}<5    Fail    In home page child rotator child are display lessthen 5
+    Check allow auto debit select default in child rotator
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    Click Element    xpath=//div[@class='item active']//button[@class='btn btn-primary si_modal_btn']
+    ${check_sI_login_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='smartwizard']
+    Run Keyword If    True!=${check_sI_login_page}    Fail    "When try to select child get into SI login but SI login page not display"
+    Click Element    xpath=.//div[@class='modal-footer']/button
+    9600 should select defaulty
+    Check rounded checkbox txt and amount
+    ${check_sel_child}=    Add child to view cart
+    Child duplicate checking    ${check_sel_child}
+ 
+To verify search child and donate
+    #Local browser launch
+    Jenkins browser launch
+    Sleep    15s
+    #Execute Javascript    window.scrollTo(0, 600)
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead']
+    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
+    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
+    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
+    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
+    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
+    Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
+    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
+    Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
+    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Footer selected child and sponsor successs child image are not match"
+    Click Element    xpath=//a[@class='view_cart']
+    ${chck_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${child_name}')]
+    Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
+    ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
+    Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Child')]n
+    ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='chld-items itm-sltn-add']//div[@class='cld-nme']/p[contains(.,'${child_name}')]
+    Run Keyword If    True!=${check_child_display}    Fail    Payment success child not display in My Child
+
+To verify child was donated in between gap while user seraching
+    #Local browser launch
+    Jenkins browser launch
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead']
+    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
+    Log To Console    Child name:${child_name}
+    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
+    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
+    Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
+    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    ${child_count}=    Get Element Count    xpath=.//div[@class='seach-page-hover-content']/h4
+    FOR    ${index}    IN RANGE    1    ${child_count}
+    ${chck_sel_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(.//div[@class='seach-page-hover-content']/h4[contains(.,'${child_name}')])[${index}]
+    Run Keyword If    True==${chck_sel_child_name}    Fail    Selected child name is displayed in search page
+
+Payment failure banner
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
+    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${val_1}    ${val_2}    Checkout flow campaign
+    check in view cart page    ${val_1}    ${val_2}
+    View cart proceed button
+    Login
+    CCAvenue payment failure flow
+    Click Element    xpath=(.//a[@class='site-branding-logo'])[1]
+    Payment failure check in home page banner
+    
 To sponsor a Educate Children Campaign using Checkout flow
     #Local browser launch    
     Jenkins browser launch
@@ -1156,4 +1240,28 @@ Check allow auto debit select default in child rotator
     FOR    ${index}    IN RANGE    1    ${chceck}
         ${active_default_label}=    Get Element Attribute    xpath=(//div[starts-with(@class,'item')]//div[@class='stepwizard-row setup-panel']//div[4]//div[1]//label)[${index}]    class
         Run Keyword If    '${active_default_label}'!='active'    Fail    "Some one child not have default amount '9,600' choosed"
+    END
+
+Check rounded checkbox txt and amount
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[4]//div[1]//label[1]
+    ${txt_1}=    Get Text    xpath=//div[@class='item active']//div[@class='rota_mandy']//p/span
+    Run Keyword If    ${txt}!='₹9,600 every year.'    Fail    "I am willing pay ${txt_1} text amount is mismatch
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${txt_2}=    Get Text    xpath=//div[@class='item active']//div[@class='rota_mandy']//p/span
+    Run Keyword If    ${txt}!=' ₹4,800 every 6 months.'    Fail    "I am willing pay ${txt_2} text amount is mismatch
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${txt_3}=    Get Text    xpath=//div[@class='item active']//div[@class='rota_mandy']//p/span
+    Run Keyword If    ${txt}!='₹2,400 every 3 months.'    Fail    "I am willing pay ${txt_3} text amount is mismatch
+    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
+    ${txt_4}=    Get Text    xpath=//div[@class='item active']//div[@class='rota_mandy']//p/span
+    Run Keyword If    ${txt}!='₹800 every month.'    Fail    "I am willing pay ${txt_4} text amount is mismatch
+
+Child duplicate checking
+    [Arguments]    ${sel_child}
+    Click Element    xpath=(//a[@class='site-branding-logo'])[1]
+    ${get_child_count}=    Get Element Count    xpath=.//*[@class='child_sponsor_image']/img
+    ${chceck}=    Evaluate    ${get_child_count}+1
+    FOR    ${index}    IN RANGE    1    ${chceck}
+        ${currentselece_child_src}=    Get Element Attribute    xpath=(.//*[@class='child_sponsor_image']/img)[${index}]    src
+        Run Keyword If    '${currentselece_child_src}'=='${sel_child}'    Fail    "Child are duplicate"
     END
