@@ -33,9 +33,132 @@ ${checkout_payment_list_no}    4
 @{Partnership_submenu_txt}    Corporate
 @{post_login_my_world_submenu_txt}
 @{post_login_waysto_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
-
+${banner_failure_txt}    Sorry, your previous transaction has not gone through
 
 *** Test Cases ***
+To verify login through invalid mobile number with invalid password
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    9856787656
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    djfkdfjfk
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter Invalid mobile number and invalid password, 'Incorrect username or password' error msg not display"
+
+To verify login through invalid email id and invalid password
+    Jenkins browser launch
+    #Local browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    mnvfdfa@gmail.com
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    djfkdfjfk
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter Invalid email id and invalid password, 'Incorrect username or password' error msg not display"
+
+To verify login through invalid mobile number with valid password
+    Jenkins browser launch
+    #Local browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    9845674321
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    123456
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter Invalid mobile number and valid password, 'Incorrect username or password' error msg not display"
+
+To verify login through valid mobile number with invalid password
+    Jenkins browser launch
+    #Local browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    9600185121
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    dfgdfs
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter valid mobile number and invalid password, 'Incorrect username or password' error msg not display"
+
+To verify login through valid mobile number with valid password
+    Jenkins browser launch
+    #Local browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    9600185121
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    123456
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
+    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
+
+To verify login through valid email ID with valid password
+    Local browser launch
+    #Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    kumaran@xerago.com
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    test
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
+    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
+
+To Sponsor a child by SI payment flow from search page
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=.//span[@class='Sub_head_search']
+    Input Text    id=edit-search-api-fulltext    hjfhjhf
+    Click Element    id=edit-submit-wv-custom-search
+    ${search_child_count}=    Get Element Count    xpath=.//div[@class='search-page'].//div[@class='search-page']
+    Run Keyword If    4!=${search_child_count}    Fail    "Enter irrelavent data list of 4 child list not display"
+    Mouse Over    xpath=(.//div[@class='search-page']/div[@class='search-page-childimg test']/h4)[1]
+    Click Element    xpath=(.//div[@class='add-cart-btn'])[1]
+
+Switching indian citizen to other passport holder in my profile page
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Input Text    id=edit-name    kumaran@xerago.com
+    Input Text    id=edit-pass    test
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
+    Log To Console    Indian is choosed:${ind}
+    Run Keyword If    'True'!='${ind}'    Fail    "Kumaran user by default have choosed 'Indian' but now it display like 'Other passport' holder"
+    Click Element    xpath=.//label[@for='othctzn']
+    Scroll Element Into View    id=edit-submit
+    Click Element    id=edit-submit
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
+    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Mouser hover ways to give campaign postlogin    Educate Children
+    Sleep    5s
+    ${val_1}    ${val_2}    Checkout flow campaign
+    check in view cart page    ${val_1}    ${val_2}
+    View cart proceed button
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
+    END
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    Click Element    xpath=.//label[@for='indctzn']
+    Scroll Element Into View    id=edit-submit
+    Click Element    id=edit-submit
+    
 Valid username Invalid password
     #Local browser launch
     Jenkins browser launch
