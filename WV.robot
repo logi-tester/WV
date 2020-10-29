@@ -36,6 +36,121 @@ ${checkout_payment_list_no}    4
 ${banner_failure_txt}    Sorry, your previous transaction has not gone through
 
 *** Test Cases ***
+Verify User should able to edit profile with invalid data
+    [Tags]    My Profile
+    #Local browser launch
+    Jenkins browser launch
+    # Click Login icon in Header
+    Click Element    xpath=//span[@class='Sub_head_Login']
+    # Enter Email-Id or Ph no
+    Input Text    //input[@id='edit-name']    logimohan@gmail.com
+    # Enter the Password
+    Input Password    //input[@id='edit-pass']    logi
+    Click Element    //button[text()='Login']
+    # Click Welcome Button
+    Click Element    //li[@class='welcomesponsor']
+    # Click My Profile
+    Click Link    //a[@href="/user"]
+    # Click Edit Profile
+    Click Element    //a[text()='Edit Profile']
+    # Edit pan Number
+    Input Text    //input[@id='edit-field-pan-number-0-value']    BJTPB90$@AA
+    # Enter valid PAN Number.
+    ${get_invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='edit-field-pan-0-value-error']
+    Run Keyword If    'True'!='${get_invalid_alert}'    Fail    "Enter invalid PAN number, alert is not display"
+
+Click login link
+    [Tags]    LOGIN
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    ${check_login_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//*[@class='login-form__top']
+    Run Keyword If    'True'!='${check_login_page}'    Fail    "When click login icon it will not redirect to login page"
+
+To verify Login credentials in UPPER case should not be treated as invalid
+    [Tags]    LOGIN
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Input Text    //input[@id='edit-name']    LOGIMOHAN@GMAIL.COM
+    Input Password    //input[@id='edit-pass']    LOGI
+    Click Element    //button[text()='Login']
+    ${chck_invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    Run Keyword If    'True'=='${chck_invalid_alert}'    Fail    "Login credentials are given in Uppercase but alert msg are display"
+    ${chck_redirect_userlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
+    Run Keyword If    'True'!='${chck_redirect_userlogin_page}'    Fail    "Login credentials are given in Uppercase but it will not redirect to the postlogin page"
+
+Validation message should be shown when invalid username and/or password is enter
+    [Tags]    LOGIN
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    logi
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    logi
+    Click Element    xpath=//div[@class='login-form__submit']//button
+    ${invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    Run Keyword If    'True'!='${invalid_alert}'    Fail    "Enter invalid username and password 'Invalid Credentials' error msg not display"
+
+After clicking get one time OTP button
+    [Tags]    LOGIN
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
+    Input Text    id=edit-name    logimohan@gmail.com
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    logi
+    Click Element    id=ToGetOTP
+    ${get_alert_txt}=    Get Text    xpath=.//div[@class='yourOTP']
+    Run Keyword If    'OTP has been sent to your Mobile/Email'!='${get_alert_txt}'    Fail    "When click 'Get One Time PAssword' link, alert msg not display"
+
+To verify all the fields are mandy
+    [Tags]    Registration Page
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Register')]
+    Click Element    xpath=.//button[@class='btn btn-info btn-lg genotp_2']
+    #first name alert
+    ${firstname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-first-name-0-value-error
+    Run Keyword If    'True'!='${firstname_alert}'    Fail    "First name alert not display"
+    #last name alert
+    ${lastname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-last-name-0-value-error
+    Run Keyword If    'True'!='${lastname_alert}'    Fail    "Last name alert not display"
+    #Email alert
+    ${email_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-mail-error
+    Run Keyword If    'True'!='${email_alert}'    Fail    "Email address alert not display"
+    #Phone no alert
+    ${phone_no__alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='submit--error-message']
+    Run Keyword If    'True'!='${phone_no__alert}'    Fail    "Phone no alert not display"
+    #Confirm password alert
+    ${confirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass1-error
+    Run Keyword If    'True'!='${confirm_password_alert}'    Fail    "Confirm password alert not display"
+    #Re-Confirm password alert
+    ${reconfirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass2-error
+    Run Keyword If    'True'!='${reconfirm_password_alert}'    Fail    "Re-Confirm password alert not display"
+    #adddress 1 alert
+    ${addrs_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-registeraddress-0-value-error
+    Run Keyword If    'True'!='${addrs_alert}'    Fail    "Address 1 alert not display"
+    #adddress 2 alert
+    ${addrs2_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-last-name-0-value-error
+    Run Keyword If    'True'!='${addrs2_alert}'    Fail    "Address 2 alert not display"
+    #Postal code alert
+    ${postal_code}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-pin-code-0-value-error
+    Run Keyword If    'True'!='${postal_code}'    Fail    "Postal code alert not display"
+    #City alert
+    ${city_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-city-0-value-error
+    Run Keyword If    'True'!='${city_alert}'    Fail    "City alert not display"
+    #State alert
+    ${state_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-regstate-0-value-error
+    Run Keyword If    'True'!='${state_alert}'    Fail    "State alert not display"
+    #Country alert
+    ${country_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-country-0-value-error
+    Run Keyword If    'True'!='${country_alert}'    Fail    "Country alert not display"
+    #DOB alert
+    ${dob_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-date-of-birth-0-value-error
+    Run Keyword If    'True'!='${dob_alert}'    Fail    "DOB alert not display"
 To verify login through invalid mobile number with invalid password
     #Local browser launch
     Jenkins browser launch
