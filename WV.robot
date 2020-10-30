@@ -6,7 +6,7 @@ Library           DateTime
 Library           BuiltIn
 
 *** Variables ***
-${baseurl}        https://uat.worldvision.in/
+${baseurl}        https://prod.worldvision.in/
 ${browser}        chrome
 ${rightside_menu_list}    7
 ${postlogin_menu_list}    6
@@ -36,6 +36,75 @@ ${checkout_payment_list_no}    4
 ${banner_failure_txt}    Sorry, your previous transaction has not gone through
 
 *** Test Cases ***
+Verify user should able to save the profile without entering any Mandatory details
+    [Tags]    My Profile
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//span[@class='Sub_head_Login']
+    Input Text    //input[@id='edit-name']    logimohan@gmail.com
+    Input Password    //input[@id='edit-pass']    logi
+    Click Element    //button[text()='Login']
+    Click Element    //li[@class='welcomesponsor']
+    Click Link    //a[@href="/user"]
+    Click Element    //a[text()='Edit Profile']
+    #Clear Field
+    Clear Element Text    //input[@id='edit-field-first-name-0-value']
+    Clear Element Text    //input[@id='edit-field-last-name-0-value']
+    Clear Element Text    //input[@id='edit-field-registeraddress-0-value']
+    Clear Element Text    //input[@id='edit-field-address-2-0-value']
+    Clear Element Text    //input[@id='edit-field-pin-code-0-value']
+    Clear Element Text    //input[@id='edit-mail']
+    Click Element    edit-submit
+    #Check Alert
+    #first name alert
+    ${firstname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-first-name-0-value-error
+    Run Keyword If    'True'!='${firstname_alert}'    Fail    "First name alert not display"
+    #last name alert
+    ${lastname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-last-name-0-value-error
+    #adddress 1 alert
+    ${addrs_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-registeraddress-0-value-error
+    Run Keyword If    'True'!='${addrs_alert}'    Fail    "Address 1 alert not display"
+    #adddress 2 alert
+    ${addrs2_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-last-name-0-value-error
+    Run Keyword If    'True'!='${addrs2_alert}'    Fail    "Address 2 alert not display"
+    #Postal code alert
+    ${postal_code}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-pin-code-0-value-error
+    Run Keyword If    'True'!='${postal_code}'    Fail    "Postal code alert not display"
+    #Email alert
+    ${email_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-mail-error
+    Run Keyword If    'True'!='${email_alert}'    Fail    "Email address alert not display"
+
+To register > User should fill all the required fields and click "create new account" button
+    #Local browser launch
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Register')]
+    #first name
+    Input Text    id=edit-field-first-name-0-value    logeshwari
+    #last name
+    Input Text    id=edit-field-last-name-0-value    mohan
+    #Email
+    Input Text    id=edit-mail    logi@gmail.com
+    #Phone no
+    Input Text    id=edit-field-mobile-verify-0-mobile    9345623456
+    #confirm password
+    Input Text    id=edit-pass-pass1    logi
+    #Re-confirm
+    Input Text    id=edit-pass-pass2    logi
+    #Address 1
+    Input Text    id=edit-field-registeraddress-0-value    ngkdjdfhbdjkgh
+    #Address 2
+    Input Text    id=edit-field-address-2-0-value    lkjlhdfgldjfg
+    #Postal code
+    Input Text    id=edit-field-pin-code-0-value    600099
+    #DOB
+    Click Element    xpath=//input[starts-with(@data-msg-required,'Date')]
+    Select From List By Label    xpath=//select[@class='ui-datepicker-month']    Sep
+    Select From List By Label    xpath=//select[@class='ui-datepicker-year']    1993
+    Click Element    xpath=(//table//tbody/tr/td/a)[7]
+    Click Element    xpath=.//button[@class='btn btn-info btn-lg genotp_2']n
+    ${chck_reg_worked}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='modal-content']
+    Run Keyword If    'True'!='${chck_reg_worked}'    Fail    "Register required fields are filled but OTP dialogue box not display"
+    
 Verify User should able to edit profile with invalid data
     [Tags]    My Profile
     #Local browser launch
