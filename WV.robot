@@ -6,7 +6,7 @@ Library           DateTime
 Library           BuiltIn
 
 *** Variables ***
-${baseurl}        https://prod.worldvision.in/
+${baseurl}        https://uat.worldvision.in/
 ${browser}        chrome
 ${rightside_menu_list}    7
 ${postlogin_menu_list}    6
