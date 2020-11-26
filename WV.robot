@@ -41,7 +41,9 @@ Verify user should able to save the profile without entering any Mandatory detai
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//span[@class='Sub_head_Login']
+    Click Element    //input[@id='edit-name']
     Input Text    //input[@id='edit-name']    logimohan@gmail.com
+    Click Element    //input[@id='edit-pass']
     Input Password    //input[@id='edit-pass']    logi
     Click Element    //button[text()='Login']
     Click Element    //li[@class='welcomesponsor']
@@ -87,13 +89,16 @@ To register > User should fill all the required fields and click "create new acc
     #Phone no
     Input Text    id=edit-field-mobile-verify-0-mobile    9345623456
     #confirm password
-    Input Text    id=edit-pass-pass1    logi
+    Input Text    //*[@id='edit-pass-pass1']    logi
     #Re-confirm
-    Input Text    id=edit-pass-pass2    logi
+    Input Text    //*[@id='edit-pass-pass1']    logi
     #Address 1
     Input Text    id=edit-field-registeraddress-0-value    ngkdjdfhbdjkgh
     #Address 2
-    Input Text    id=edit-field-address-2-0-value    lkjlhdfgldjfg
+    Input Text    id=edit-field-address-2-0-value    lkjlhdfgldjfgjhg
+    #Address 3
+    Input Text    id=edit-field-address-3-0-value    lkjlhdfgldjfgkljuytr
+    
     #Postal code
     Input Text    id=edit-field-pin-code-0-value    600099
     #DOB
@@ -112,8 +117,10 @@ Verify User should able to edit profile with invalid data
     # Click Login icon in Header
     Click Element    xpath=//span[@class='Sub_head_Login']
     # Enter Email-Id or Ph no
+    Click Element    //input[@id='edit-name']
     Input Text    //input[@id='edit-name']    logimohan@gmail.com
     # Enter the Password
+    Click Element    //input[@id='edit-pass']
     Input Password    //input[@id='edit-pass']    logi
     Click Element    //button[text()='Login']
     # Click Welcome Button
@@ -141,7 +148,9 @@ To verify Login credentials in UPPER case should not be treated as invalid
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    //input[@id='edit-name']
     Input Text    //input[@id='edit-name']    LOGIMOHAN@GMAIL.COM
+    Click Element    //input[@id='edit-pass']
     Input Password    //input[@id='edit-pass']    LOGI
     Click Element    //button[text()='Login']
     ${chck_invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
