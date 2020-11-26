@@ -159,8 +159,8 @@ Validation message should be shown when invalid username and/or password is ente
     Click Element    id=edit-pass
     Input Text    id=edit-pass    logi
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
-    Run Keyword If    'True'!='${invalid_alert}'    Fail    "Enter invalid username and password 'Invalid Credentials' error msg not display"
+    ${invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
+    Run Keyword If    'True'!='${invalid_alert}'    Fail    "Enter invalid username and password 'Incorrect username or password' error msg not display"
 
 After clicking get one time OTP button
     [Tags]    LOGIN
@@ -172,7 +172,7 @@ After clicking get one time OTP button
     Click Element    id=edit-pass
     Input Text    id=edit-pass    logi
     Click Element    id=ToGetOTP
-    ${get_alert_txt}=    Get Text    xpath=.//div[@class='yourOTP']
+    ${get_alert_txt}=    Get Text    xpath=.//span[@class='orngClr']
     Run Keyword If    'OTP has been sent to your Mobile/Email'!='${get_alert_txt}'    Fail    "When click 'Get One Time PAssword' link, alert msg not display"
 
 To verify all the fields are mandy
@@ -220,6 +220,7 @@ To verify all the fields are mandy
     #DOB alert
     ${dob_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-date-of-birth-0-value-error
     Run Keyword If    'True'!='${dob_alert}'    Fail    "DOB alert not display"
+
 To verify login through invalid mobile number with invalid password
     #Local browser launch
     Jenkins browser launch
@@ -229,7 +230,7 @@ To verify login through invalid mobile number with invalid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    djfkdfjfk
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter Invalid mobile number and invalid password, 'Incorrect username or password' error msg not display"
 
 To verify login through invalid email id and invalid password
@@ -241,7 +242,7 @@ To verify login through invalid email id and invalid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    djfkdfjfk
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter Invalid email id and invalid password, 'Incorrect username or password' error msg not display"
 
 To verify login through invalid mobile number with valid password
@@ -253,7 +254,7 @@ To verify login through invalid mobile number with valid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    123456
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter Invalid mobile number and valid password, 'Incorrect username or password' error msg not display"
 
 To verify login through valid mobile number with invalid password
@@ -265,7 +266,7 @@ To verify login through valid mobile number with invalid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    dfgdfs
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter valid mobile number and invalid password, 'Incorrect username or password' error msg not display"
 
 To verify login through valid mobile number with valid password
@@ -281,8 +282,8 @@ To verify login through valid mobile number with valid password
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
 
 To verify login through valid email ID with valid password
-    Local browser launch
-    #Jenkins browser launch
+    #Local browser launch
+    Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
     Input Text    id=edit-name    kumaran@xerago.com
@@ -298,7 +299,7 @@ To Sponsor a child by SI payment flow from search page
     Click Element    xpath=.//span[@class='Sub_head_search']
     Input Text    id=edit-search-api-fulltext    hjfhjhf
     Click Element    id=edit-submit-wv-custom-search
-    ${search_child_count}=    Get Element Count    xpath=.//div[@class='search-page'].//div[@class='search-page']
+    ${search_child_count}=    Get Element Count    xpath=.//div[@class='search-page']
     Run Keyword If    4!=${search_child_count}    Fail    "Enter irrelavent data list of 4 child list not display"
     Mouse Over    xpath=(.//div[@class='search-page']/div[@class='search-page-childimg test']/h4)[1]
     Click Element    xpath=(.//div[@class='add-cart-btn'])[1]
@@ -350,8 +351,8 @@ Valid username Invalid password
     Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
-    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter username only try to login 'Invalid Credentials' error msg not display"
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
+    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter valid username and blank password but 'Password/OTP is required.' error msg not display"
     Clear Element Text    id=edit-name
 
 Invalid username and valid password
@@ -361,8 +362,8 @@ Invalid username and valid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    ${password}
     Click Element    xpath=//div[@class='login-form__submit']//button
-    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='InvalidUsername']
-    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter password only try to login 'Invalid Credentials' error msg not display"
+    ${username_validation}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//*[@id='edit-pass-error']
+    Run Keyword If    'True'!='${username_validation}'    Fail    "Enter valid password and blank username but 'Incorrect username or password' error msg not display"
     Clear Element Text    id=edit-pass
 
 Ensure user can able to logout in direct login
