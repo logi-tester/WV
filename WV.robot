@@ -956,7 +956,7 @@ Check Add-on added in view cart page
     Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
     Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
     ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
-    Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
+    Run Keyword If    '${footer_proceed_btn}'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
     Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
     ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
     Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
@@ -998,7 +998,7 @@ Check Add-on added in view cart page
     Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
     Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
     ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
-    Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
+    Run Keyword If    '${footer_proceed_btn}'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
     Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
     ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
     Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
@@ -1133,7 +1133,9 @@ Ensure user can able to change passport holder
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
     Input Text    id=edit-name    kumaran@xerago.com
+    Click Element    id=edit-pass
     Input Text    id=edit-pass    test
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     Mouse Over    xpath=.//li[@class='welcomesponsor']
@@ -1193,7 +1195,9 @@ Checkout flow Indian passport holder payment gateways list
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name
     Input Text    id=edit-name    kumaran@xerago.com
+    Click Element    id=edit-pass
     Input Text    id=edit-pass    test
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     Mouse Over    xpath=.//li[@class='welcomesponsor']
@@ -1265,7 +1269,7 @@ Max val alert in view cart page
     Click Element    id=ChkForSI
     Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
     Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    600000
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']1
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     Click Element    xpath=//a[@class='view_cart']
     ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='max-amount']
     Run Keyword If    'True'!='${max_erro_msg}'    Fail    "Total amount reach 10k but 'Maximum Amount Payable' alert msg not display"
@@ -1343,7 +1347,9 @@ Login
     
   
 Direct login
+    Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
+    Click Element    id=edit-pass
     Input Text    id=edit-pass    ${password}
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
