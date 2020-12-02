@@ -295,9 +295,9 @@ To verify login through valid email ID with valid password
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
-    Input Text    id=edit-name    kumaran@xerago.com
+    Input Text    id=edit-name    logimohan@gmail.com
     Click Element    id=edit-pass
-    Input Text    id=edit-pass    test
+    Input Text    id=edit-pass    logi
     Click Element    xpath=//div[@class='login-form__submit']//button
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
