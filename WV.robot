@@ -89,26 +89,32 @@ To register > User should fill all the required fields and click "create new acc
     #Phone no
     Input Text    id=edit-field-mobile-verify-0-mobile    9345623456
     #confirm password
-    Input Text    //*[@id='edit-pass-pass1']    logi
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[text()='Password']    
+    Input Text    id=edit-pass-pass1    logi
     #Re-confirm
-    Input Text    //*[@id='edit-pass-pass1']    logi
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[text()='Confirm Password']
+    Input Text    id=edit-pass-pass2    logi
     #Address 1
     Input Text    id=edit-field-registeraddress-0-value    ngkdjdfhbdjkgh
     #Address 2
     Input Text    id=edit-field-address-2-0-value    lkjlhdfgldjfgjhg
     #Address 3
     Input Text    id=edit-field-address-3-0-value    lkjlhdfgldjfgkljuytr
-    
     #Postal code
     Input Text    id=edit-field-pin-code-0-value    600099
+    #How Do you Know - Newly added
+    Execute JavaScript    window.scrollTo(0, document.body.scrollHeight)
+    Select From List By Label    id=edit-field-how-do-you-know-about-worl    Friends and Family        
     #DOB
-    Click Element    xpath=//input[starts-with(@data-msg-required,'Date')]
+    Click Element    //label[text()='Date of Birth']
     Select From List By Label    xpath=//select[@class='ui-datepicker-month']    Sep
     Select From List By Label    xpath=//select[@class='ui-datepicker-year']    1993
     Click Element    xpath=(//table//tbody/tr/td/a)[7]
-    Click Element    xpath=.//button[@class='btn btn-info btn-lg genotp_2']n
-    ${chck_reg_worked}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='modal-content']
-    Run Keyword If    'True'!='${chck_reg_worked}'    Fail    "Register required fields are filled but OTP dialogue box not display"
+    Click Element    //button[@class='singUpRegister']
+    #${chck_reg_worked}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='modal-content']
+    #Run Keyword If    'True'!='${chck_reg_worked}'    Fail    "Register required fields are filled but OTP dialogue box not display"
     
 Verify User should able to edit profile with invalid data
     [Tags]    My Profile
@@ -188,47 +194,56 @@ To verify all the fields are mandy
     [Tags]    Registration Page
     #Local browser launch
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Register')]
-    Click Element    xpath=.//button[@class='btn btn-info btn-lg genotp_2']
+    Click Element    xpath=//a[contains(text(),'Register')]    
+    Click Element    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']   
+    
     #first name alert
-    ${firstname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-first-name-0-value-error
+    ${firstname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpfnameErr
     Run Keyword If    'True'!='${firstname_alert}'    Fail    "First name alert not display"
+    
     #last name alert
-    ${lastname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-last-name-0-value-error
+    ${lastname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUplnameErr
     Run Keyword If    'True'!='${lastname_alert}'    Fail    "Last name alert not display"
-    #Email alert
-    ${email_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-mail-error
+    #Email alert   
+    
+    ${email_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpEmailErr
     Run Keyword If    'True'!='${email_alert}'    Fail    "Email address alert not display"
+    
     #Phone no alert
-    ${phone_no__alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='submit--error-message']
+    ${phone_no__alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signInPhoneErr
     Run Keyword If    'True'!='${phone_no__alert}'    Fail    "Phone no alert not display"
+    
     #Confirm password alert
-    ${confirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass1-error
+    ${confirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpPassErr
     Run Keyword If    'True'!='${confirm_password_alert}'    Fail    "Confirm password alert not display"
+    
     #Re-Confirm password alert
-    ${reconfirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass2-error
+    ${reconfirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpConPassErr
     Run Keyword If    'True'!='${reconfirm_password_alert}'    Fail    "Re-Confirm password alert not display"
+    
     #adddress 1 alert
-    ${addrs_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-registeraddress-0-value-error
+    ${addrs_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpaddrErr
     Run Keyword If    'True'!='${addrs_alert}'    Fail    "Address 1 alert not display"
+    
     #adddress 2 alert
-    ${addrs2_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-last-name-0-value-error
+    ${addrs2_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpaddrErr1
     Run Keyword If    'True'!='${addrs2_alert}'    Fail    "Address 2 alert not display"
+    
+    #adddress 3 alert - NEWLY ADDED
+    ${addrs3_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpaddrErr3
+    Run Keyword If    'True'!='${addrs3_alert}'    Fail    "Address 2 alert not display"
+
     #Postal code alert
-    ${postal_code}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-pin-code-0-value-error
+    ${postal_code}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpPscodeErr
     Run Keyword If    'True'!='${postal_code}'    Fail    "Postal code alert not display"
+    
     #City alert
-    ${city_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-city-0-value-error
+    ${city_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpCityErr
     Run Keyword If    'True'!='${city_alert}'    Fail    "City alert not display"
+    
     #State alert
-    ${state_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-regstate-0-value-error
+    ${state_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpStateErr
     Run Keyword If    'True'!='${state_alert}'    Fail    "State alert not display"
-    #Country alert
-    ${country_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-country-0-value-error
-    Run Keyword If    'True'!='${country_alert}'    Fail    "Country alert not display"
-    #DOB alert
-    ${dob_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-date-of-birth-0-value-error
-    Run Keyword If    'True'!='${dob_alert}'    Fail    "DOB alert not display"
 
 To verify login through invalid mobile number with invalid password
     #Local browser launch
