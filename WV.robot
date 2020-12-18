@@ -334,8 +334,15 @@ Switching indian citizen to other passport holder in my profile page
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Input Text    id=edit-name    kumaran@xerago.com
-    Input Text    id=edit-pass    test
+    
+    Wait Until Element Is Visible    id=edit-name    15s
+    Click Element    id=edit-name    
+    Input Text    id=edit-name    9600185121
+    
+    Wait Until Element Is Visible    id=edit-pass    15s
+    Click Element    id=edit-pass    
+    Input Text    id=edit-pass    123456
+    
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
