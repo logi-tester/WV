@@ -406,6 +406,13 @@ Ensure user can able to logout in direct login
     Direct login
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
+    
+    #Click Element    class=input-survey    
+    #Input Text    input-survey    Test review Data
+    #Click Element    class=btnSub-survey
+    
+    Click Element    class=close-survey            
+
     ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
     Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
     
