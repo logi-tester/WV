@@ -1385,10 +1385,10 @@ Direct login
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
 SI login
-    Click Element    xpath=.//input[@id='exampleInputEmail1']
-    Input Text    xpath=.//input[@id='exampleInputEmail1']    ${user_name}
-    Click Element    xpath=.//input[@id='exampleInputPassword1']
-    Input Text    xpath=.//input[@id='exampleInputPassword1']    ${password}
+    Click Element    xpath=//input[@id='exampleInputEmail1']
+    Input Text    xpath=//input[@id='exampleInputEmail1']    ${user_name}
+    Click Element    xpath=//input[@id='exampleInputPassword1']
+    Input Text    xpath=//input[@id='exampleInputPassword1']    ${password}
     Click Element    id=si_login_btn
     ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
