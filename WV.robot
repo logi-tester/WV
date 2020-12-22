@@ -895,11 +895,12 @@ Get involved submenu list verification
 Media submenu list verification
     #Local browser launch
     Jenkins browser launch
-    ${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]/div//ul/li
+    ${headermenu_list}=    Get Element Count    xpath=//div[@class='main-menu-inner']//span[contains(text(),'Media')]//parent::li//li/a
+    Log To Console    ${headermenu_list}    
     Run Keyword If    '${headermenu_list}'!='4'    Fail    "Media sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Media_submenu_txt}
-        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]
-        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'Media')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Mouse Over    xpath=//div[@class='main-menu-inner']//span[contains(text(),'Media')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='main-menu-inner']//span[contains(text(),'Media')]//parent::li//li/a[contains(text(),'${menu_txt}')]
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin Media submenu ${menu_txt} text are mismatch"
     END
 
