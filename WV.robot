@@ -19,6 +19,7 @@ ${password}       123456
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 ${checkout_payment_list_no}    4
+@{Sponcer_List}    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children
 @{homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
 @{checkout_payment_list_text}    Powered by CC Avenue    Powered by AXIS BANK    POWERED BY HDFC BANK
 @{SI_payment_list_text}    NET BANKING    Indian credit card    Debit card
@@ -1275,37 +1276,16 @@ Max val alert in view cart page
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
     Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
-    Sleep    10s
-    Click Element    xpath=.//div[@class='add-to-cart-section']
-    ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
-    #${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
-    Clear Element Text    xpath=.//input[@name='manualCart[0][amount]']
-    Input Text    xpath=.//input[@name='manualCart[0][amount]']    500000
-    ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
-    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
-    Click Element    xpath=//a[@class='view_cart']
-    #Educate children campaign with checkout flow
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Educate Children')])[1]
-    Sleep    10s
-    Click Element    xpath=.//div[@class='item-image']//img
-    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Click Element    id=ChkForSI
-    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
-    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    600000
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']
-    ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='max-amount']
-    Run Keyword If    'True'!='${max_erro_msg}'    Fail    "Total amount reach 10k but 'Maximum Amount Payable' alert msg not display"
-    ${proceed_btn_disable}=    Run Keyword And Return Status    Click Element    id=edit-actions
-    Run Keyword If    'False'!='${proceed_btn_disable}'    Fail    "Max alert msg display but Proceed button is enable"
+    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}    
+    
+    FOR    ${element}    IN    @{Sponcer_List}
+        Ways to give - 5 items    ${element}
+    END
+    
+    ${proceed_btn_disable}=    Run Keyword And Return Status    Element Should Be Disabled    id=edit-checkout
+    Run Keyword If    'True'=='${proceed_btn_disable}'    Log To Console    "Proceed button is disabled"
+    ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    //div[@class='max-amount']
+    Run Keyword If    'True'!='${max_erro_msg}'    Fail    "Donation is more than 10 lakhs and alert message doesnt appear"
     
 *** Keywords ***
 Jenkins browser launch
@@ -1629,3 +1609,21 @@ Child duplicate checking
         ${currentselece_child_src}=    Get Element Attribute    xpath=(.//*[@class='child_sponsor_image']/img)[${index}]    src
         Run Keyword If    '${currentselece_child_src}'=='${sel_child}'    Fail    "Child are duplicate"
     END
+    
+Ways to give - 5 items
+    [Arguments]    ${element}
+    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(.//li/a[contains(.,'${element}')])[1]  
+    Sleep    10s
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+        #Click Auto credit
+    Click Element    id=ChkForSI
+        #enter Amount
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    1000000
+    
+        #Add to cart
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+        #Proceed to cart
+    Click Element    xpath=//a[@class='view_cart']
