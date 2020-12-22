@@ -843,13 +843,13 @@ Header and footer verification
 Aboutus submenu list verification
     #Local browser launch
     Jenkins browser launch
-    ${headermenu_list}=    Get Element Count    xpath=(//div[@class='we-mega-menu-row'])[1]/div/ul/li
+    ${headermenu_list}=    Get Element Count    xpath=//div[@class='main-menu-inner']//span[contains(text(),'About Us')]//parent::li//li/a
     #${headermenu_list}=    Get Element Count    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]/div//ul/li
     Log To Console    ${headermenu_list}    
     Run Keyword If    '${headermenu_list}'!='7'    Fail    "About us sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Aboutus_submenu_txt}
-        Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]
-        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='we-mega-menu-row'])[1]/div/ul/li/a[contains(.,'${menu_txt}')]
+        Mouse Over    xpath=//div[@class='main-menu-inner']//span[contains(text(),'About Us')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='main-menu-inner']//span[contains(text(),'About Us')]//parent::li//li/a[contains(text(),'${menu_txt}')]
         #${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li[contains(.,'About Us')]/div//ul/li/a[contains(.,'${menu_txt}')]
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Prelogin About us submenu ${menu_txt} text are mismatch"
     END
