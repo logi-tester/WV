@@ -1395,7 +1395,8 @@ SI login
     Click Element    xpath=//input[@id='exampleInputPassword1']
     Input Text    xpath=//input[@id='exampleInputPassword1']    ${password}
     Click Element    id=si_login_btn
-    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']
+    Wait Until Page Contains Element    //div[@class='payment-main-content']    
+    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
 
 CCavenue payment success flow
