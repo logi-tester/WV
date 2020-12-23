@@ -1215,7 +1215,8 @@ Checkout flow Other passport holder payment gateways list
     Sleep    10s
     Click Element    xpath=.//div[@class='add-to-cart-section']
     ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
+    ${split_Hunger_name_with_rightside}=    Remove String    ${hunger_camp_name}    Free
+    #${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
     ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
