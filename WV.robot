@@ -201,6 +201,7 @@ To verify all the fields are mandy
     Click Element    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']   
     
     #first name alert
+    Wait Until Page Contains Element    id=signUpfnameErr    15s
     ${firstname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpfnameErr
     Run Keyword If    'True'!='${firstname_alert}'    Fail    "First name alert not display"
     
