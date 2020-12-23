@@ -1558,6 +1558,7 @@ CCAvenue payment failure flow
     Click Element    xpath=.//input[@id='edit-actions-next']
     #${order_id}=    Get Text    xpath=.//span[@class='order-value']
     #Log To Console    Order id:${order_id}
+    Wait Until Element Is Visible    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
     Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
     Select From List By Value    id=netBankingBank    AvenuesTest
     Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
