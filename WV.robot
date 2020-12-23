@@ -360,7 +360,7 @@ Switching indian citizen to other passport holder in my profile page
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
     Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
     Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
-    Mouser hover ways to give campaign postlogin    Educate Children
+    Mouser hover ways to give campaign    Educate Children
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
     check in view cart page    ${val_1}    ${val_2}
@@ -1381,6 +1381,7 @@ Direct login
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
 SI login
+    Wait Until Page Contains Element    xpath=//input[@id='exampleInputEmail1']    20s
     Click Element    xpath=//input[@id='exampleInputEmail1']
     Input Text    xpath=//input[@id='exampleInputEmail1']    ${user_name}
     Click Element    xpath=//input[@id='exampleInputPassword1']
