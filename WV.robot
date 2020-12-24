@@ -1241,9 +1241,9 @@ Checkout flow Indian passport holder payment gateways list
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
-    Input Text    id=edit-name    kumaran@xerago.com
+    Input Text    id=edit-name    9600185121
     Click Element    id=edit-pass
-    Input Text    id=edit-pass    test
+    Input Text    id=edit-pass    123456
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
