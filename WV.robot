@@ -1328,8 +1328,8 @@ View cart proceed button
 
 Mouser hover ways to give campaign
     [Arguments]    ${edu_child}
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'${edu_child}')])[1]
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Ways to Give')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${edu_child}')]
 
 Ensure default amount in educational need
     ${get_val}=    Get Element Attribute    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div//input[@name='manualCart[0][amount]']    value
