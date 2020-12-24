@@ -528,7 +528,7 @@ Payment failure banner
     View cart proceed button
     Login
     CCAvenue payment failure flow
-    Click Element    xpath=(.//a[@class='site-branding-logo'])[1]
+    Click Element    xpath=//div[@class='header_new_logo']//img
     Payment failure check in home page banner
     
 To sponsor a Educate Children Campaign using Checkout flow
