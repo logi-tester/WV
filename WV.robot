@@ -25,7 +25,7 @@ ${checkout_payment_list_no}    4
 @{SI_payment_list_text}    NET BANKING    Indian credit card    Debit card
 @{checkout_payment_list_ind_passport}    Debit Card/Net banking/Wallets/Amex    Amazon Pay    International credit card    Indian credit cards    Offline Payment
 @{postlogin_homepage_header_menu_txt_list}    My World    My Child    My Campaign    Tax Receipts    Ways to Give    Explore More
-@{postlogin_homepage_header_chck_menu_txt}    My World    My Child    My Campaign    Tax Receipts
+@{postlogin_homepage_header_chck_menu_txt}    My World    My Child    My Campaign    Tax Receipts    Ways to Give    Explore More
 @{Aboutus_submenu_txt}    Who We Are    How We Work    Where We Work    Our History    Our Accountability    Careers    Contact Us
 @{Childsponsorship_submenu_txt}    How Sponsorship Works    Sponsor a Child    Stories of Change    Partners Speak    FAQs    Child Protection Policy
 @{Ways_to_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
@@ -1150,15 +1150,14 @@ Ensure overview campaign label in Gift catalog
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    ${postloginheadermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li
+    ${postloginheadermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[//a or //span]
+    Log To Console    "No of Post login menus: ${postloginheadermenu_list}"    
     Run Keyword If    '${postloginheadermenu_list}'!='${postlogin_menu_list}'    Fail    "Post login header main menu list size are mismatch"
-    ${ways_to_give_menus_name}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[5]/span
-    Run Keyword If    '${ways_to_give_menus_name}'!='WAYS TO GIVE'    Fail    "Ways to givr menu text are different"
-    ${explore_menu_txt}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[6]/span
-    Run Keyword If    '${explore_menu_txt}'!='EXPLORE MORE'    Fail    "Explore more menu text are different"
+    ${postlogin_menu_txt}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[//a or //span]
     FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}
-        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/a[contains(.,'${postlogin_menu_txt}')]
-        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin home page ${menu_txt} text are mismatch"
+        Log To Console    "Post login menus are : ${postlogin_menu_txt}"
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li//*[contains(text(),'${postlogin_menu_txt}')]    
+        Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin home page ${postlogin_menu_txt} text are mismatch"
     END  
     
 Post login ways to give submenu list verification
