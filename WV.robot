@@ -1559,7 +1559,7 @@ Remove symbol
 CCAvenue payment failure flow
     ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
     Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
-    Click Element    xpath=.//input[@id='edit-actions-next']
+    Click Element    xpath=//div[@id='edit-actions']/button[contains(text(),'pay my contribution')]
     #${order_id}=    Get Text    xpath=.//span[@class='order-value']
     #Log To Console    Order id:${order_id}
     Wait Until Element Is Visible    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]   15s
@@ -1568,9 +1568,10 @@ CCAvenue payment failure flow
     Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
     Select From List By Value    xpath=.//select[@name='PAID']    N
     Click Element    xpath=.//input[@type='submit']
-    ${payment_success_msg}=    Get Text    xpath=.//div[@class='content block-content']/div/h3/span
-    Log To Console    Payment failure text:${payment_success_msg}
-    Run Keyword If    'PAYMENT FAILED'!='${payment_success_msg}'    Fail    "Payment Failure page not display"
+    ${payment_msg}=    Get Text    xpath=.//div[@class='content block-content']/div/h3/span
+    ${Payment_msg}=    Remove String Using Regexp    ${payment_msg}    \\W*\\d*
+    Log To Console    Payment failure text: ${payment_msg}
+    Run Keyword If    'PAYMENTFAILED'!='${payment_msg}'    Fail    "Payment Failure page not display"
 
 Payment failure check in home page banner
     ${get_payment_failure_txt}=    Get Text    xpath=.//div[@class='swiper-wrapper']/div/div/p
