@@ -1391,7 +1391,7 @@ SI login
     Input Text    xpath=//input[@id='exampleInputPassword1']    ${password}
     Sleep    15s    
     Click Element    id=si_login_btn
-    Wait Until Page Contains Element    xpath=//div[@class='payment-main-content']    
+    Wait Until Page Contains Element    xpath=//div[@class='payment-main-content']    15s    
     ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
 
