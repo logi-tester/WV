@@ -407,6 +407,7 @@ Ensure user can able to logout in direct login
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
     
