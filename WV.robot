@@ -468,7 +468,7 @@ To verify search child and donate
     Jenkins browser launch
     Sleep    15s
     #Execute Javascript    window.scrollTo(0, 600)
-    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead']
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
     Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
     ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
@@ -500,7 +500,7 @@ To verify search child and donate
 To verify child was donated in between gap while user seraching
     #Local browser launch
     Jenkins browser launch
-    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead']
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
     Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
     ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
@@ -657,7 +657,7 @@ To sponsor child using SI flow
     Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
     Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
     Sleep    10s
-    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead']
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
     Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
     ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
@@ -937,7 +937,7 @@ To add child to a cart
     Jenkins browser launch
     Sleep    15s
     Execute Javascript    window.scrollTo(0, 600)
-    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='container carousel_Sponsor defaultHead']
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
     Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
     ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
