@@ -1385,15 +1385,16 @@ Direct login
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
 SI login
-    Wait Until Page Contains Element    xpath=//input[@id='exampleInputEmail1']    20s
+    Wait Until Element Is Visible    xpath=//input[@id='exampleInputEmail1']    30s
     Click Element    xpath=//input[@id='exampleInputEmail1']
-    Input Text    xpath=//input[@id='exampleInputEmail1']    ${user_name}
-    Sleep    15s    
+    Input Text    xpath=//input[@id='exampleInputEmail1']    ${user_name}  
     Click Element    xpath=//input[@id='exampleInputPassword1']
     Input Text    xpath=//input[@id='exampleInputPassword1']    ${password}
-    Sleep    15s    
+    
+    Sleep    10s    
     Click Element    id=si_login_btn
-    Wait Until Page Contains Element    xpath=//div[@class='payment-main-content']    15s    
+    
+    Wait Until Element Is Visible    xpath=//div[@class='payment-main-content']    30s    
     ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
 
