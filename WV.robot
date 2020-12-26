@@ -1385,11 +1385,11 @@ Direct login
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     
 SI login
-    Wait Until Element Is Visible    xpath=//input[@id='exampleInputEmail1']    30s
-    Click Element    xpath=//input[@id='exampleInputEmail1']
-    Input Text    xpath=//input[@id='exampleInputEmail1']    ${user_name}  
-    Click Element    xpath=//input[@id='exampleInputPassword1']
-    Input Text    xpath=//input[@id='exampleInputPassword1']    ${password}
+    Wait Until Element Is Visible    xpath=//input[contains(@id,'exampleInputEmail')]    30s
+    Click Element    xpath=//input[contains(@id,'exampleInputEmail')]    
+    Input Text    xpath=//input[contains(@id,'exampleInputEmail')]    ${user_name}  
+    Click Element    xpath=//input[contains(@id,'exampleInputPassword')]
+    Input Text    xpath=//input[contains(@id,'exampleInputPassword')]    ${password}
     
     Sleep    10s    
     Click Element    id=si_login_btn
