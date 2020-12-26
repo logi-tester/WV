@@ -1152,10 +1152,10 @@ Ensure overview campaign label in Gift catalog
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    ${postloginheadermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[//a or //span]
+    ${postloginheadermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li
     Log To Console    "No of Post login menus: ${postloginheadermenu_list}"    
     Run Keyword If    '${postloginheadermenu_list}'!='${postlogin_menu_list}'    Fail    "Post login header main menu list size are mismatch"
-    ${postlogin_menu_txt}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[//a or //span]
+    ${postlogin_menu_txt}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li
     FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}
         Log To Console    "Post login menus are : ${postlogin_menu_txt}"
         ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li//*[contains(text(),'${postlogin_menu_txt}')]    
