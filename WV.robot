@@ -306,6 +306,7 @@ To verify login through valid mobile number with valid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    123456
     Click Element    xpath=//div[@class='login-form__submit']//button
+    Sleep   15s
     Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
@@ -407,6 +408,7 @@ Ensure user can able to logout in direct login
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Sleep   15s
     Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
