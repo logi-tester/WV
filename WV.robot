@@ -1446,9 +1446,9 @@ Checkout flow campaign
     ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     ${del_month_get_val_only}=    Fetch From Right    ${label_val}    3 Months
     ${camp_amt}=    Strip String    ${SPACE}${del_month_get_val_only}
-    #$${final_val}=    Strip String    ${SPACE}${del_month_get_val_only}
-    #Log To Console    Final val is: ${final_val}
     Log To Console    Final val is: ${camp_amt}
+    Sleep    15s
+    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    id=ChkForSI
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
@@ -1456,7 +1456,6 @@ Checkout flow campaign
     ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
     Log To Console    View cart page campaign amount: ${view_cart_amount}
     [Return]    ${camp_name}    ${camp_amt}
-    #[Return]    ${camp_name}    ${final_val}
 
 SI flow campaign
     Sleep    10s
