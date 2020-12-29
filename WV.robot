@@ -600,7 +600,19 @@ To sponsor a Where Most Needed Campaign as a one time donation using Checkout fl
     Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
     Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
     Mouser hover ways to give campaign    Where Most Needed
-    ${camp_name}    ${Camp_val}    one time campaign
+    
+    #${camp_name}    ${Camp_val}    one time campaign        
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=   Replace String    ${camp_name}    M    m
+    ${camp_name}=   Replace String    ${camp_name}    N    n                  
+    Sleep    15s    
+    Wait Until Element Is Visible    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    15s
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Click Element    xpath=//a[@class='view_cart']   
+    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
     check in view cart page    ${camp_name}    ${Camp_val}
     View cart proceed button
     Login
