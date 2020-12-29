@@ -658,17 +658,21 @@ To sponsor child using SI flow
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
     Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
     Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    
+    Click Element    xpath=//div[@class='header_new_logo']//img    
+
     Sleep    10s
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
-    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
-    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
-    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
+    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//div[@class='stepwizard-row setup-panel']/div[3]/div/label
+    ${child_name}=    Get Text    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//h4
+    ${child_name}=    Remove String Using Regexp    ${child_name}    \,.*$
+    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//p[@class='pricemnth active']//span[@class='home-price']
     ${remove_comma_symbol}=    Remove symbol    ${sel_child_amt}    ,
     ${remove_dollor_symbol}=    Remove symbol    ${remove_comma_symbol}    ₹
-    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']/div/div[1]/div[1]/div/img    src
     Log To Console    Child name:${child_name} and child amount:${remove_dollor_symbol} and also child img src:${sel_child_imgsrc}
-    Click Element    xpath=//div[@class='item active']//button[@class='btn btn-primary si_modal_btn']
+    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//button[@class='btn btn-primary si_modal_btn']
     SI login
     ${SI_payment_total_amt}=    Get Text    xpath=.//h5[@id='TotalAmtOfOrder']
     ${get_amt_only}=    Fetch From Right    ${SI_payment_total_amt}    Total Amount Of Order
