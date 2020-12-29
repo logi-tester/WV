@@ -468,11 +468,11 @@ To verify child rotator
  
 To verify search child and donate
     #Local browser launch
-    Jenkins browser launch
-    Sleep    15s    
+    Jenkins browser launch    
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
     Log To Console    Child name: ${child_name} and child amount: ${sel_child_amt} and also child img src: ${sel_child_imgsrc}
     Rotator Payment validation    ${sel_child_imgsrc}
+    Click Element    xpath=//a[@class='view_cart']
     Rotator Child cart validation    ${child_name}    ${sel_child_amt}    
     View cart proceed button
     Login
@@ -940,11 +940,11 @@ Multiple deletion
 To add child to a cart
     #Local browser launch
     Jenkins browser launch
-    Sleep    15s
     #Execute Javascript    window.scrollTo(0, 600)
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
     Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}        
     Rotator Payment validation    ${sel_child_imgsrc}
+    Click Element    xpath=//a[@class='view_cart']
     Rotator Child cart validation    ${child_name}    ${sel_child_amt}"
 
 SI Flow payment gateway list and text check
@@ -980,23 +980,10 @@ Check Add-on added in view cart page
  
  Child add from child rotator and payment success ccavenue
     #Local browser launch
-    Jenkins browser launch
-    ${child_display_banner}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='myCarousel']
-    Run Keyword If    'True'!='${child_display_banner}'    Fail    "Home banner section child rotator not display"
-    
-    Sleep    15s    
+    Jenkins browser launch        
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details    
     Log To Console    Child name: ${child_name} and child amount: ${sel_child_amt} and also child img src: ${sel_child_imgsrc}
-    
-    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//label[@class='chkSIlabel']
-    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//input[@id='edit-submit--12']    value
-    Run Keyword If    '${footer_proceed_btn}'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
-    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//input[@id='edit-submit--12']
-    ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
-    Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
-    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']/div/div[1]/div[1]/div/img    src
-    Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Footer selected child and sponsor successs child image are not match"
-    
+    Rotator Payment validation    ${sel_child_imgsrc}
     Click Element    xpath=.//a[@class='view_detailed']
     ${by_spec_child_count}=    Get Element Count    xpath=//div[@class='row mychilddet']/div/div
     Run Keyword If    ${by_spec_child_count}<1    Fail    "No child in By specifics page"
@@ -1023,21 +1010,11 @@ Check Add-on added in view cart page
  Child add from child rotator and add extra child from add another child way
     #Local browser launch
     Jenkins browser launch
-    ${child_display_banner}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='myCarousel']
-    Run Keyword If    'True'!='${child_display_banner}'    Fail    "Home banner section child rotator not display"
-    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
-    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
-    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
-    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
-    Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
-    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
-    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
-    Run Keyword If    '${footer_proceed_btn}'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
-    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
-    ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
-    Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
-    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
-    Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Home page banner section selected child and sponsor successs child image are not match"
+        
+    ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
+    Log To Console    Child name: ${child_name} and child amount: ${sel_child_amt} and also child img src: ${sel_child_imgsrc}
+    Rotator Payment validation    ${sel_child_imgsrc}
+    
     Click Element    xpath=.//a[@class='view_detailed']
     ${by_spec_child_count}=    Get Element Count    xpath=//div[@class='row mychilddet']/div/div
     Run Keyword If    ${by_spec_child_count}<1    Fail    "No child in By specifics page"
@@ -1050,10 +1027,9 @@ Check Add-on added in view cart page
     Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='SIpatent']//input
     Click Element    xpath=//div[@class='row mychilddet']/div/div[1]//div[@class='addpledge pledgeblock']//div[@class='siNonShow']//div[@class='kl_flood_sub_or_sec']/input
     Click Element    xpath=(.//a[@class='view_cart'])[1]
-    ${chck_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${child_name}')]
-    Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
-    ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
-    Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
+    
+    Rotator Child cart validation    ${child_name}    ${sel_child_amt}
+
     ${chck_byspec_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${byspec_child_name}')]
     Run Keyword If    'True'!='${chck_byspec_child_name}'    Fail    "By spec choosed child not display in view cart page"
     ${chck_byspec_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${add_symbol_to_amt}')]
@@ -1640,6 +1616,7 @@ Ways to give - 5 items
     Click Element    xpath=//a[@class='view_cart']
 
 Rotator Child Details
+    Sleep    15s
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
     
@@ -1662,7 +1639,6 @@ Rotator Payment validation
     Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
     ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']/div/div[1]/div[1]/div/img    src
     Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Footer selected child and sponsor successs child image are not match"
-    Click Element    xpath=//a[@class='view_cart']
    
 Rotator Child cart validation 
     [Arguments]    ${child_name}    ${sel_child_amt}
