@@ -502,21 +502,22 @@ To verify search child and donate
     Run Keyword If    True!=${check_child_display}    Fail    Payment success child not display in My Child
 
 To verify child was donated in between gap while user seraching
-    #Local browser launch
     Jenkins browser launch
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
-    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
-    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
-    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
+    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"    
+    Click Element    xpath=//div[@class='item childRotator active']//div[@class='stepwizard-row setup-panel']/div[3]/div/label
+    ${child_name}=    Get Text    xpath=//div[@class='item childRotator active']//h4
+    ${child_name}=    Remove String    ${child_name}     ,1 month 1 week ago
     Log To Console    Child name:${child_name}
-    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
-    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
+    Click Element    xpath=//div[@class='item childRotator active']//label[@class='chkSIlabel']
+    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item childRotator active']//input[@id='edit-submit--12']    value
     Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
-    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    Click Element    xpath=//div[@class='item childRotator active']//input[@id='edit-submit--12']
     ${child_count}=    Get Element Count    xpath=.//div[@class='seach-page-hover-content']/h4
     FOR    ${index}    IN RANGE    1    ${child_count}
     ${chck_sel_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(.//div[@class='seach-page-hover-content']/h4[contains(.,'${child_name}')])[${index}]
     Run Keyword If    True==${chck_sel_child_name}    Fail    Selected child name is displayed in search page
+    END
 
 Payment failure banner
     #Local browser launch
