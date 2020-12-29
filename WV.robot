@@ -949,24 +949,27 @@ Multiple deletion
     Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display"
 
 To add child to a cart
-    #Local browser launch
     Jenkins browser launch
     Sleep    15s
-    Execute Javascript    window.scrollTo(0, 600)
+    #Execute Javascript    window.scrollTo(0, 600)
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
-    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
-    ${child_name}=    Get Text    xpath=.//div[@class='item active']//h4
-    ${sel_child_amt}=    Get Text    xpath=//div[@class='item active']//p[@class='pricemnth active']//span[@class='home-price']
-    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    
+    Click Element    xpath=//div[@class='item childRotator active']//div[@class='stepwizard-row setup-panel']/div[3]/div/label    
+    ${child_name}=    Get Text    xpath=//div[@class='item childRotator active']//h4    
+    ${child_name}=    Remove String    ${child_name}     ,1 month 1 week ago    
+    ${sel_child_amt}=    Get Text    xpath=//div[@class='item childRotator active']//p[@class='pricemnth active']//span[@class='home-price']
+    ${sel_child_amt}=    Remove String    ${sel_child_amt}     .00
+    ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item childRotator active']/div/div[1]/div[1]/div/img    src
     Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
-    Click Element    xpath=.//div[@class='item active']//label[@class='chkSIlabel']
-    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item active']//input[@id='edit-submit--12']    value
+    Sleep    15s        
+    Click Element    xpath=//div[@class='item childRotator active']//label[@class='chkSIlabel']
+    ${footer_proceed_btn}=    Get Element Attribute    xpath=//div[@class='item childRotator active']//input[@id='edit-submit--12']    value
     Run Keyword If    'SPONSOR NOW'!='SPONSOR NOW'    Fail    "After Allow Auto Debit button click it will not change into 'Sponsor Now' text"
-    Click Element    xpath=//div[@class='item active']//input[@id='edit-submit--12']
+    Click Element    xpath=//div[@class='item childRotator active']//input[@id='edit-submit--12']
     ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
     Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
-    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item active']/div/div[1]/div[1]/div/img    src
+    ${Sponsor_success_img_chck}=    Get Element Attribute    xpath=//div[@class='item childRotator active']/div/div[1]/div[1]/div/img    src
     Run Keyword If    '${Sponsor_success_img_chck}'!='${sel_child_imgsrc}'    Fail    "Footer selected child and sponsor successs child image are not match"
     Click Element    xpath=//a[@class='view_cart']
     ${chck_child_name}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${child_name}')]
