@@ -308,7 +308,7 @@ To verify login through valid mobile number with valid password
     Click Element    xpath=//div[@class='login-form__submit']//button
     Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
-    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
+    Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login Or Post login Page doesnt Load"
 
 To verify login through valid email ID with valid password
     #Local browser launch
