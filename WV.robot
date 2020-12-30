@@ -1184,7 +1184,7 @@ Checkout flow Other passport holder payment gateways list
     Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
     Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
     #Select Hunger free campaign
-    Mouse Over    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]
+    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
     Sleep    10s
     Click Element    xpath=.//div[@class='add-to-cart-section']
