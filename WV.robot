@@ -14,8 +14,8 @@ ${edu_child_amt}    4000
 ${val}            000
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
-${user_name}      9600185121
-${password}       123456
+${user_name}      aswin.l@live.in
+${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 ${checkout_payment_list_no}    4
@@ -1116,13 +1116,14 @@ Ensure overview campaign label in Gift catalog
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
     Sleep   15s
-    ${postloginheadermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li
+    ${postloginheadermenu_list}=    Get Element Count    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
     Log To Console    "No of Post login menus: ${postloginheadermenu_list}"    
     Run Keyword If    '${postloginheadermenu_list}'!='${postlogin_menu_list}'    Fail    "Post login header main menu list size are mismatch"
-    ${postlogin_menu_txt}=    Get Text    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li
-    FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}
+    #${postlogin_menu_txt}=    Get Text    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
+    FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}        
         Log To Console    "Post login menus are : ${postlogin_menu_txt}"
-        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li//*[contains(text(),'${postlogin_menu_txt}')]    
+        Mouse Over    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/*[contains(text(),'${postlogin_menu_txt}')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/*[contains(text(),'${postlogin_menu_txt}')]    
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin home page ${postlogin_menu_txt} text are mismatch"
     END  
     
