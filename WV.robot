@@ -1371,10 +1371,12 @@ CCavenue payment success flow
     #Sleep    4s
     ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
     Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
+    Sleep    30s
     Click Element    //button[text()='pay my contribution']    
     #Click Element    xpath=.//input[@id='edit-actions-next']
     #${order_id}=    Get Text    xpath=.//span[@class='order-value']
     #Log To Console    Order id:${order_id}
+    Wait Until Element Is Visible    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]    15s    
     Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
     Select From List By Value    id=netBankingBank    AvenuesTest
     Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
