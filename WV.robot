@@ -775,8 +775,12 @@ Tax receipt page
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Click Element    xpath=.//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li/a[contains(.,'Tax Receipts')]
-    ${chk_disable_download_Btn}=    Run Keyword And Return Status    Click Element    xpath=.//a[@class='downloadpdf']
+    Click Element    xpath=//li/a[contains(text(),'Tax Receipts')]
+    
+    Wait Until Element Is Visible    xpath=(//div[@class='refer-cls'])[1]/img    30s
+    Click Element    xpath=(//div[@class='refer-cls'])[1]/img    
+
+    ${chk_disable_download_Btn}=    Run Keyword And Return Status    Click Element    xpath=//a[@class='downloadpdf']
     Run Keyword If    'True'!='${chk_disable_download_Btn}'    Fail    "Tax receipts page by default 'Download Tax Receipt' button is enable"
     Click Element    xpath=.//input[@id='edit-created-min']
     Select From List By Label    xpath=.//select[@class='ui-datepicker-month']    Jan
@@ -788,12 +792,13 @@ Tax receipt page
         Run Keyword If    '${get_date_txt}'=='${sub_date_}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         Exit For Loop If    '${get_date_txt}'=='${sub_date_}'
     END
+    Sleep    20s
     Click Element    xpath=.//input[@id='edit-created-max']
     ${get_count_date}=    Get Element Count    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a
     FOR    ${index}    IN RANGE    1    ${get_count_date}
         ${get_txt_date}=    Get Text    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         ${today_date}=    Today date
-        Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index_today}]
+        Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         Exit For Loop If    '${get_txt_date}'=='${today_date}'
     END
     Click Element    id=generate_tax
