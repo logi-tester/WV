@@ -1530,6 +1530,7 @@ Remove symbol
 CCAvenue payment failure flow
     ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
     Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
+    Sleep    30s
     Click Element    xpath=//div[@id='edit-actions']/button[contains(text(),'pay my contribution')]
     #${order_id}=    Get Text    xpath=.//span[@class='order-value']
     #Log To Console    Order id:${order_id}
@@ -1544,7 +1545,9 @@ CCAvenue payment failure flow
     Log To Console    Payment failure text: ${payment_msg}
     Run Keyword If    'PAYMENTFAILED'!='${payment_msg}'    Fail    "Payment Failure page not display"
 
-Payment failure check in home page banner
+Payment failure check in home page banner       
+    #Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/div/div/p    30s    
+    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
     ${get_payment_failure_txt}=    Get Text    xpath=.//div[@class='swiper-wrapper']/div/div/p
     Run Keyword If    '${banner_failure_txt}'!='${get_payment_failure_txt}'    Fail    After payment failure, failure section info not display in banner section
 
