@@ -302,9 +302,9 @@ To verify login through valid mobile number with valid password
     #Local browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
-    Input Text    id=edit-name    9600185121
+    Input Text    id=edit-name    8056230775
     Click Element    id=edit-pass
-    Input Text    id=edit-pass    123456
+    Input Text    id=edit-pass    test
     Click Element    xpath=//div[@class='login-form__submit']//button
     Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
