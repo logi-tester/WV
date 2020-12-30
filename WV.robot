@@ -353,7 +353,7 @@ Switching indian citizen to other passport holder in my profile page
     Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
     ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
     Log To Console    Indian is choosed:${ind}
-    Run Keyword If    'True'!='${ind}'    Fail    "Kumaran user by default have choosed 'Indian' but now it display like 'Other passport' holder"
+    Run Keyword If    'True'!='${ind}'    Fail    "User by default have choosed 'Indian' but now it display like 'Other passport' holder"
     Click Element    xpath=.//label[@for='othctzn']
     Scroll Element Into View    id=edit-submit
     Click Element    id=edit-submit
