@@ -1131,11 +1131,12 @@ Post login ways to give submenu list verification
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    ${headermenu_list}=    Get Element Count    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]/div//ul/li
+    ${headermenu_list}=    Get Element Count    xpath=//li/span[contains(text(),'Ways to Give')]/parent::li//ul//a
+    Log To Console    No of Submenus: ${headermenu_list}    
     Run Keyword If    '${headermenu_list}'!='12'    Fail    "Ways to give sub menu list size are mismatch"
     FOR    ${menu_txt}    IN    @{Ways_to_give}
-        Mouse Over    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]
-        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]/div//ul/li/a[contains(.,'${menu_txt}')]
+        Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//li/span[contains(text(),'Ways to Give')]/parent::li//ul//a[contains(.,'${menu_txt}')]
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin Ways to give submenu ${menu_txt} text are mismatch"
     END
     
