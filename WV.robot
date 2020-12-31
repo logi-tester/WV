@@ -1229,34 +1229,35 @@ Checkout flow Indian passport holder payment gateways list
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Click Element    id=edit-name
-    Input Text    id=edit-name    aswin.l@live.in
-    Click Element    id=edit-pass
-    Input Text    id=edit-pass    test
-    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+    Direct login
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
     Click Element    xpath=.//a[contains(.,'Edit Profile')]
     Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
     ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
     Run Keyword If    'True'!='${ind}'    Fail    "By default Indian passport holder should be checked but not like that"
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
-    Mouse Over    xpath=//ul[@class='we-mega-menu-ul nav nav-tabs pst_mnu_prnt']/li[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Educate Children')])[1]
+    Click Element    xpath=.//a[contains(.,'My Gifts')]    
+    Banner Alert   
+    Delete view cart campaign
+    # ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    # Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
+    # Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(text(),'Ways to Give')]
+    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(text(),'Educate Children')]
     Sleep    5s
     Click Element    xpath=.//div[@class='item-image']//img
-    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div        
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    15s
     Click Element    id=ChkForSI
     Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
     Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']
+    Click Element    xpath=//a[@class='view_cart']    
+    Banner Alert
     ${replace_val_educate_camp}=    Replace String    ${edu_child_amt}    4    4,
-    ${edu_child_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${educate_chld_camp_name}')]
+    ${edu_child_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id' and contains(text(),'${educate_chld_camp_name}')]
     Run Keyword If    'True'!='${edu_child_camp_viewcart}'    Fail    "Educate children campaign not display in view cart page"
     ${chck_edu_child_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val_educate_camp}')]
     Run Keyword If    'True'!='${chck_edu_child_camp_amt_viewcart}'    Fail    "Educate children campaign amount are not display/mismatch in view cart page"
@@ -1674,3 +1675,7 @@ Rotator Child cart validation
     Run Keyword If    'True'!='${chck_child_name}'    Fail    "Choosed child not display in view cart page"
     ${chck_child_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${sel_child_amt}')]
     Run Keyword If    'True'!='${chck_child_amt}'    Fail    "Choosed child amount are mismatch in view cart page"
+    
+Banner Alert
+    ${banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='refer-cls'])[1]/img    
+    Run Keyword If    'True'=='${banner_status}'    Click Element    xpath=(//div[@class='refer-cls'])[1]/img     ELSE    Log To Console    "Banner was not present"    
