@@ -667,7 +667,7 @@ To sponsor child using SI flow
     ${child_name}=    Get Text    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//h4
     ${child_name}=    Remove String Using Regexp    ${child_name}    \,.*$
     ${sel_child_amt}=    Get Text    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//p[@class='pricemnth active']//span[@class='home-price']
-    ${remove_comma_symbol}=    Remove symbol    ${sel_child_amt}    ,
+    ${remove_comma_symbol}=    Remove symbol    ${sel_child_amt}    .00
     ${remove_dollor_symbol}=    Remove symbol    ${remove_comma_symbol}    ₹
     ${sel_child_imgsrc}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']/div/div[1]/div[1]/div/img    src
     Log To Console    Child name:${child_name} and child amount:${remove_dollor_symbol} and also child img src:${sel_child_imgsrc}
