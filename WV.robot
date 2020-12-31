@@ -1340,8 +1340,11 @@ View cart page
     ${back_to_school_camp_amt}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${real_gift_}')]
     Run Keyword If    'True'!='${back_to_school_camp_amt}'    Fail    "Back to school campaign amount are not display/mismatch in view cart page"
 
-Delete view cart campaign
-    Click Element    xpath=(.//a[@class='remove-btn'])[1]
+Delete view cart campaign   
+    Sleep    10s     
+    ${gift_cart_msg1}=    Get Text    xpath=//span[@class='badge notification_badge']
+    ${gift_cart_msg1}=    Convert To Integer    ${gift_cart_msg1}
+    Run Keyword If    ${gift_cart_msg1}>=1    Click Element    xpath=(.//a[@class='remove-btn'])[1]    ELSE    Log To Console    "Cleared Cart"    
     #${gift_cart_msg}=    Get Text    xpath=//div[@class='Empty_basket_Content']/h1  
     Sleep    10s              
     ${gift_cart_msg1}=    Get Text    xpath=//span[@class='badge notification_badge']
@@ -1349,7 +1352,7 @@ Delete view cart campaign
     Log To Console    ${gift_cart_msg1}      
     Run Keyword If    ${gift_cart_msg1}>=1    Fail    "Your cart have some order left"
     #Run Keyword If    '${gift_cart_msg}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display" 
-    
+
 Login
     Click Element   xpath=//input[@id='edit-login-custom-returning-customer-name']
     Input Text    xpath=//input[@id='edit-login-custom-returning-customer-name']    ${user_name}
