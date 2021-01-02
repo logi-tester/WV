@@ -110,9 +110,9 @@ To register > User should fill all the required fields and click "create new acc
     Execute JavaScript    window.scrollTo(0, document.body.scrollHeight)
     Select From List By Label    id=edit-field-how-do-you-know-about-worl    Friends and Family        
     #DOB
-    Click Element    //label[text()='Date of Birth']
-    Select From List By Label    xpath=//select[@class='ui-datepicker-month']    Sep
+    Click Element    xpath=//label[text()='Date of Birth']
     Select From List By Label    xpath=//select[@class='ui-datepicker-year']    1993
+    Select From List By Label    xpath=//select[@class='ui-datepicker-month']    Sep
     Click Element    xpath=(//table//tbody/tr/td/a)[7]
     Click Element    //button[@class='singUpRegister']
     #${chck_reg_worked}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='modal-content']
