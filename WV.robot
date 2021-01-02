@@ -19,6 +19,7 @@ ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 ${checkout_payment_list_no}    4
+@{RegisterFields}    signUpfnameErr    signUplnameErr    signUpEmailErr    signInPhoneErr    signUpPassErr    signUpConPassErr    signUpaddrErr    signUpaddrErr1    signUpaddrErr3    signUpPscodeErr    signUpCityErr    signUpStateErr
 @{Sponcer_List}    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children
 #@{Sponcer_List}    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children
 @{homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
@@ -201,54 +202,16 @@ To verify all the fields are mandy
     Click Element    xpath=//a[contains(text(),'Register')]    
     Click Element    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']   
     
-    #first name alert
-    Wait Until Element Is Visible    id=signUpfnameErr    30s
-    ${firstname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpfnameErr
-    Run Keyword If    'True'!='${firstname_alert}'    Fail    "First name alert not display"
+    FOR    ${element}    IN    @{RegisterFields}
+        ${alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpfnameErr
+        Run Keyword If    'True'!='${alert}'    Fail    "${element} name alert not display"
+    END
     
-    #last name alert
-    ${lastname_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUplnameErr
-    Run Keyword If    'True'!='${lastname_alert}'    Fail    "Last name alert not display"
-    #Email alert   
+    Log To Console    "Alert messages are active"
     
-    ${email_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpEmailErr
-    Run Keyword If    'True'!='${email_alert}'    Fail    "Email address alert not display"
-    
-    #Phone no alert
-    ${phone_no__alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signInPhoneErr
-    Run Keyword If    'True'!='${phone_no__alert}'    Fail    "Phone no alert not display"
-    
-    #Confirm password alert
-    ${confirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpPassErr
-    Run Keyword If    'True'!='${confirm_password_alert}'    Fail    "Confirm password alert not display"
-    
-    #Re-Confirm password alert
-    ${reconfirm_password_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpConPassErr
-    Run Keyword If    'True'!='${reconfirm_password_alert}'    Fail    "Re-Confirm password alert not display"
-    
-    #adddress 1 alert
-    ${addrs_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpaddrErr
-    Run Keyword If    'True'!='${addrs_alert}'    Fail    "Address 1 alert not display"
-    
-    #adddress 2 alert
-    ${addrs2_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpaddrErr1
-    Run Keyword If    'True'!='${addrs2_alert}'    Fail    "Address 2 alert not display"
-    
-    #adddress 3 alert - NEWLY ADDED
-    ${addrs3_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpaddrErr3
-    Run Keyword If    'True'!='${addrs3_alert}'    Fail    "Address 2 alert not display"
-
-    #Postal code alert
-    ${postal_code}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpPscodeErr
-    Run Keyword If    'True'!='${postal_code}'    Fail    "Postal code alert not display"
-    
-    #City alert
-    ${city_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpCityErr
-    Run Keyword If    'True'!='${city_alert}'    Fail    "City alert not display"
-    
-    #State alert
-    ${state_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpStateErr
-    Run Keyword If    'True'!='${state_alert}'    Fail    "State alert not display"
+    # #State alert
+    # ${state_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpStateErr
+    # Run Keyword If    'True'!='${state_alert}'    Fail    "State alert not display"
 
 To verify login through invalid mobile number with invalid password
     #Local browser launch
