@@ -1154,10 +1154,9 @@ Ensure user can able to change passport holder
     Run Keyword If    'True'=='${again_other}'    Check indian passport holder
 
 Checkout flow Other passport holder payment gateways list
-    #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login
+    Direct login - Other passport user
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
     Click Element    xpath=.//a[contains(.,'Edit Profile')]
@@ -1176,12 +1175,12 @@ Checkout flow Other passport holder payment gateways list
     Click Element    xpath=.//div[@class='add-to-cart-section']
     ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     ${split_Hunger_name_with_rightside}=    Remove String    ${hunger_camp_name}    Free
-    #${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
     ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
     Click Element    xpath=//a[@class='view_cart']
+    Banner Alert
     ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${split_Hunger_name_with_rightside}[0]')]
     Run Keyword If    'True'!='${hunger_camp_viewcart}'    Fail    "Hunger Free campaign not display in view cart page"
     ${replace_val}=    Replace String    ${input_val}    1    1,
@@ -1651,3 +1650,10 @@ Rotator Child cart validation
 Banner Alert
     ${banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='refer-cls'])[1]/img    
     Run Keyword If    'True'=='${banner_status}'    Click Element    xpath=(//div[@class='refer-cls'])[1]/img     ELSE    Log To Console    "Banner was not present"    
+
+Direct login - Other passport user
+    Click Element    id=edit-name
+    Input Text    id=edit-name    testmail@test.com
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    test
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
