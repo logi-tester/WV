@@ -36,7 +36,7 @@ ${checkout_payment_list_no}    4
 @{Partnership_submenu_txt}    Corporate
 @{post_login_my_world_submenu_txt}
 @{post_login_waysto_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
-${banner_failure_txt}    Sorry, your previous transaction has not gone through
+${banner_failure_txt}   Sorry, your previous transaction has not gone through test
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
@@ -1543,9 +1543,9 @@ CCAvenue payment failure flow
     Run Keyword If    'PAYMENTFAILED'!='${payment_msg}'    Fail    "Payment Failure page not display"
 
 Payment failure check in home page banner       
-    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    40s    
+    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    60s    
     Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
-    ${get_payment_failure_txt}=    Get Text    xpath=.//div[@class='swiper-wrapper']/div/div/p
+    ${get_payment_failure_txt}=    Get Text    xpath=//div[@class='swiper-wrapper']/div/div/p
     Run Keyword If    '${banner_failure_txt}'!='${get_payment_failure_txt}'    Fail    After payment failure, failure section info not display in banner section
 
 Check child duplicate
