@@ -761,6 +761,7 @@ Tax receipt page
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Wait Until Element Is Visible   xpath=//li/a[contains(text(),'Tax Receipts')]   60s
     Click Element    xpath=//li/a[contains(text(),'Tax Receipts')]
     
     Wait Until Element Is Visible    xpath=(//div[@class='refer-cls'])[1]/img    30s
