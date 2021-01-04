@@ -322,9 +322,10 @@ Switching indian citizen to other passport holder in my profile page
     Scroll Element Into View    id=edit-submit
     Click Element    id=edit-submit
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
@@ -489,9 +490,10 @@ To sponsor a Educate Children Campaign using Checkout flow
     #Local browser launch    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
@@ -504,9 +506,10 @@ To sponsor a Save Malnourished Children Campaign using Checkout flow
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Save Malnourished Children
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
@@ -519,9 +522,10 @@ To sponsor a Childhood Rescue Campaign using Checkout flow
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Childhood Rescue
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
@@ -534,9 +538,10 @@ To sponsor a Hunger Free Campaign as a one time donation using Checkout flow
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     One time Hunger Free campaign
     View cart proceed button
     Login
@@ -546,9 +551,10 @@ To sponsor a Where Most Needed Campaign as a one time donation using Checkout fl
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Where Most Needed
     
     #${camp_name}    ${Camp_val}    one time campaign        
@@ -572,9 +578,10 @@ To sposor a Educate Children Campaign as a one time donation using Checkout flow
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children
     ${camp_name}    ${Camp_val}    one time campaign
     check in view cart page    ${camp_name}    ${Camp_val}
@@ -586,9 +593,10 @@ To sponsor a Rescue Children Campaign using Si payment Flow from Educate Childre
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Childhood Rescue
     SI flow campaign
     SI login
@@ -597,9 +605,10 @@ To sponsor a Help HIV aids Campaign using Si payment Flow
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    HIV & AIDS
     SI flow campaign
     SI login
@@ -608,9 +617,10 @@ To sponsor a Protect Girl Children Campaign using Si payment Flow from Educate C
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    End Child Sexual Abuse
     SI flow campaign
     SI login
@@ -619,9 +629,10 @@ To sponsor child using SI flow
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     
     Click Element    xpath=//div[@class='header_new_logo']//img    
 
@@ -908,12 +919,13 @@ Multiple deletion
     One time Hunger Free campaign
     Educate children campaign with checkout flow
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    FOR    ${index}    IN    ${get_viewcart_list_count}    1
-        Click Element    xpath=(.//a[@class='remove-btn'])[${index}]
-        Sleep    10s
-    END
-    ${check_cartpage_after_complete_del}=    Get Text    xpath=.//div[@class='Empty_basket_Content']/h1
-    Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display"
+    FOR    ${index}    IN RANGE    ${get_viewcart_list_count}    0    -1
+        Log To Console    Count: ${index}    
+        Click Element    xpath=(//a[@class='remove-btn'])[${index}]    
+        Sleep    10s    
+    END           
+    ${check_cartpage_after_complete_del}=    Run Keyword And Return Status    Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
+    Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart is Empty' text not display"
 
 To add child to a cart
     #Local browser launch
@@ -1153,9 +1165,10 @@ Checkout flow Other passport holder payment gateways list
     ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
     Run Keyword If    'True'!='${other}'    Fail    "By default Other passport holder should be checked but not like that"
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     #Select Hunger free campaign
     Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
     Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
@@ -1196,8 +1209,7 @@ Checkout flow Indian passport holder payment gateways list
     Click Element    xpath=.//a[contains(.,'My Gifts')]    
     Banner Alert   
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
-    Log To Console    ${get_viewcart_list_count}    
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}          
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}    
     Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(text(),'Ways to Give')]
     Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(text(),'Educate Children')]
