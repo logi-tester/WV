@@ -472,8 +472,9 @@ Payment failure banner
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Log To Console    ${get_viewcart_list_count}    
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
     Mouser hover ways to give campaign    Educate Children
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
@@ -1481,13 +1482,13 @@ Today date
 
 Notification deletion
     [Arguments]    ${get_viewcart_list_count}
-    ${add_val}=    Evaluate    ${get_viewcart_list_count}+1
-    FOR    ${index}    IN RANGE    ${add_val}    1
-        Click Element    xpath=(.//a[@class='remove-btn'])[${index}]
-        Sleep    10s
-    END
-    ${check_cartpage_after_complete_del}=    Get Text    xpath=.//div[@class='Empty_basket_Content']/h1
-    Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display"
+    #${get_viewcart_list_count}=    Set Variable    ${get_viewcart_list_count + 1}      
+    FOR    ${index}    IN RANGE    ${get_viewcart_list_count}    0    -1    
+        Click Element    xpath=(//a[@class='remove-btn'])[${index}]    
+        Sleep    10s    
+    END           
+    ${check_cartpage_after_complete_del}=    Run Keyword And Return Status    Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
+    Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart is Empty' text not display"
 
 Check indian passport holder
     Click Element    xpath=.//label[@for='indctzn']
