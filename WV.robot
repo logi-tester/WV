@@ -1326,7 +1326,7 @@ Delete view cart campaign
     ${gift_cart_msg1}=    Convert To Integer    ${gift_cart_msg1}  
     Log To Console    ${gift_cart_msg1}      
     Run Keyword If    ${gift_cart_msg1}>=1    Fail    "Your cart have some order left"
-    #Run Keyword If    '${gift_cart_msg}'!='Your Gift Cart Is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display" 
+    #Run Keyword If    '${gift_cart_msg}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart Is Empty' text not display" 
 
 Login
     Click Element   xpath=//input[@id='edit-login-custom-returning-customer-name']
