@@ -665,15 +665,16 @@ To sponsor child using SI flow
         Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
     END
     
-Just post login check hungerfree campaign
-    #Local browser launch
+Just post login check hungerfree campaign    
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]    
-    Banner Alert    
-    Sleep    10s        
-    Delete view cart campaign
+    Wait Until Element Is Visible    xpath=//a[contains(.,'My Gifts')]    40s    
+    Click Element    xpath=//a[contains(.,'My Gifts')]    
+    Banner Alert            
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Click Element    xpath=.//li[@class='post_lgn']/a
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
     Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
@@ -716,6 +717,7 @@ Just post login check hungerfree campaign
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
     Log To Console    Overall hunger free label amount:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
+
 
    
 Just pre login check hungerfree campaign
