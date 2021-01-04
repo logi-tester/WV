@@ -270,7 +270,7 @@ To verify login through valid mobile number with valid password
     Click Element    id=edit-pass
     Input Text    id=edit-pass    test
     Click Element    xpath=//div[@class='login-form__submit']//button
-    Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
+    Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    60s
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login Or Post login Page doesnt Load"
 
