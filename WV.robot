@@ -1195,11 +1195,10 @@ Checkout flow Indian passport holder payment gateways list
     Run Keyword If    'True'!='${ind}'    Fail    "By default Indian passport holder should be checked but not like that"
     Click Element    xpath=.//a[contains(.,'My Gifts')]    
     Banner Alert   
-    Delete view cart campaign
-    # ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    # Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    # Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}
-    
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Log To Console    ${get_viewcart_list_count}    
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}    
     Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(text(),'Ways to Give')]
     Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(text(),'Educate Children')]
     Sleep    5s
@@ -1234,10 +1233,11 @@ Max val alert in view cart page
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    Run Keyword If    '${get_viewcart_list_count}'<'1'    Log To Console    "No campaign in view cart page"
-    Run Keyword If    '${get_viewcart_list_count}'>'1'    Notification deletion    ${get_viewcart_list_count}    
-    
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Log To Console    ${get_viewcart_list_count}    
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}                   
     FOR    ${element}    IN    @{Sponcer_List}
         Ways to give - 5 items    ${element}
     END
