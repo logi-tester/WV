@@ -1243,18 +1243,15 @@ Checkout flow Indian passport holder payment gateways list
     END
  
 Max val alert in view cart page
-    #Local browser launch
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
-    Log To Console    ${get_viewcart_list_count}    
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}                   
-    FOR    ${element}    IN    @{Sponcer_List}
-        Ways to give - 5 items    ${element}
+    FOR    ${sponcer}    IN    @{Sponcer_List}
+        Ways to give - 5 items    ${sponcer}
     END
-    
     ${proceed_btn_disable}=    Run Keyword And Return Status    Element Should Be Disabled    id=edit-checkout
     Run Keyword If    'True'=='${proceed_btn_disable}'    Log To Console    "Proceed button is disabled"
     ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    //div[@class='max-amount']
@@ -1600,22 +1597,23 @@ Child duplicate checking
     END
     
 Ways to give - 5 items
-    [Arguments]    ${element}
+    [Arguments]    ${sponcer}
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'${element}')])[1]  
+    Click Element    xpath=(.//li/a[contains(.,'${sponcer}')])[1]  
     Sleep    10s
     Click Element    xpath=.//div[@class='item-image']//img
     ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
         #Click Auto credit
+    Sleep    10s    
     Click Element    id=ChkForSI
         #enter Amount
-    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
-    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    1000000
-    
+    Click Element    xpath=//input[contains(@class,'commerce_manual_input realgift_inputvalue realgift_input')]
+    Input Text    xpath=//input[contains(@class,'commerce_manual_input realgift_inputvalue realgift_input')]    1000000    
         #Add to cart
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
         #Proceed to cart
-    Click Element    xpath=//a[@class='view_cart']
+    Click Element    xpath=//a[@class='view_cart']    
+    Banner Alert
 
 Rotator Child Details
     Sleep    15s
