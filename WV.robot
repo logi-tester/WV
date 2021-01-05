@@ -1042,8 +1042,8 @@ Check Add-on added in view cart page
  Ensure overview campaign label in Hosh menu
     #Local browser launch
     Jenkins browser launch
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(.,'Overview')]
     ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
     Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
     Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[1]//h3
@@ -1056,8 +1056,9 @@ Check Add-on added in view cart page
     #${wv_url}=    Get Location
     #Log To Console    WV url is:${wv_url}
     Click Element    xpath=//div[@class='gbl_tabbed_menu']/ul/li[2]
-    Mouse Over    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='IMGSec_cover']
-    Click Element    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='Gift_add giftBtn']
+    Mouse Over    xpath=//div[@class='IMGSec_cover']
+    Sleep    5s    
+    Click Element    xpath=//div[@class='Gift_add giftBtn']/input    
     Ensure default amount in educational need
     Error default value and check button disable
     View cart page
@@ -1290,18 +1291,19 @@ Mouser hover ways to give campaign
     Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${edu_child}')]
 
 Ensure default amount in educational need
-    ${get_val}=    Get Element Attribute    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div//input[@name='manualCart[0][amount]']    value
-    #Log To Console    Input value is:${get_val}
-    Run Keyword If    1000!=${get_val}    Fail    "Default value '1000' not display"
+    ${get_val}=    Get Element Attribute    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]    value
+    #Log To Console    Input value is: ${get_val}
+    Run Keyword If    '1000'!='${get_val}'    Fail    "Default value '1000' not display"
 
 Error default value and check button disable
-    Click Element    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div//input[@name='manualCart[0][amount]']
-    Clear Element Text    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div//input[@name='manualCart[0][amount]']
-    Input Text    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div//input[@name='manualCart[0][amount]']    99
-    ${chck_button_disable}=    Get Element Attribute    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//input[@class='button button--primary form-submit multi_cart_submit_button']    disabled
-    #Log To Console    Diabled value is:${chck_button_disable}
+    Click Element    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]       
+    Clear Element Text    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]
+    Input Text    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]    99
+    ${chck_button_disable}=    Element Should Be Disabled    xpath=//div[@class='kl_flood_sub_or_sec']/input[1]
+    #${chck_button_disable}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input[1]    disabled
+    Log To Console    Diabled value is:${chck_button_disable}
     Run Keyword If    '${chck_button_disable}'!='true'    Fail    "Enter amount '99' but 'ADD TO CART' button not in disable mode"
-    Input Text    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div//input[@name='manualCart[0][amount]']    ${real_gift_enter_val}
+    Input Text    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]    ${real_gift_enter_val}
 
 View cart page
     ${backto_schl_campaign_name}=    Get Text    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@id='mySidenav']//div[@class='inner_banner_pledge_content']/h2
