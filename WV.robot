@@ -1104,7 +1104,7 @@ Ensure overview campaign label in Gift catalog
     ${expected}=    Strip String    ${SPACE}${again_remove_curlybrace}
     Run Keyword If    '${actual}'!='${expected}'    Fail    "Gift Catalog label amount and 'Add to Cart' button amount are mismatch"
     
- Post login menus check
+Post login menus check
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
