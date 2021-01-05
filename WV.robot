@@ -1135,27 +1135,47 @@ Post login ways to give submenu list verification
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin Ways to give submenu ${menu_txt} text are mismatch"
     END
     
-Ensure user can able to change passport holder
-    #Local browser launch
+# Ensure user can able to change passport holder
+    # Jenkins browser launch
+    # Click Element    xpath=//a[contains(text(),'Login')]
+    # Click Element    id=edit-name
+    # Input Text    id=edit-name  aswin.l@live.in
+    # Click Element    id=edit-pass
+    # Input Text    id=edit-pass  test
+    # Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+    # Mouse Over    xpath=.//li[@class='welcomesponsor']
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    # Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    # Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    # ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
+    # Log To Console    Indian is choosed:${ind}
+    # ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
+    # Log To Console    Other is choosed:${other}
+    # Run Keyword If    'True'=='${ind}'    Check other passport holder
+    # Run Keyword If    'True'=='${other}'    Check indian passport holder
+    # ${again_other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
+    # Run Keyword If    'True'=='${again_other}'    Check indian passport holder
+    
+Indian citizen should not change to Other passport holder
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Click Element    id=edit-name
-    Input Text    id=edit-name  aswin.l@live.in
-    Click Element    id=edit-pass
-    Input Text    id=edit-pass  test
-    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
-    Click Element    xpath=.//a[contains(.,'Edit Profile')]
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    Direct login
+    MyProfile Edit
     ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
-    Log To Console    Indian is choosed:${ind}
+    Log To Console    Indian is choosed:${ind}      
+    Run Keyword If    'True'=='${ind}'    Check other passport holder    
+    # ${again_other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
+    # Run Keyword If    'True'=='${again_other}'    Check indian passport holder
+    
+Other passport holder should not change to Indian passport holder
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login - Other passport user
+    MyProfile Edit
     ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
-    Log To Console    Other is choosed:${other}
-    Run Keyword If    'True'=='${ind}'    Check other passport holder
+    Log To Console    Other is choosed:${other}  
     Run Keyword If    'True'=='${other}'    Check indian passport holder
-    ${again_other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
-    Run Keyword If    'True'=='${again_other}'    Check indian passport holder
+
 
 Checkout flow Other passport holder payment gateways list
     Jenkins browser launch
@@ -1659,4 +1679,22 @@ Direct login - Other passport user
     Input Text    id=edit-name    testmail@test.com
     Click Element    id=edit-pass
     Input Text    id=edit-pass    test
-    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]    
+    
+MyProfile Edit
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+   
+Check other passport holder        
+    ${OtherPassStatus}=    Run Keyword And Return Status    Click Element    xpath=//label[@for='othctzn']        
+    Run Keyword If    'True'=='${OtherPassStatus}'    Fail    "INDIAN User can able to select other passport user"
+    Mouse Over    xpath=//li[@class='welcomesponsor']        
+    Click Element    xpath='//a[contains(text(),'My profile')]'    
+
+Check indian passport holder
+    ${OtherPassStatus}=    Run Keyword And Return Status    Click Element    xpath=//label[@for='indctzn']        
+    Run Keyword If    'True'=='${OtherPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
+    Mouse Over    xpath=//li[@class='welcomesponsor']        
+    Click Element    xpath='//a[contains(text(),'My profile')]' 
