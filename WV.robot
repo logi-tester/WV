@@ -14,7 +14,7 @@ ${edu_child_amt}    4000
 ${val}            000
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
-${user_name}      aswin.l@live.in
+${user_name}      gmail@gmail.com
 ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
@@ -266,7 +266,7 @@ To verify login through valid mobile number with valid password
     #Local browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Click Element    id=edit-name
-    Input Text    id=edit-name    8056230775
+    Input Text    id=edit-name    7777777777
     Click Element    id=edit-pass
     Input Text    id=edit-pass    test
     Click Element    xpath=//div[@class='login-form__submit']//button
