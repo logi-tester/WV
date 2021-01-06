@@ -297,53 +297,53 @@ To Sponsor a child by SI payment flow from search page
     Mouse Over    xpath=(.//div[@class='search-page']/div[@class='search-page-childimg test']/h4)[1]
     Click Element    xpath=(.//div[@class='add-cart-btn'])[1]
 
-Switching indian citizen to other passport holder in my profile page
-    #Local browser launch
-    Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+# Switching indian citizen to other passport holder in my profile page
+    # #Local browser launch
+    # Jenkins browser launch
+    # Click Element    xpath=//a[contains(text(),'Login')]
     
-    Wait Until Element Is Visible    id=edit-name    15s
-    Click Element    id=edit-name    
-    Input Text    id=edit-name    9600185121
+    # Wait Until Element Is Visible    id=edit-name    15s
+    # Click Element    id=edit-name    
+    # Input Text    id=edit-name    9600185121
     
-    Wait Until Element Is Visible    id=edit-pass    15s
-    Click Element    id=edit-pass    
-    Input Text    id=edit-pass    123456
+    # Wait Until Element Is Visible    id=edit-pass    15s
+    # Click Element    id=edit-pass    
+    # Input Text    id=edit-pass    123456
     
-    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
-    Click Element    xpath=.//a[contains(.,'Edit Profile')]
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
-    ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
-    Log To Console    Indian is choosed:${ind}
-    Run Keyword If    'True'!='${ind}'    Fail    "User by default have choosed 'Indian' but now it display like 'Other passport' holder"
-    Click Element    xpath=.//label[@for='othctzn']
-    Scroll Element Into View    id=edit-submit
-    Click Element    id=edit-submit
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
-    Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    Mouser hover ways to give campaign    Educate Children
-    Sleep    5s
-    ${val_1}    ${val_2}    Checkout flow campaign
-    check in view cart page    ${val_1}    ${val_2}
-    View cart proceed button
-    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
-    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
-    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
-    END
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
-    Click Element    xpath=.//a[contains(.,'Edit Profile')]
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
-    Click Element    xpath=.//label[@for='indctzn']
-    Scroll Element Into View    id=edit-submit
-    Click Element    id=edit-submit
+    # Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+    # Mouse Over    xpath=.//li[@class='welcomesponsor']
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    # Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    # Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    # ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
+    # Log To Console    Indian is choosed:${ind}
+    # Run Keyword If    'True'!='${ind}'    Fail    "User by default have choosed 'Indian' but now it display like 'Other passport' holder"
+    # Click Element    xpath=.//label[@for='othctzn']
+    # Scroll Element Into View    id=edit-submit
+    # Click Element    id=edit-submit
+    # Click Element    xpath=.//a[contains(.,'My Gifts')]
+    # Banner Alert
+    # ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    # ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    # Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    # Mouser hover ways to give campaign    Educate Children
+    # Sleep    5s
+    # ${val_1}    ${val_2}    Checkout flow campaign
+    # check in view cart page    ${val_1}    ${val_2}
+    # View cart proceed button
+    # ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    # Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    # FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        # ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        # Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
+    # END
+    # Mouse Over    xpath=.//li[@class='welcomesponsor']
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    # Click Element    xpath=.//a[contains(.,'Edit Profile')]
+    # Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
+    # Click Element    xpath=.//label[@for='indctzn']
+    # Scroll Element Into View    id=edit-submit
+    # Click Element    id=edit-submit
     
 Valid username Invalid password
     #Local browser launch
@@ -1694,7 +1694,7 @@ Check other passport holder
     Click Element    xpath='//a[contains(text(),'My profile')]'    
 
 Check indian passport holder
-    ${OtherPassStatus}=    Run Keyword And Return Status    Click Element    xpath=//label[@for='indctzn']        
-    Run Keyword If    'True'=='${OtherPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
+    ${indianPassStatus}=    Run Keyword And Return Status    Click Element    xpath=//label[@for='indctzn']        
+    Run Keyword If    'True'=='${indianPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
     Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath='//a[contains(text(),'My profile')]' 
+    Click Element    xpath='//a[contains(text(),'My profile')]'  
