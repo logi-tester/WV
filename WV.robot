@@ -754,21 +754,18 @@ Just pre login check hungerfree campaign
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
 
 Tax receipt page
-    #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Wait Until Element Is Visible   xpath=//li/a[contains(text(),'Tax Receipts')]   60s
-    Click Element    xpath=//li/a[contains(text(),'Tax Receipts')]
-    
-    Wait Until Element Is Visible    xpath=(//div[@class='refer-cls'])[1]/img    30s
-    Click Element    xpath=(//div[@class='refer-cls'])[1]/img    
-
-    ${chk_disable_download_Btn}=    Run Keyword And Return Status    Click Element    xpath=//a[@class='downloadpdf']
-    Run Keyword If    'True'!='${chk_disable_download_Btn}'    Fail    "Tax receipts page by default 'Download Tax Receipt' button is enable"
+    Navigation banner close
+    Click Element    xpath=//li/a[contains(text(),'Tax Receipts')]          
+    # ${chk_disable_download_Btn}=    Run Keyword And Return Status    Click Element    xpath=//a[@class='downloadpdf']
+    # Run Keyword If    'True'!='${chk_disable_download_Btn}'    Fail    "Tax receipts page by default 'Download Tax Receipt' button is enable"
     Click Element    xpath=.//input[@id='edit-created-min']
-    Select From List By Label    xpath=.//select[@class='ui-datepicker-month']    Jan
-    Select From List By Label    xpath=.//select[@class='ui-datepicker-year']    2020
+    Select From List By Label    xpath=//select[@class='ui-datepicker-month']    May
+    Sleep    5s    
+    Select From List By Label    xpath=//select[@class='ui-datepicker-year']    2020
+    Sleep    5s    
     ${get_date_count}=    Get Element Count    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a
     FOR    ${index}    IN RANGE    1    ${get_date_count}
         ${get_date_txt}=    Get Text    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
@@ -776,6 +773,7 @@ Tax receipt page
         Run Keyword If    '${get_date_txt}'=='${sub_date_}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         Exit For Loop If    '${get_date_txt}'=='${sub_date_}'
     END
+    Banner Alert
     Sleep    20s
     Click Element    xpath=.//input[@id='edit-created-max']
     ${get_count_date}=    Get Element Count    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a
@@ -785,6 +783,7 @@ Tax receipt page
         Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         Exit For Loop If    '${get_txt_date}'=='${today_date}'
     END
+    Sleep    10s    
     Click Element    id=generate_tax
     
 Hungree one time campaign
