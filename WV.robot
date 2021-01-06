@@ -1065,7 +1065,7 @@ Check Add-on added in view cart page
 Ensure overview campaign label in Back to school
     Jenkins browser launch
     Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(//li/a[contains(.,'Overview')])[1]
+    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(.,'Overview')]
     ${overview_menus_list}=    Get Element Count    xpath=//div[@class='views-element-container']//a
     Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
     Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[3]//h3    
@@ -1077,7 +1077,9 @@ Ensure overview campaign label in Back to school
     Ensure default amount in educational need
     Error default value and check button disable
     View cart page
-    Delete view cart campaign
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
 
 Ensure overview campaign label in Gift catalog
     #Local browser launch
