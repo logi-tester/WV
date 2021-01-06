@@ -201,6 +201,7 @@ To verify all the fields are mandy
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Register')]    
     Scroll Element Into View    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']
+    Sleep   5s
     Click Element    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']   
     
     FOR    ${element}    IN    @{RegisterFields}
@@ -209,8 +210,6 @@ To verify all the fields are mandy
     END
     
     Log To Console    "Alert messages are active"
-    
-    # #State alert
     # ${state_alert}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpStateErr
     # Run Keyword If    'True'!='${state_alert}'    Fail    "State alert not display"
 
