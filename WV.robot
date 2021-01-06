@@ -1524,22 +1524,6 @@ Notification deletion
     ${check_cartpage_after_complete_del}=   Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
     Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart is Empty' text not display"
 
-Check indian passport holder
-    Click Element    xpath=.//label[@for='indctzn']
-    Scroll Element Into View    id=edit-submit
-    Click Element    id=edit-submit
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
-    ${chck_indian}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
-    Run Keyword If    'True'!='${chck_indian}'    Fail    "Other passport holder can't able to change Indian passport holder"
-
-Check other passport holder
-    Click Element    xpath=.//label[@for='othctzn']
-    Scroll Element Into View    id=edit-submit
-    Click Element    id=edit-submit
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
-    ${chck_other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
-    Run Keyword If    'True'!='${chck_other}'    Fail    "Indian passport holder can't able to change Other passport holder"
-
 Remove symbol
     [Arguments]    ${val}    ${sysmbol}
     ${output}=    Remove String    ${val}    ${sysmbol}
