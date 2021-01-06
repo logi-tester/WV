@@ -368,23 +368,20 @@ Invalid username and valid password
     Clear Element Text    id=edit-pass
 
 Ensure user can able to logout in direct login
-    #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Sleep   15s
-    Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
+    Sleep   40s
+    Navigation banner close
+    #Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    30s
     Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
-    
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]    
     #Click Element    class=input-survey    
     #Input Text    input-survey    Test review Data
-    #Click Element    class=btnSub-survey
-    
+    #Click Element    class=btnSub-survey    
     Click Element    class=close-survey            
-
     ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
-    Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
+    Run Keyword If    'True'!='${check_success_logout}'    Fail    "Unable to logout Properly"
     
 Direct login with exit user
     #Local browser launch
@@ -1700,3 +1697,8 @@ Check indian passport holder
     Run Keyword If    'True'=='${indianPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
     Mouse Over    xpath=//li[@class='welcomesponsor']        
     Click Element    xpath='//a[contains(text(),'My profile')]'  
+    
+Navigation banner close   
+    ${nav_banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='mySidenav']/a    
+    Run Keyword If    'True'=='${nav_banner_status}'    Click Element    xpath=//div[@id='mySidenav']/a     ELSE    Log To Console    "Nav banner was not present" 
+ 
