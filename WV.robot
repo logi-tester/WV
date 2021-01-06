@@ -1520,7 +1520,7 @@ Notification deletion
         Click Element    xpath=(//a[@class='remove-btn'])[${index}]    
         Sleep    10s    
     END           
-    ${check_cartpage_after_complete_del}=    Run Keyword And Return Status    Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
+    ${check_cartpage_after_complete_del}=   Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
     Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart is Empty' text not display"
 
 Check indian passport holder
