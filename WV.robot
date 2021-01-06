@@ -1286,6 +1286,8 @@ Jenkins browser launch
     Call Method    ${chrome_options}    add_argument    headless
     Call Method    ${chrome_options}    add_argument    disable-gpu
     Call Method    ${chrome_options}    add_argument    no-sandbox
+    Call Method    ${chrome_options}    add_argument    incognito
+    Call Method    ${chrome_options}    add_argument    disable-notifications
     Create WebDriver    Chrome    chrome_options=${chrome_options}
     Set Window Size    1920    1080
     Go To    ${baseurl}
