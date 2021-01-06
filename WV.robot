@@ -200,6 +200,7 @@ To verify all the fields are mandy
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Register')]    
+    Scroll Element Into View    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']
     Click Element    xpath=//div[@id='edit-actions']//button[@class='singUpRegister']   
     
     FOR    ${element}    IN    @{RegisterFields}
