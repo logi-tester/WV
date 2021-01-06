@@ -1063,16 +1063,17 @@ Check Add-on added in view cart page
     Delete view cart campaign
 
 Ensure overview campaign label in Back to school
-    #Local browser launch
     Jenkins browser launch
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
-    ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=(//li/a[contains(.,'Overview')])[1]
+    ${overview_menus_list}=    Get Element Count    xpath=//div[@class='views-element-container']//a
     Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
-    Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[3]//h3
+    Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[3]//h3    
+    #${chck_banner_image}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='views-field views-field-field-banner-image']    
     Click Element    xpath=//div[@class='gbl_tabbed_menu']/ul/li[2]
-    Mouse Over    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='IMGSec_cover']
-    Click Element    xpath=.//div[@class='views-infinite-scroll-content-wrapper clearfix']/div[1]//div[@class='Gift_add giftBtn']
+    Mouse Over    xpath=//div[@class='IMGSec_cover']
+    Sleep    5s    
+    Click Element    xpath=//div[@class='Gift_add giftBtn']/input
     Ensure default amount in educational need
     Error default value and check button disable
     View cart page
