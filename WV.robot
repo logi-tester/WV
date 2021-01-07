@@ -1159,17 +1159,17 @@ Indian citizen should not change to Other passport holder
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Navigation banner close
     MyProfile Edit
     ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
     Log To Console    Indian is choosed:${ind}      
-    Run Keyword If    'True'=='${ind}'    Check other passport holder    
-    # ${again_other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
-    # Run Keyword If    'True'=='${again_other}'    Check indian passport holder
+    Run Keyword If    'True'=='${ind}'    Check other passport holder 
     
 Other passport holder should not change to Indian passport holder
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login - Other passport user
+    Navigation banner close
     MyProfile Edit
     ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
     Log To Console    Other is choosed:${other}  
@@ -1673,16 +1673,16 @@ MyProfile Edit
     Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
    
 Check other passport holder        
-    ${OtherPassStatus}=    Run Keyword And Return Status    Click Element    xpath=//label[@for='othctzn']        
-    Run Keyword If    'True'=='${OtherPassStatus}'    Fail    "INDIAN User can able to select other passport user"
+    ${OtherPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//label[@for='othctzn']        
+    Run Keyword If    'True'!='${OtherPassStatus}'    Fail    "INDIAN User can able to select other passport user"
     Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath='//a[contains(text(),'My profile')]'    
+    Click Element    xpath=//a[contains(text(),'My profile')]    
 
 Check indian passport holder
-    ${indianPassStatus}=    Run Keyword And Return Status    Click Element    xpath=//label[@for='indctzn']        
-    Run Keyword If    'True'=='${indianPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
+    ${indianPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//input[@id='indctzn']        
+    Run Keyword If    'True'!='${indianPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
     Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath='//a[contains(text(),'My profile')]'  
+    Click Element    xpath=//a[contains(text(),'My profile')]  
     
 Navigation banner close   
     ${nav_banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='mySidenav']/a    
