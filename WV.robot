@@ -1314,6 +1314,16 @@ To verify app store and google play link should not appear in prelogin
     ${status_playstore}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//img[contains(@src,'gppgle pay.PNG')]    
     Run Keyword If  'True'!='${status_appstore}' or 'True'!='${status_playstore}'    Fail    "AppStore and PlayStore images are visible in PRE-LOGIN page"    ELSE    Log To Console    "AppStore and PlayStore images are not visible in PRE-LOGIN page"     
 
+To verify my campaign details for existing user
+    [Tags]    My Campaign
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'My Campaign')]    
+    ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
+    Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
 
 
 *** Keywords ***
@@ -1726,3 +1736,9 @@ Navigation banner close
     ${nav_banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='mySidenav']/a    
     Run Keyword If    'True'=='${nav_banner_status}'    Click Element    xpath=//div[@id='mySidenav']/a     ELSE    Log To Console    "Nav banner was not present" 
  
+MyCampaign List
+    @{mycampaign}=    Get WebElements    xpath=//div[@class='userCampHolder']//a
+    FOR    ${element}    IN    @{mycampaign}
+        ${text}=    Get Text    ${element}
+        Log To Console    My campaign lists are: ${text}   
+    END 
