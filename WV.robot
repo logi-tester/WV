@@ -1280,6 +1280,17 @@ Max val alert in view cart page
     ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    //div[@class='max-amount']
     Run Keyword If    'True'!='${max_erro_msg}'    Fail    "Donation is more than 10 lakhs and alert message doesnt appear"
     
+Verify User should able to Edit Existing profile details
+    [Tags]    My Profile
+    Jenkins browser launch
+    Click Element    xpath=//a[text()='Login']
+    Direct login
+    Sleep    20s    
+    Navigation banner close
+    MyProfile Edit
+    Scroll Element Into View    id=edit-submit
+    Click Element    id=edit-submit    
+    
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
