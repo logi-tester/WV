@@ -1302,7 +1302,7 @@ To verify app store and google play link appear in postlogin
     Scroll Element Into View    xpath=//img[contains(@src,'app store.PNG')]
     ${status_appstore}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//img[contains(@src,'app store.PNG')]
     ${status_playstore}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//img[contains(@src,'gppgle pay.PNG')]    
-    Run Keyword If  'True'=='${status_appstore}' or 'True'=='${status_playstore}'    Log To Console    "AppStore and PlayStore images are visible in POST-LOGIN page"    ELSE    Fail    "AppStore and PlayStore images are not visible in POST-LOGIN page"
+    Run Keyword If  'True'!='${status_appstore}' or 'True'!='${status_playstore}'    Fail    "AppStore and PlayStore images are not visible in POST-LOGIN page"    ELSE    Log To Console    "AppStore and PlayStore images are visible in POST-LOGIN page"
 
 To verify app store and google play link should not appear in prelogin
     [Tags]    Page Footer
@@ -1312,7 +1312,7 @@ To verify app store and google play link should not appear in prelogin
     Execute Javascript    window.scrollTo(0, 900)
     ${status_appstore}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//img[contains(@src,'app store.PNG')]
     ${status_playstore}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//img[contains(@src,'gppgle pay.PNG')]    
-    Run Keyword If  'True'=='${status_appstore}' or 'True'=='${status_playstore}'    Log To Console    "AppStore and PlayStore images are not visible in PRE-LOGIN"    ELSE    Fail    "AppStore and PlayStore images are visible in PRE-LOGIN"     
+    Run Keyword If  'True'!='${status_appstore}' or 'True'!='${status_playstore}'    Fail    "AppStore and PlayStore images are visible in PRE-LOGIN page"    ELSE    Log To Console    "AppStore and PlayStore images are not visible in PRE-LOGIN page"     
 
 
 
