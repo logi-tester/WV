@@ -1291,6 +1291,31 @@ Verify User should able to Edit Existing profile details
     Scroll Element Into View    id=edit-submit
     Click Element    id=edit-submit    
     
+To verify app store and google play link appear in postlogin
+    [Tags]    Page Footer
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Navigation banner close
+    Scroll Element Into View    xpath=//img[contains(@src,'app store.PNG')]
+    ${status_appstore}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//img[contains(@src,'app store.PNG')]
+    ${status_playstore}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//img[contains(@src,'gppgle pay.PNG')]    
+    Run Keyword If  'True'=='${status_appstore}' or 'True'=='${status_playstore}'    Log To Console    "AppStore and PlayStore images are visible in POST-LOGIN page"    ELSE    Fail    "AppStore and PlayStore images are not visible in POST-LOGIN page"
+
+To verify app store and google play link should not appear in prelogin
+    [Tags]    Page Footer
+    
+    Jenkins browser launch
+    Navigation banner close
+    Execute Javascript    window.scrollTo(0, 900)
+    ${status_appstore}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//img[contains(@src,'app store.PNG')]
+    ${status_playstore}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//img[contains(@src,'gppgle pay.PNG')]    
+    Run Keyword If  'True'=='${status_appstore}' or 'True'=='${status_playstore}'    Log To Console    "AppStore and PlayStore images are not visible in PRE-LOGIN"    ELSE    Fail    "AppStore and PlayStore images are visible in PRE-LOGIN"     
+
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
