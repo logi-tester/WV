@@ -1341,6 +1341,18 @@ To verify my campaign details for new user
     ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
     Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
 
+To verify Overview page
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Navigation banner close
+    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
+    Click Element    xpath=//a[contains(text(),'Overview')]    
+    ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    class=Way_give_title    
+    Run Keyword If    'True'!='${campaign_status}'    Fail    'Overview campaign details are not visible'    ELSE    Overview List 
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -1757,6 +1769,13 @@ MyCampaign List
         ${text}=    Get Text    ${element}
         Log To Console    My campaign lists are: ${text}   
     END 
+    
+Overview List
+    @{overview_list}=    Get WebElements    class=Way_give_title
+    FOR    ${element}    IN    @{overview_list}
+        ${text}=    Get Text    ${element}
+        Log To Console    Overview lists are: ${text}   
+    END
     
 Registration - Indian
     
