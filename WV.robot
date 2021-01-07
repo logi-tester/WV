@@ -1325,6 +1325,21 @@ To verify my campaign details for existing user
     ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
     Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
 
+To verify my campaign details for new user
+    [Tags]    My Campaign
+    Jenkins browser launch
+    Navigation banner close
+    Registration - Indian
+    # Click Element    xpath=//a[contains(text(),'Login')]
+    # Click Element    id=edit-name
+    # Input Text    id=edit-name    john
+    # Click Element    id=edit-pass
+    # Input Text    id=edit-pass    kennedy
+    # Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'My Campaign')]    
+    ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
+    Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
 
 *** Keywords ***
 Jenkins browser launch
@@ -1742,3 +1757,45 @@ MyCampaign List
         ${text}=    Get Text    ${element}
         Log To Console    My campaign lists are: ${text}   
     END 
+    
+Registration - Indian
+    
+    Click Element    xpath=//a[contains(text(),'Register')]
+    
+    Select From List By Label    id=edit-field-title    Mr.
+    
+    Input Text    id=edit-field-first-name-0-value    john
+    #last name
+    Input Text    id=edit-field-last-name-0-value    kennedy
+    #Email
+    Input Text    id=edit-mail    john@john.com
+    #Phone no
+    Input Text    id=edit-field-mobile-verify-0-mobile    6666666666
+    #confirm password
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[text()='Password']    
+    Input Text    id=edit-pass-pass1    john
+    #Re-confirm
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[text()='Confirm Password']
+    Input Text    id=edit-pass-pass2    john
+    #Address 1
+    Input Text    id=edit-field-registeraddress-0-value    Test Address 1
+    #Address 2
+    Input Text    id=edit-field-address-2-0-value    Test address 2
+    #Address 3
+    Input Text    id=edit-field-address-3-0-value    Test address 3
+    #Postal code
+    Input Text    id=edit-field-pin-code-0-value    600130
+    #How Do you Know - Newly added
+    Execute JavaScript    window.scrollTo(0, document.body.scrollHeight)
+    Select From List By Label    id=edit-field-how-do-you-know-about-worl    Friends and Family        
+    #DOB
+    Click Element    xpath=//label[text()='Date of Birth']
+    Select From List By Label    xpath=//select[@class='ui-datepicker-year']    1989
+    Select From List By Label    xpath=//select[@class='ui-datepicker-month']    Oct
+    Click Element    xpath=(//table//tbody/tr/td/a)[11]
+    
+    Click Element    id=user-register-form    
+    
+    Click Element    class=singUpRegister    
