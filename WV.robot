@@ -1352,6 +1352,24 @@ To verify Overview page
     ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    class=Way_give_title    
     Run Keyword If    'True'!='${campaign_status}'    Fail    'Overview campaign details are not visible'    ELSE    Overview List 
 
+To Verify current emergency campaign in overview page
+    Jenkins browser launch
+    Navigation banner close
+    ${mylist} =    Create List
+    Mouser hover ways to give campaign    Emergency Relief
+    ${Emergency_relief}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[contains(@id,'current-emergency')]
+    Run Keyword If    ${True}!=${Emergency_relief}    Fail    There are no current "emergency page"    ELSE    Log To Console    Redirected to "emergency page"       
+    @{emergency_relief}=    Get WebElements    xpath=//h5[@class='campaign-title']/a
+    FOR    ${element}    IN    @{emergency_relief}
+        ${text}=    Get Text    ${element}
+        Log To Console    Current Emergencey reliefs are: ${text}    
+        Append To List    ${mylist}    ${text}    
+    END    
+    Mouser hover ways to give campaign    Overview                       
+    FOR    ${element}    IN    @{mylist}                 
+        ${list_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//h3[contains(text(),'${text}')]    
+        Run Keyword If    ${True}==${list_status}    Log To Console    "Emergency relief camapigns are visible in Overview page"    ELSE    Fail    "Emergency relief camapigns are not visible in Overview page"
+    END
 
 *** Keywords ***
 Jenkins browser launch
