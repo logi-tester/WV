@@ -13,6 +13,7 @@ ${rightside_menu_list}    7
 ${postlogin_menu_list}    6
 ${edu_child_amt}    4000
 ${val}            000
+${amount}    1000
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
 ${user_name}      gmail@gmail.com
@@ -1454,6 +1455,35 @@ To Verify Existing user Email Id and Phone Should not Accept for New User Regist
     ${phone_status}=    Run Keyword And Return Status    Element Should Be Visible    id=signInPhoneErr
     Run Keyword If    'True'=='${phone_status}'    Log To Console    "phone number alert is dispayed"    ELSE    Fail    "Phone number alert was not displayed"   
     
+To sponsor a Rescue Children Campaign as a one time donation using Checkout flow
+    [Tags]    Rescue Children
+        
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}           
+    Mouser hover ways to give campaign    Childhood Rescue
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Remove String    ${camp_name}    Childhood
+    Log To Console    ${camp_name}    
+    Sleep    15s
+    #Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
+    Click Element    id=ChkForSI
+    Click Element    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]    
+    Input Text    xpath=//div[@class='realgift_input_value commerce_manual_inputs']/input[1]    ${amount}    
+    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
+    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"     
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input
+    Click Element    xpath=//div[@class='cart-buttons']/a[2]    
+    ${amount}=    Replace String    ${amount}    1    1,
+    check in view cart page    ${camp_name}    ${amount}
+    View cart proceed button
+    Login
+    CCavenue payment success flow    
 
 
 *** Keywords ***
