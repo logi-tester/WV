@@ -4,6 +4,7 @@ Library           SeleniumLibrary
 Library           String
 Library           DateTime
 Library           BuiltIn
+Library           Collections
 
 *** Variables ***
 ${baseurl}        https://uat.worldvision.in/
