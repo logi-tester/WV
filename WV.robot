@@ -1372,6 +1372,49 @@ To Verify current emergency campaign in overview page
         ${list_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//h3[contains(text(),'${text}')]    
         Run Keyword If    ${True}==${list_status}    Log To Console    "Emergency relief camapigns are visible in Overview page"    ELSE    Fail    "Emergency relief camapigns are not visible in Overview page"
     END
+    
+    
+Verify user should Able to add profile details with Valid Data
+    [Tags]    My Profile    
+
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Navigation banner close
+    MyProfile Edit
+    Click Element    xpath=//input[contains(@id,'edit-field-pan-number')]    
+    
+    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    NewLastName Test
+    Input Text    Xpath=//input[@id='edit-field-registeraddress-0-value']    New Test address1 Test
+    Input Text    xpath=//input[@id='edit-field-address-2-0-value']    New Test address2 Test
+    
+    Scroll Element Into View    id=edit-submit    
+    Click Element    id=edit-submit
+
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
+
+    ${last_Name}=    Get Text    xpath=//span[@class='userspanprofile']/div
+    Run Keyword If    'NewLastName Test'=='${last_Name}'    Log To Console    "LastName Updated in Edit profile"    ELSE    Fail    "Unable to edit Last Name"
+    ${address_1}=    Get Text    xpath=//li[@class='user_address']/div//div[2]
+    Run Keyword If    'New Test address1 Test'=='${address_1}'    Log To Console    "Address field 1 Updated in Edit profile"    ELSE    Fail    "Unable to edit Address field 1"
+    ${address_2}=    Get Text    xpath=(//span[@class='userspanprofile1'])[1]/div
+    Run Keyword If    'New Test address2 Test'=='${address_2}'    Log To Console    "Address field 2 Updated in Edit profile"    ELSE    Fail    "Unable to edit Address field 2"
+    
+    MyProfile Edit
+    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    NewLastName
+    Input Text    Xpath=//input[@id='edit-field-registeraddress-0-value']    New Test address1
+    Input Text    xpath=//input[@id='edit-field-address-2-0-value']    New Test address2
+    
+    Scroll Element Into View    id=edit-submit    
+    Click Element    id=edit-submit
+    
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
+
+
+
 
 *** Keywords ***
 Jenkins browser launch
