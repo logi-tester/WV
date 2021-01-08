@@ -1353,6 +1353,8 @@ To verify Overview page
     Run Keyword If    'True'!='${campaign_status}'    Fail    'Overview campaign details are not visible'    ELSE    Overview List 
 
 To Verify current emergency campaign in overview page
+    [Tags]    Overview Page
+    
     Jenkins browser launch
     Navigation banner close
     ${mylist} =    Create List
