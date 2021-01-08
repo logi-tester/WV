@@ -1413,6 +1413,32 @@ Verify user should Able to add profile details with Valid Data
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
 
+To verify that user can edit the City , State,& Country even though it is auto Populated or not
+    [Tags]    Registration Pages
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]     
+    Sleep    10s          
+    #Scroll Element Into View    class=singUpRegister s    
+    Click Element    xpath=//input[contains(@id,'edit-field-pin-code')]    
+    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123    
+    Sleep    10s        
+    # ${chat_box}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='ChatOpen']/div[2]    
+    # Run Keyword If    'True'=='${chat_box}'    Click Element    xpath=//div[@id='ChatOpen']/div[2]     ELSE    Log To Console    "Chat Box was not present"
+    #Pincode
+    Click Element    xpath=//input[contains(@id,'edit-field-pin-code')]    
+    Clear Element Text    xpath=//input[contains(@id,'edit-field-pin-code')]
+    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600012    
+    #City
+    Click Element    xpath=//input[contains(@id,'edit-field-city')]    
+    Clear Element Text    xpath=//input[contains(@id,'edit-field-city')]
+    Input Text    xpath=//input[contains(@id,'edit-field-city')]    Chennai
+    #State
+    Click Element    xpath=//input[contains(@id,'edit-field-regstate')]    
+    Clear Element Text    xpath=//input[contains(@id,'edit-field-regstate')]
+    Input Text    xpath=//input[contains(@id,'edit-field-regstate')]    Tamil Nadu    
+    #Country
+    Select From List By Label    id=edit-field-country    India 
 
 
 
