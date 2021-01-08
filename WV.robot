@@ -1440,6 +1440,19 @@ To verify that user can edit the City , State,& Country even though it is auto P
     #Country
     Select From List By Label    id=edit-field-country    India 
 
+To Verify Existing user Email Id and Phone Should not Accept for New User Registration
+    [Tags]    Registration Page
+        
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]     
+    Sleep    10s          
+    Registration - Indian - Test
+    ${email_status}=    Run Keyword And Return Status    Element Should Be Visible    id=signUpEmailErr
+    Run Keyword If    'True'=='${email_status}'    Log To Console    "Email alert is dispayed"    ELSE    Fail    "Email alert was not displayed"
+    ${phone_status}=    Run Keyword And Return Status    Element Should Be Visible    id=signInPhoneErr
+    Run Keyword If    'True'=='${phone_status}'    Log To Console    "phone number alert is dispayed"    ELSE    Fail    "Phone number alert was not displayed"   
+    
 
 
 *** Keywords ***
@@ -1907,3 +1920,46 @@ Registration - Indian
     Click Element    id=user-register-form    
     
     Click Element    class=singUpRegister    
+
+Registration - Indian - Test
+    
+    Click Element    xpath=//a[contains(text(),'Register')]
+    
+    Select From List By Label    id=edit-field-title    Mr.
+    
+    Input Text    id=edit-field-first-name-0-value    john
+    #last name
+    Input Text    id=edit-field-last-name-0-value    kennedy
+    #Email
+    Input Text    id=edit-mail    aswin.l@live.in
+    #Phone no
+    Input Text    id=edit-field-mobile-verify-0-mobile    8056230775
+    #confirm password
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[text()='Password']    
+    Input Text    id=edit-pass-pass1    john
+    #Re-confirm
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[text()='Confirm Password']
+    Input Text    id=edit-pass-pass2    john
+    #Address 1
+    Input Text    id=edit-field-registeraddress-0-value    Test Address 1
+    #Address 2
+    Input Text    id=edit-field-address-2-0-value    Test address 2
+    #Address 3
+    Input Text    id=edit-field-address-3-0-value    Test address 3
+    #Postal code
+    Input Text    id=edit-field-pin-code-0-value    600130
+    #How Do you Know - Newly added
+    Execute JavaScript    window.scrollTo(0, document.body.scrollHeight)
+    Select From List By Label    id=edit-field-how-do-you-know-about-worl    Friends and Family        
+    #DOB
+    Click Element    xpath=//label[text()='Date of Birth']
+    Select From List By Label    xpath=//select[@class='ui-datepicker-year']    1989
+    Select From List By Label    xpath=//select[@class='ui-datepicker-month']    Oct
+    Click Element    xpath=(//table//tbody/tr/td/a)[11]
+    
+    Click Element    id=user-register-form    
+    
+    Click Element    class=singUpRegister
+
