@@ -1571,6 +1571,34 @@ To sponsor a Protect Girl Children Campaign as a one time donation using Checkou
     Login
     CCavenue payment success flow
 
+To select children through location filter
+    [Tags]    Sponsor a Child
+    Jenkins browser launch
+    Banner Alert
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
+    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
+    
+    Sleep    15s    
+
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
+    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
+    
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    
+    ${state}=    Get Text    xpath=//label[contains(@for,'subdivision--gujarat')]//span[1]
+    Click Element    xpath=//label[contains(@for,'subdivision--gujarat')]//span[1]  
+    
+    Scroll Element Into View    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]        
+    Run Keyword If    'True'!='${status}'    Fail    "Childrens are not available on the state you selected"    ELSE    Log To Console    "Childrens are available on the selected state"        
+   
+
+
 
 
 *** Keywords ***
