@@ -485,6 +485,25 @@ Payment failure banner
     Click Element    xpath=//div[@class='header_new_logo']//img
     Payment failure check in home page banner
     
+To verify payment flow using failure banner
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Navigation banner close
+    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    60s    
+    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
+    Click Element    xpath=//a[@class='donate-now-btn-pending active']    
+    CCavenue payment success flow
+    Click Element    xpath=//div[@class='header_new_logo']//a/img  
+    Banner Alert
+    @{failure_banner}=    Get WebElements    xpath=//div[@class='banner-content']/h2
+    FOR    ${element}    IN    @{failure_banner}
+        ${text}=    Get Text    ${element}        
+        Run Keyword If    'Please try again!'!='${text}'    Log To Console    "Payment Failure banner is changed"    ELSE    fail    'Payment failure banner is still exist'   
+    END    
+    
+    
 To sponsor a Educate Children Campaign using Checkout flow
     #Local browser launch    
     Jenkins browser launch
