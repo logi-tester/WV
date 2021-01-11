@@ -1536,6 +1536,24 @@ To sponsor a Save malnourshied Children Campaign as a one time donation using Ch
     Login
     CCavenue payment success flow
 
+To sponsor a Educate Children Campaign using Si payment Flow from Educate Children campaign page
+    [Tags]    Educate Children
+    
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    Educate Children
+    SI flow campaign
+    SI login
+    Sleep    15s    
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='True'    Fail    'Payment type was not displayed"    ELSE    Log To Console    "payment types are displayed"    
+    END
+
 
 *** Keywords ***
 Jenkins browser launch
