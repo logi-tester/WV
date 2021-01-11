@@ -1554,6 +1554,24 @@ To sponsor a Educate Children Campaign using Si payment Flow from Educate Childr
         Run Keyword If    '${status}'!='True'    Fail    'Payment type was not displayed"    ELSE    Log To Console    "payment types are displayed"    
     END
 
+To sponsor a Protect Girl Children Campaign as a one time donation using Checkout flow
+    [Tags]    Protect Girl Children Campaign
+
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    End Child Sexual Abuse
+    ${camp_name}    ${Camp_val}    one time campaign
+    Banner Alert
+    check in view cart page    ${camp_name}    ${Camp_val}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -1735,6 +1753,8 @@ one time campaign
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    id=ChkForSI
+    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
+    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"
     Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
     Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
