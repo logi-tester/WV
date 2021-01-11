@@ -1505,6 +1505,23 @@ To sponsor a Rescue Children Campaign as a one time donation using Checkout flow
     CCavenue payment success flow    
 
 
+To sponsor a Save malnourished Children Campaign using Si payment Flow from Educ
+    [Tags]    Save malnourished Children
+    Jenkins browser launch
+    Navigation banner close
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    Save Malnourished Children
+    SI flow campaign
+    SI login
+    Sleep    15s    
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='True'    Fail    'Payment type was not displayed"    ELSE    Log To Console    "payment types are displayed"    
+    END
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
