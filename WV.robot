@@ -1772,7 +1772,7 @@ To sponsor a Protect Girl Children Campaign using Checkout flow
     Login
     CCavenue payment success flow
 
-To verify Confirm password and Re-confirm password should be displayed in masked
+To Verify title select from the options provided in th the dropdown
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Register')]
