@@ -1795,7 +1795,19 @@ To Verify User should submit the form without entering any details
         Run Keyword If    'True'!='${alert}'    Fail    "${element} name alert not display"          
     END    
 
-
+To Verify User should submit the form without entering any details - End Child sexual abuse Page
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouser hover ways to give campaign    End Child Sexual Abuse 
+    Sleep    30s    
+    Scroll Element Into View    id=edit-actions-submit
+    Click Element    id=edit-actions-submit    
+    FOR    ${element}    IN    @{alert_list}
+        ${alert}=    Run Keyword And Return Status    Element Should Be Visible    id=${element}
+        Run Keyword If    'True'!='${alert}'    Fail    "${element} name alert not display"          
+    END 
 
 *** Keywords ***
 Jenkins browser launch
