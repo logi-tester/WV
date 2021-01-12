@@ -1772,6 +1772,17 @@ To sponsor a Protect Girl Children Campaign using Checkout flow
     Login
     CCavenue payment success flow
 
+To verify Confirm password and Re-confirm password should be displayed in masked
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]
+    FOR    ${element}    IN    @{registration_title}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-title 
+        Run Keyword If    '${status}'=='True'    Select From List By Label    id=edit-field-title    ${element}    ELSE    Fail    "${element} is not in title dropdown"
+    END
+    
+    
+
 
 
 *** Keywords ***
