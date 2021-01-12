@@ -1629,6 +1629,39 @@ To select children through age filter
         Run Keyword If    ${element_age}>=${age}    Log To Console    "Sorted children age is : ${element_age}'    ELSE    Fail    "Site show children out of filter applied"        
     END   
 
+To select children through gender filter
+    [Tags]    Sponsor a Child
+    
+    Jenkins browser launch
+    Banner Alert
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
+    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
+    
+    Sleep    15s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
+    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
+    
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    
+    ${gender}=    Get Text    xpath=//label[@for='gender-boy']/span[1]
+    ${gender}=    Replace String    ${gender}    B    b
+    Click Element    xpath=//label[@for='gender-boy']/span[1]      
+    
+    Scroll Element Into View    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
+    
+    @{gender_list}=    Get WebElements    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
+    FOR    ${element}    IN    @{gender_list}
+        ${text}=    Get Text    ${element}  
+        Log To Console    ${text}      
+        Run Keyword If    '${text}'!='${gender}'    Fail    "Sorted was not based on the given gender"        
+    END
+    Log To Console    "Sorted based on the given gender'
+
+
 
 *** Keywords ***
 Jenkins browser launch
