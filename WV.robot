@@ -21,6 +21,7 @@ ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 ${checkout_payment_list_no}    4
+@{alert_list}    edit-name--error    edit-email--error    edit-contact--error    edit-query-type-error    edit-message-error
 @{RegisterFields}    signUpfnameErr    signUplnameErr    signUpEmailErr    signInPhoneErr    signUpPassErr    signUpConPassErr    signUpaddrErr    signUpaddrErr1    signUpaddrErr3    signUpPscodeErr    signUpCityErr    signUpStateErr
 @{Sponcer_List}    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children
 #@{Sponcer_List}    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children
@@ -1781,7 +1782,18 @@ To Verify title select from the options provided in th the dropdown
         Run Keyword If    '${status}'=='True'    Select From List By Label    id=edit-field-title    ${element}    ELSE    Fail    "${element} is not in title dropdown"
     END
     
-    
+To Verify User should submit the form without entering any details
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'About Us')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Contact Us')] 
+    Sleep    30s    
+    Scroll Element Into View    id=edit-actions-submit
+    Click Element    id=edit-actions-submit    
+    FOR    ${element}    IN    @{alert_list}
+        ${alert}=    Run Keyword And Return Status    Element Should Be Visible    id=${element}
+        Run Keyword If    'True'!='${alert}'    Fail    "${element} name alert not display"          
+    END    
 
 
 
