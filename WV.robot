@@ -1700,6 +1700,19 @@ To verify uncheck and check allow auto debit, It should lead to SI flow
         Run Keyword If    '${status}'!='True'    Fail    'Payment type was not displayed"    ELSE    Log To Console    "${element} is displayed in payment page"    
     END
 
+Password should be displayed in masked format rather than showing actual text format
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Element    id=edit-name    
+    Input Text    id=edit-name    username    
+    Click Element    id=edit-pass    
+    Input Text    id=edit-pass    DummyPassword
+    Capture Page Screenshot    
+    ${password_status}=    Get Element Attribute    id=edit-pass    type
+    Run Keyword If    '${password_status}'=='password'    Log To Console    'Password is in masked format'    ELSE    Fail    'Password is not in masked format'
+
+
 
 *** Keywords ***
 Jenkins browser launch
