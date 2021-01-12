@@ -1713,6 +1713,39 @@ Password should be displayed in masked format rather than showing actual text fo
     Run Keyword If    '${password_status}'=='password'    Log To Console    'Password is in masked format'    ELSE    Fail    'Password is not in masked format'
 
 
+To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
+    [Tags]    HIV aids Campaign
+
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    HIV & AIDS
+    #${camp_name}    ${Camp_val}    one time campaign
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Replace String    ${camp_name}    F    f
+    ${camp_name}=    Replace String    ${camp_name}    a    A
+    ${camp_name}=    Replace String    ${camp_name}    n    N
+    ${camp_name}=    Replace String    ${camp_name}    d    D
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Click Element    id=ChkForSI
+    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
+    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Click Element    xpath=//a[@class='view_cart']
+    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,    
+    Banner Alert
+    check in view cart page    ${camp_name}    ${Camp_val}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+
+
 
 *** Keywords ***
 Jenkins browser launch
