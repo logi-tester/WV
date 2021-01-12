@@ -1745,6 +1745,33 @@ To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
     Login
     CCavenue payment success flow
 
+To sponsor a Protect Girl Children Campaign using Checkout flow
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    End Child Sexual Abuse
+    Sleep    5s
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    Click Element    id=ChkForSI
+    Sleep    10s    
+    ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    Log To Console    Final val is: ${camp_amt}
+    Sleep    15s   
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Click Element    xpath=//a[@class='view_cart']
+    ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
+    Log To Console    View cart page campaign amount: ${view_cart_amount}
+    check in view cart page    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+
 
 
 *** Keywords ***
