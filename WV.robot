@@ -1662,6 +1662,44 @@ To select children through gender filter
     Log To Console    "Sorted based on the given gender'
 
 
+To verify uncheck and check allow auto debit, It should lead to SI flow
+        
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    Childhood Rescue
+    
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
+    ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${del_month_get_val_only}=    Fetch From Right    ${label_val}    3 Months
+    ${final_val}=    Strip String    ${SPACE}${del_month_get_val_only}
+    Log To Console    Final val is: ${final_val}
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    
+    Click Element    id=ChkForSI    
+    
+    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
+    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button text changed to 'Add to cart'    ELSE    Fail    "Button text was not changed to 'Add to cart'
+    
+    Click Element    id=ChkForSI
+    
+    ${button_text}=    Get Text    xpath=//div[@class='SIPopBlock']//button
+    Run Keyword If    'PROCEED TO AUTOPAY'=='${button_text}'    Log To Console    "Button text changed to 'PROCEED TO AUTOPAY'    ELSE    Fail    "Button text was not changed to 'PROCEED TO AUTOPAY'       
+
+    Click Element    xpath=//div[@class='SIPopBlock']//button    
+    
+    SI login
+    
+    Sleep    15s    
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='True'    Fail    'Payment type was not displayed"    ELSE    Log To Console    "${element} is displayed in payment page"    
+    END
+
 
 *** Keywords ***
 Jenkins browser launch
