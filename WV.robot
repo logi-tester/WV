@@ -1608,7 +1608,6 @@ To select children through age filter
     Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
     
     Sleep    15s    
-
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
     Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
     
@@ -1618,6 +1617,9 @@ To select children through age filter
     ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
     Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
     
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]    
+    Run Keyword If    'True'!='${status}'    Fail    'Currently there are no childrens or Childrens age are below 12 years"    ELSE    Log To Console    "Children's are found"
+
     ${age}=    Get Text    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]
     ${age}=    Remove String Using Regexp    ${age}    \\D
     Log To Console    ${age}    
@@ -1628,7 +1630,7 @@ To select children through age filter
         ${Text}=    Get Text    ${element}
         ${element_age}=    Convert To Integer    ${Text}
         Run Keyword If    ${element_age}>=${age}    Log To Console    "Sorted children age is : ${element_age}'    ELSE    Fail    "Site show children out of filter applied"        
-    END   
+    END
 
 To select children through gender filter
     [Tags]    Sponsor a Child
