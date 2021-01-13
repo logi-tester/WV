@@ -1839,6 +1839,27 @@ To sponsor a Help Hiv aids Campaign using Checkout flow
     Login
     CCavenue payment success flow    
     
+To verify gallery and recent videos in my child page
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Sleep    20s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//h2[@class='savegallry-head']/span[contains(text(),'Gallery')]       
+    Run Keyword If    'True'!='${status}'    Fail    "Gallery section was not loading in mychild page"    ELSE    Log To Console    "Gallery section loading successfully"
+    @{galary_img}=    Get WebElements    xpath=//div[@class='child-gallery']//img
+    FOR    ${element}    IN    @{galary_img}
+        ${image}=    Get Element Attribute    ${element}    title
+        Log To Console    Images displaying in My child page are: ${image}    
+    END
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//h2[@class='savegallry-head']/span[contains(text(),'Recent Video')]       
+    Run Keyword If    'True'!='${status}'    Fail    "Recent video section was not loading in mychild page"    ELSE    Log To Console    "Recent video section loading successfully"
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='sponsor_header']/img       
+    Run Keyword If    'True'!='${status}'    Fail    "Recent video was not uploaded in mychild page"    ELSE    Log To Console    "Recent video was uploaded in mychild page"
+    Click Element    xpath=//div[@class='sponsor_header']/img     
+    
+    
 
 *** Keywords ***
 Jenkins browser launch
