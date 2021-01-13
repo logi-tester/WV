@@ -1900,6 +1900,32 @@ To verify child profile
     ${adp} =    Remove String Using Regexp    ${adp}    \1.*$
     Log To Console    Area development details: ${adp}    
 
+To verify schedule a call
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Click Element    xpath=(//div[@class='child_title'])[1]    
+    ${schedule_call}=    Get Text    xpath=//div[contains(@class,'call-schedule')]/a/p    
+    Run Keyword If    'Schedule a Call'=='${schedule_call}'    Log To Console    "Schedule call option is enabled"    ELSE    Fail    "Schedule call options is not enabled"
+    Click Element    xpath=//div[contains(@class,'call-schedule')]/a/p
+    
+    ${CurrentDate}=    Get Current Date    result_format=%Y-%m-%d
+    ${datetime}=    Convert Date    ${CurrentDate}    datetime
+    
+    Click Element    xpath=//input[@class='scheduleavcdate hasDatepicker']    
+    Select From List By Label    class=ui-datepicker-month    Jan
+    Select From List By Label    class=ui-datepicker-year    2021
+    Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day+8}']        
+
+    Click Element    class=scheduleavctime
+    Click Element    xpath=//a[text()='10:00:00']        
+    Click Element    xpath=(//label[@class='disableclick'])[2]    
+    Click Element    xpath=//a[contains(@class,'sendcallrequest')]
+
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
