@@ -777,13 +777,15 @@ Just pre login check hungerfree campaign
     Log To Console    Overall final hunger free label val:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
 
-Tax receipt page
+To download tax receipt 
+    [Tags]    Tax Receipt Page
+    
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
     Navigation banner close
     Click Element    xpath=//li/a[contains(text(),'Tax Receipts')] 
-    Sleep    20s
+    Sleep    40s
     Banner Alert             
     ${chk_disable_download_Btn}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//a[@class='downloadpdf']
     Run Keyword If    'True'!='${chk_disable_download_Btn}'    Fail    "Tax receipts page by default 'Download Tax Receipt' button is enable"    ELSE    Log To Console    'By default "Download Tax Receipt" button is Disabled'                
@@ -809,8 +811,13 @@ Tax receipt page
         Run Keyword If    '${get_txt_date}'=='${today_date}'    Click Element    xpath=(//table[@class='ui-datepicker-calendar']//tbody/tr/td/a)[${index}]
         Exit For Loop If    '${get_txt_date}'=='${today_date}'
     END
-    Sleep    10s    
+    Sleep    10s        
     Click Element    id=generate_tax
+    ${tax_receipt}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//div[contains(@class,'no-data-found')]
+    Run Keyword If    'True'!='${tax_receipt}'    Fail    "Tax receipt are not loading"    ELSE    Log To Console    'Tax receipts are loading'
+
+
+
     
 Hungree one time campaign
     #Local browser launch
