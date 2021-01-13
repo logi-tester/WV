@@ -21,6 +21,7 @@ ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 ${checkout_payment_list_no}    4
+@{HungerFree_alert}    edit-name-error    edit-date-of-birth-error    edit-email-error    edit-mobile-number-error
 @{alert_list}    edit-name--error    edit-email--error    edit-contact--error    edit-query-type-error    edit-message-error
 @{RegisterFields}    signUpfnameErr    signUplnameErr    signUpEmailErr    signInPhoneErr    signUpPassErr    signUpConPassErr    signUpaddrErr    signUpaddrErr1    signUpaddrErr3    signUpPscodeErr    signUpCityErr    signUpStateErr
 @{Sponcer_List}    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children
@@ -1859,7 +1860,45 @@ To verify gallery and recent videos in my child page
     Run Keyword If    'True'!='${status}'    Fail    "Recent video was not uploaded in mychild page"    ELSE    Log To Console    "Recent video was uploaded in mychild page"
     Click Element    xpath=//div[@class='sponsor_header']/img     
     
+To Verify User should submit the form without entering any details - HungerFree page
+    [Tags]    HungerFree page
     
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouser hover ways to give campaign    Hungerfree 
+    Sleep    30s    
+    Scroll Element Into View    id=edit-actions-submit
+    Click Element    id=edit-actions-submit    
+    FOR    ${element}    IN    @{HungerFree_alert}
+        ${alert}=    Run Keyword And Return Status    Element Should Be Visible    id=${element}
+        Run Keyword If    'True'!='${alert}'    Fail    "${element} name alert not display"          
+    END 
+    
+To verify child profile
+    [Tags]    MyChild Page
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Sleep    20s    
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log To Console    Details enabled for child:    ${text}    
+    END    
+    Click Element    xpath=//p[contains(text(),'PROFILE')]
+    ${sponsor_amt}=    Get Text    xpath=//div[contains(@class,'sponsorship-amount')]/p
+    ${Payment_Frequency}=    Get Text    xpath=//div[contains(@class,'Payment-period')]/p[1]
+    ${Child_Image}=    Get Element Attribute    xpath=//div[@class='child-image']/img    src        
+    Log To Console    Sponsored amount is: ${sponsor_amt}, Payment frequency for the child is: ${Payment_Frequency} and child image are at: ${Child_Image}
+    Click Element    xpath=//p[contains(text(),'PROJECT METER')]
+    ${adp}=    Get Text    xpath=//div[contains(@class,'proj_id')]    
+    ${adp} =    Remove String Using Regexp    ${adp}    \1.*$
+    Log To Console    Area development details: ${adp}    
 
 *** Keywords ***
 Jenkins browser launch
