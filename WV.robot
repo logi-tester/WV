@@ -1924,6 +1924,23 @@ To verify schedule a call
     Click Element    xpath=(//label[@class='disableclick'])[2]    
     Click Element    xpath=//a[contains(@class,'sendcallrequest')]
 
+To verify Confirm password and Re-confirm password should be displayed in masked
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]    
+    #confirm password
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[text()='Password']    
+    Input Text    id=edit-pass-pass1    dummuPass
+    #Re-confirm password
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[text()='Confirm Password']
+    Input Text    id=edit-pass-pass2    dummyPass
+    Capture Page Screenshot
+    ${password_status}=    Get Element Attribute    id=edit-pass-pass1    type
+    Run Keyword If    '${password_status}'=='password'    Log To Console    'Password is in masked format'    ELSE    Fail    'Password is not in masked format'
+    ${password_status}=    Get Element Attribute    id=edit-pass-pass2    type
+    Run Keyword If    '${password_status}'=='password'    Log To Console    'Confirm Password is in masked format'    ELSE    Fail    'Confirm Password is not in masked format'
 
 
 *** Keywords ***
