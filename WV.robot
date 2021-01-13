@@ -20,6 +20,7 @@ ${user_name}      gmail@gmail.com
 ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
+@{registration_title}    Mr.    Miss.    Mrs.    Dr.
 ${checkout_payment_list_no}    4
 @{HungerFree_alert}    edit-name-error    edit-date-of-birth-error    edit-email-error    edit-mobile-number-error
 @{alert_list}    edit-name--error    edit-email--error    edit-contact--error    edit-query-type-error    edit-message-error
