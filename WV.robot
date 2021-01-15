@@ -1952,6 +1952,54 @@ To verify Confirm password and Re-confirm password should be displayed in masked
     Run Keyword If    '${password_status}'=='password'    Log To Console    'Confirm Password is in masked format'    ELSE    Fail    'Confirm Password is not in masked format'
 
 
+To sponsor single child - SI flow - By specific section
+    [Tags]    Sponsor a Child
+    
+    Jenkins browser launch
+    Banner Alert
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
+    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
+    
+    Sleep    15s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
+    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
+    
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]    
+    ${child_details}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]/p
+    ${child_location}=    Get Text    xpath=(//div[@class='bySpecLocation'])[1]/p    
+    
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]  
+      
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='overall_banner_pledge'][1]/div[2]/h2[contains(text(),'${Child_name}')]
+    Run Keyword If    'True'=='${status}'    Log To Console    "Child found in popup menus"    ELSE    Fail    "Child is mismatching in popup menu"
+    
+    ${Amount_button}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='price save-malnourished-cart-sec current'])[1]
+    Run Keyword If    'True'=='${Amount_button}'    Log To Console    "1 year Rs.9600 is selected by default"    ELSE    Fail    "1 year Rs.9600 is not selected by default"
+    
+    ${recurring_payments}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//input[@id='ChkForSI'])[1]
+    Run Keyword If    'True'=='${recurring_payments}'    Log To Console    "Please use my card details for recurring payments is selected by default"    ELSE    Fail    "Please use my card details for recurring payments is not selected by default"
+    
+    ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
+    Run Keyword If    '0'=='${more_childrens}'    Log To Console    "Sponsor More Children is 0 by default "    ELSE    Fail    "Sponsor More Children is not 0 by default"
+   
+    Click Element    xpath=(//button[contains(@class,'si_modal_btn')])[1]
+    
+    SI login
+    Sleep    10s    
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} are displayed"    
+    END
+
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
