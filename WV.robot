@@ -2034,6 +2034,54 @@ To Sponsor a child-SI flow - Any child section
     END  
 
 
+To verify increment/decrement functionality
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Log To Console    ${get_viewcart_list_count}    
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}        
+    
+    #One Time Donation
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    Click Element    xpath=.//div[@class='item-image']//img
+    #Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    5s    
+    Click Element    id=ChkForSI
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Click Element    xpath=//a[@class='view_cart']
+    ${add_button}=    Run Keyword And Return Status    Element Should Not Be Visible    class=save-plus        
+    Run Keyword If    'True'=='${add_button}'    Log To Console    "Plus button is not available for one time donation"    ELSE    Fail    "Plus button is available for one time donation"
+    ${reduce_button}=    Run Keyword And Return Status    Element Should Not Be Visible    class=save-plus        
+    Run Keyword If    'True'=='${reduce_button}'    Log To Console    "Reduce button is not available for one time donation"    ELSE    Fail    "Reduce button is available for one time donation"            
+
+    #Recuring Payment
+    Sleep    10s    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Log To Console    ${get_viewcart_list_count}    
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    Click Element    xpath=.//div[@class='item-image']//img
+    Sleep    15s
+    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[1]/label    15s    
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[1]/label
+    Click Element    id=ChkForSI
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Click Element    xpath=//a[@class='view_cart']    
+    Cart addition check
+    Cart reduce check
+
+
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -2560,3 +2608,52 @@ one time campaign - Save malnourshied Children Campaign
     Click Element    xpath=//a[@class='view_cart']
     ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
     [Return]    ${camp_name}    ${camp_val}
+
+Cart addition check
+    ${price_std}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number-2']
+    ${price_std}=    Remove String Using Regexp    ${price_std}    \\D        
+    ${price_std}=    Convert To Integer    ${price_std}
+    Log To Console    Standard price: ${price_std}     
+    
+    FOR    ${element}    IN RANGE    1    3
+        Sleep    5s    
+        Click Element    class=save-plus    
+    END
+    
+    Sleep    10s    
+    ${quantity}=    Get Element Attribute    xpath=//span[@class='dynamic-quantity']/div/input    value
+    Log To Console    quanity of payment: ${quantity}    
+    ${quantity}=    Convert To Integer    ${quantity}    
+    ${total_cal}=    Evaluate    ${price_std}*${quantity} 
+    
+    ${total_cart}=    Get Text    xpath=//td[@headers='view-total-price-number-table-column']
+    ${total_cart}=    Remove String Using Regexp    ${total_cart}    \\D        
+    ${total_cart}=    Convert To Integer    ${total_cart}   
+    Log To Console    Total cart value: ${total_cal}        
+
+    Should Be Equal As Integers    ${total_cal}    ${total_cart}
+
+Cart reduce check
+    ${price_std}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number-2']
+    ${price_std}=    Remove String Using Regexp    ${price_std}    \\D        
+    ${price_std}=    Convert To Integer    ${price_std}
+    Log To Console    Standard price: ${price_std}     
+    
+    FOR    ${element}    IN RANGE    3    1    -1
+        Sleep    5s    
+        Click Element    class=save-minus    
+    END
+    
+    Sleep    10s    
+    ${quantity}=    Get Element Attribute    xpath=//span[@class='dynamic-quantity']/div/input    value
+    Log To Console    quanity of payment: ${quantity}    
+    ${quantity}=    Convert To Integer    ${quantity}    
+    ${total_cal}=    Evaluate    ${price_std}*${quantity} 
+    
+    ${total_cart}=    Get Text    xpath=//td[@headers='view-total-price-number-table-column']
+    ${total_cart}=    Remove String Using Regexp    ${total_cart}    \\D        
+    ${total_cart}=    Convert To Integer    ${total_cart}   
+    Log To Console    Total cart value: ${total_cal}        
+
+    Should Be Equal As Integers    ${total_cal}    ${total_cart}
+
