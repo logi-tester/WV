@@ -2122,6 +2122,37 @@ To verify schedule a visit
     Click Element    xpath=(//label[@class='disableclick'])[1]    
     Click Element    xpath=//a[contains(@class,'sendrequest')]
 
+To verify write a message
+    [Tags]    MyChild Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Click Element    xpath=(//div[@class='child_title'])[1]
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
+    
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log To Console    Details enabled for child:    ${text}    
+    END
+    
+    ${write_msg}=    Get Text    xpath=//div[contains(@class,'message-sec')]/p    
+    Run Keyword If    'Write a Message'=='${write_msg}'    Log To Console    "Write a message option is enabled"    ELSE    Fail    "Write a message options is not enabled"
+    
+    ${child_name}=    Get Text    xpath=//div[@id='edit-messageheader']/div[@class='childsname']
+    ${Child_image}=    Get Element Attribute    xpath=//div[@id='edit-messageheader']/div[@class='childspic']/img    src
+
+    Click Element    xpath=//div[contains(@class,'message-sec')]/p    
+    
+    Click Element    id=edit-user-message    
+    Input Text    id=edit-user-message    Test message for child
+    Sleep    5s    
+    ${child_msg}=    Get Text    id=user_message
+    Run Keyword If    'Test message for child'=='${child_msg}'    Log To Console    "Message populate same as like written'    ELSE    Fail    "Message was not same as like written"
+
 
 
 *** Keywords ***
