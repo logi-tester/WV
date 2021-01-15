@@ -2098,6 +2098,31 @@ To Verify Postal Code Field, User should enter Valid Postal Code details to - Au
     ${country}=    Get Element Attribute    id=edit-field-country    value
     Log To Console    Country ${country} is auto populated
 
+To verify schedule a visit
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Click Element    xpath=(//div[@class='child_title'])[1]
+    
+    ${schedule_call}=    Get Text    xpath=//div[contains(@class,'visit-schedule')]/a/p    
+    Run Keyword If    'Schedule a Visit'=='${schedule_call}'    Log To Console    "Schedule a Visit option is enabled"    ELSE    Fail    "Schedule a Visit options is not enabled"
+    Click Element    xpath=//div[contains(@class,'visit-schedule')]/a/p
+    ${CurrentDate}=    Get Current Date    result_format=%Y-%m-%d
+    ${datetime}=    Convert Date    ${CurrentDate}    datetime
+    
+    Sleep    10s    
+    Click Element    xpath=//input[@class='schedulevisitdate hasDatepicker']    
+    Select From List By Label    class=ui-datepicker-month    Jan
+    Select From List By Label    class=ui-datepicker-year    2021
+    Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day+7}']        
+    Click Element    xpath=//input[@class='schedulevisittime valid']
+    Click Element    xpath=//a[text()='10:00:00']        
+    Click Element    xpath=(//label[@class='disableclick'])[1]    
+    Click Element    xpath=//a[contains(@class,'sendrequest')]
+
+
 
 *** Keywords ***
 Jenkins browser launch
