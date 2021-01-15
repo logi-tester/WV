@@ -2080,7 +2080,23 @@ To verify increment/decrement functionality
     Cart addition check
     Cart reduce check
 
+To Verify Postal Code Field, User should enter Valid Postal Code details to - Auto populate
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]     
+    Sleep    10s          
+    Scroll Element Into View    class=singUpRegister    
+      
+    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123  
+    
+    Sleep    10s        
 
+    ${city}=    Get Element Attribute    id=edit-field-city-0-value    value
+    Log To Console    City ${city} is auto populated    
+    ${state}=    Get Element Attribute    id=edit-field-regstate-0-value    value
+    Log To Console    state ${state} is auto populated
+    ${country}=    Get Element Attribute    id=edit-field-country    value
+    Log To Console    Country ${country} is auto populated
 
 
 *** Keywords ***
