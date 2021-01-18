@@ -16,7 +16,7 @@ ${val}            000
 ${amount}    1000
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
-${user_name}      gmail@gmail.com
+${user_name}      9999999992
 ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
