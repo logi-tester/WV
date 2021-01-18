@@ -1588,7 +1588,6 @@ To select children through location filter
     Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
     
     Sleep    15s    
-
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
     Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
     
@@ -1598,8 +1597,8 @@ To select children through location filter
     ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
     Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
     
-    ${state}=    Get Text    xpath=//label[contains(@for,'subdivision--gujarat')]//span[1]
-    Click Element    xpath=//label[contains(@for,'subdivision--gujarat')]//span[1]  
+    ${state}=    Get Text    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]
+    Click Element    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]  
     
     Scroll Element Into View    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]
     
