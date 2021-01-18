@@ -1209,7 +1209,7 @@ Other passport holder should not change to Indian passport holder
     Run Keyword If    'True'=='${other}'    Check indian passport holder
 
 
-Checkout flow Other passport holder payment gateways list
+To verify payment gateways for other passport holder
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login - Other passport user
@@ -1250,7 +1250,7 @@ Checkout flow Other passport holder payment gateways list
         Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
     END
 
-Checkout flow Indian passport holder payment gateways list
+To verify payment gateways for indian citizen
     #Local browser launch
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
