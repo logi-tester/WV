@@ -2638,11 +2638,11 @@ Registration - Indian - Test
     Input Text    id=edit-field-mobile-verify-0-mobile    8056230775
     #confirm password
     Wait Until Element Is Visible    id=edit-pass-pass1    20s
-    Click Element    //label[text()='Password']    
+    Click Element    //label[@for='edit-pass-pass1']    
     Input Text    id=edit-pass-pass1    john
     #Re-confirm
     Wait Until Element Is Visible    id=edit-pass-pass2    20s
-    Click Element    //label[text()='Confirm Password']
+    Click Element    //label[@for='edit-pass-pass2']
     Input Text    id=edit-pass-pass2    john
     #Address 1
     Input Text    id=edit-field-registeraddress-0-value    Test Address 1
