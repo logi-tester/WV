@@ -1626,17 +1626,19 @@ To select children through age filter
     
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]    
     Run Keyword If    'True'!='${status}'    Fail    'Currently there are no childrens or Childrens age are below 12 years"    ELSE    Log To Console    "Children's are found"
-
     ${age}=    Get Text    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]
     ${age}=    Remove String Using Regexp    ${age}    \\D
-    Log To Console    ${age}    
+    #Log To Console    ${age}    
     ${age}=    Convert To Integer    ${age}            
-    Click Element    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]      
-    @{age_list}=    Get WebElements    xpath=//div[@class='bySpecinfo']//span[1]
-    FOR    ${element}    IN    @{age_list}
-        ${Text}=    Get Text    ${element}
+    Click Element    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')] 
+    Sleep    15s         
+    ${age_count}=    Get Element Count    xpath=//div[@class='bySpecinfo']//span[1]
+    Log To Console    No of childrens found: ${age_count}
+    FOR    ${element}    IN RANGE    1    ${age_count}+1    
+        Mouse Over    xpath=(//div[@class='bySpecHoverContent'][1])[${element}]        
+        ${Text}=    Get Text    xpath=(//div[@class='bySpecinfo']//span[1])[${element}]
         ${element_age}=    Convert To Integer    ${Text}
-        Run Keyword If    ${element_age}>=${age}    Log To Console    "Sorted children age is : ${element_age}'    ELSE    Fail    "Site show children out of filter applied"        
+        Run Keyword If    ${element_age}>${age}    Log To Console    "Sorted children age is : ${element_age}'    ELSE    Fail    "Site show children out of filter applied"        
     END
 
 To select children through gender filter
