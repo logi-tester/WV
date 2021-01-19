@@ -2412,15 +2412,20 @@ Checkout flow campaign
     ${Camp_amt}=    Get Substring    ${label_val}    9    16
     Log To Console    Final val is: ${camp_amt}
     Sleep    15s
+    
     Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Sleep    10s        
+    Sleep    10s    
     Click Element    id=ChkForSI
+    
+    Add to cart text change
+    
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
     Click Element    xpath=//a[@class='view_cart']
-    ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
-    Log To Console    View cart page campaign amount: ${view_cart_amount}
-    [Return]    ${camp_name}    ${camp_amt}
 
 SI flow campaign
     Sleep    10s
@@ -2439,11 +2444,20 @@ one time campaign
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    id=ChkForSI
-    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
-    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"
-    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    
+    Add to cart text change
+    Add to cart functionality
+
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    
     Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Sleep    5s    
+
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
     Click Element    xpath=//a[@class='view_cart']
     ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
     [Return]    ${camp_name}    ${camp_val}
@@ -2771,16 +2785,25 @@ Registration - Indian - Test
 
 one time campaign - Save malnourshied Children Campaign
     Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
     ${camp_name}=   Replace String    ${camp_name}    M    m
     ${camp_name}=   Replace String    ${camp_name}    C    c
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    id=ChkForSI
-    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
-    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"
+    
+    Add to cart text change
+    Add to cart functionality
+    
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
     Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
     Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Sleep    5s    
+    
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
     Click Element    xpath=//a[@class='view_cart']
     ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
     [Return]    ${camp_name}    ${camp_val}
@@ -2833,3 +2856,149 @@ Cart reduce check
 
     Should Be Equal As Integers    ${total_cal}    ${total_cart}
 
+Clear and input text
+    [Arguments]    ${text}
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${text}
+
+Add to cart text change
+    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
+    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"
+
+Add to cart button disable
+    ${button_status}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//div[@class='kl_flood_sub_or_sec']/input
+    Run Keyword If    'True'=='${button_status}'    Log To Console    "Button is disabled"    ELSE    Fail    "Button was not disabled"
+
+Add to cart button enabled
+    ${button_status}=    Run Keyword And Return Status    Element Should Be Enabled    xpath=//div[@class='kl_flood_sub_or_sec']/input
+    Run Keyword If    'True'=='${button_status}'    Log To Console    "Button is enabled"    ELSE    Fail    "Button was not enabled"
+
+Add to cart functionality
+    
+    Clear and input text    ${lesser_amount}
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    class=errorMessage
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert is displayed for amount: ${lesser_amount}"    ELSE    Fail    "Minimum donation amount alert was not displayed for amount: ${lesser_amount}"
+    Add to cart button disable
+    Sleep    5s
+    
+    Clear and input text    ${minimum_amount}
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    class=errorMessage
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert was not displayed for amount: ${minimum_amount}"    ELSE    Fail    "Minimum donation amount alert is displaying for amount: ${minimum_amount}"
+    Add to cart button enabled
+    Sleep    5s    
+
+    Clear and input text    ${accurate_amount}
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    class=errorMessage
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert was not displayed for amount: ${accurate_amount}"    ELSE    Fail    "Minimum donation amount alert is displaying for amount: ${accurate_amount}"
+    Add to cart button enabled
+    Sleep    5s        
+    
+    Clear and input text    ${maximum_amount}        
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    class=errorMessage
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert was not displayed for amount: ${maximum_amount}    Fail    "Minimum donation amount alert is displaying for amount: ${maximum_amount}"
+    Add to cart button enabled
+    Sleep    5s
+    
+    Clear and input text    ${higher_amount}
+    ${max_value}=    Get Element Attribute    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    value
+    Run Keyword If    '100000'=='${max_value}'    Log To Console    "Given amount '${higher_amount}' is changed to : ${max_value} in webpage"    ELSE    Fail    "Given amount is not changed to "₹100000"      
+    Add to cart button enabled
+    Sleep    5s
+
+one time campaign - Where Most Needed Campaign
+    
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=   Replace String    ${camp_name}    M    m
+    ${camp_name}=   Replace String    ${camp_name}    N    n 
+    
+    Add to cart text change
+    Add to cart functionality
+                     
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Sleep    5s    
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
+    Click Element    xpath=//a[@class='view_cart']   
+    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
+    [Return]    ${camp_name}    ${camp_val}   
+    
+one time campaign - Help HIV aids Campaign
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Replace String    ${camp_name}    F    f
+    ${camp_name}=    Replace String    ${camp_name}    a    A
+    ${camp_name}=    Replace String    ${camp_name}    n    N
+    ${camp_name}=    Replace String    ${camp_name}    d    D
+    
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Click Element    id=ChkForSI
+    
+    Add to cart text change
+    Add to cart functionality
+
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
+    Sleep    5s    
+
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
+    Click Element    xpath=//a[@class='view_cart']
+    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
+    [Return]    ${camp_name}    ${camp_val}
+    
+one time campaign - Hunger Free campaign
+    
+    Sleep    10s
+    Click Element    xpath=.//div[@class='add-to-cart-section']
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Remove String    ${camp_name}    Free
+
+    Add to cart text change
+    Add to cart functionality
+    
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}    
+    Sleep    5s    
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
+        
+    Click Element    xpath=//a[@class='view_cart']
+    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
+    [Return]    ${camp_name}    ${camp_val}    
+
+check in view cart page - Checkout flow
+    [Arguments]    ${camp_name}    ${camp_amt}
+        
+    ${camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]
+    Run Keyword If    'True'!='${camp_viewcart}'    Fail    "${camp_name} campaign not display in view cart page"
+    ${camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${camp_amt}')]
+    Run Keyword If    'True'!='${camp_amt_viewcart}'    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"   
+    ${cart_quanity}=    Get Element Attribute    xpath=//span[@class='dynamic-quantity']//input    value
+    
+    [Return]    ${cart_quanity}
+    
+check in view cart page - One time donation flow
+    [Arguments]    ${camp_name}    ${camp_amt}
+        
+    ${camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]
+    Run Keyword If    'True'!='${camp_viewcart}'    Fail    "${camp_name} campaign not display in view cart page"
+    ${camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${camp_amt}')]
+    Run Keyword If    'True'!='${camp_amt_viewcart}'    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"   
+    ${cart_quanity}=    Get Text    class=dynamic-quantity
+    
+    [Return]    ${cart_quanity}    
