@@ -508,7 +508,8 @@ To verify payment flow using failure banner
     
     
 To sponsor a Educate Children Campaign using Checkout flow
-    #Local browser launch    
+    [Tags]    Educate Children Campaign
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -517,11 +518,12 @@ To sponsor a Educate Children Campaign using Checkout flow
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children
     Sleep    5s
-    ${val_1}    ${val_2}    Checkout flow campaign
-    check in view cart page    ${val_1}    ${val_2}
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
 To sponsor a Save Malnourished Children Campaign using Checkout flow
     #Local browser launch
@@ -556,20 +558,25 @@ To sponsor a Childhood Rescue Campaign using Checkout flow
     CCavenue payment success flow
 
 To sponsor a Hunger Free Campaign as a one time donation using Checkout flow
-    #Local browser launch
+    [Tags]    Hunger Free Campaign
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    One time Hunger Free campaign
+    Mouser hover ways to give campaign     Hungerfree 
+    ${camp_name}    ${Camp_val}    one time campaign - Hunger Free campaign       
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Where Most Needed Campaign as a one time donation using Checkout flow
-    #Local browser launch
+    [Tags]    Where Most Needed Campaign
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -577,26 +584,16 @@ To sponsor a Where Most Needed Campaign as a one time donation using Checkout fl
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Where Most Needed
-    
-    #${camp_name}    ${Camp_val}    one time campaign        
-    Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${camp_name}=   Replace String    ${camp_name}    M    m
-    ${camp_name}=   Replace String    ${camp_name}    N    n                  
-    Sleep    15s    
-    Wait Until Element Is Visible    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    15s
-    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
-    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']   
-    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
-    check in view cart page    ${camp_name}    ${Camp_val}
+    ${camp_name}    ${Camp_val}    one time campaign - Where Most Needed Campaign       
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sposor a Educate Children Campaign as a one time donation using Checkout flow
-    #Local browser launch
+    [Tags]    Educate Children Campaign
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -605,10 +602,11 @@ To sposor a Educate Children Campaign as a one time donation using Checkout flow
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children
     ${camp_name}    ${Camp_val}    one time campaign
-    check in view cart page    ${camp_name}    ${Camp_val}
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Rescue Children Campaign using Si payment Flow from Educate Children campaign page
     #Local browser launch
@@ -1531,19 +1529,21 @@ To sponsor a Save malnourished Children Campaign using Si payment Flow from Educ
     END
 
 To sponsor a Save malnourshied Children Campaign as a one time donation using Checkout flow
+    [Tags]    Save malnourshied Children Campaign
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count} 
-    Mouser hover ways to give campaign    Save Malnourished Children
+    Mouser hover ways to give campaign    Save Malnourished Children  
     ${camp_name}    ${Camp_val}    one time campaign - Save malnourshied Children Campaign
-    Banner Alert
-    check in view cart page    ${camp_name}    ${Camp_val}
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Educate Children Campaign using Si payment Flow from Educate Children campaign page
     [Tags]    Educate Children
@@ -1565,20 +1565,20 @@ To sponsor a Educate Children Campaign using Si payment Flow from Educate Childr
 
 To sponsor a Protect Girl Children Campaign as a one time donation using Checkout flow
     [Tags]    Protect Girl Children Campaign
-
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    Mouser hover ways to give campaign    End Child Sexual Abuse
+    Mouser hover ways to give campaign    End Child Sexual Abuse  
     ${camp_name}    ${Camp_val}    one time campaign
-    Banner Alert
-    check in view cart page    ${camp_name}    ${Camp_val}
+    ${cart_quanity}    check in view cart page - One time donation flow   ${camp_name}    ${Camp_val}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To select children through location filter
     [Tags]    Sponsor a Child
@@ -1727,7 +1727,6 @@ Password should be displayed in masked format rather than showing actual text fo
 
 To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
     [Tags]    HIV aids Campaign
-
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -1735,27 +1734,12 @@ To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    HIV & AIDS
-    #${camp_name}    ${Camp_val}    one time campaign
-    Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${camp_name}=    Replace String    ${camp_name}    F    f
-    ${camp_name}=    Replace String    ${camp_name}    a    A
-    ${camp_name}=    Replace String    ${camp_name}    n    N
-    ${camp_name}=    Replace String    ${camp_name}    d    D
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Click Element    id=ChkForSI
-    ${button_text}=    Get Element Attribute    xpath=//div[@class='kl_flood_sub_or_sec']/input    value
-    Run Keyword If    'Add to cart'=='${button_text}'    Log To Console    "Button changed to ADD TO CART"    ELSE    Fail    "Button was not changed to ADD TO CART"
-    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
-    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']
-    ${camp_val}=    Replace String    ${edu_child_amt}    4    4,    
-    Banner Alert
-    check in view cart page    ${camp_name}    ${Camp_val}
+    ${camp_name}    ${Camp_val}    one time campaign - Help HIV aids Campaign
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}  
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Protect Girl Children Campaign using Checkout flow
     Jenkins browser launch
