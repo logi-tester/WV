@@ -2182,12 +2182,14 @@ To verify write a message
     ${child_msg}=    Get Text    id=user_message
     Run Keyword If    'Test message for child'=='${child_msg}'    Log To Console    "Message populate same as like written'    ELSE    Fail    "Message was not same as like written"
 
-
 To verify offline - Cheque & DD acknowledgement page
+    [Tags]    Payment Acknowlodgement for Indian Passport Holder
+        
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Sleep    30s    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
@@ -2195,24 +2197,18 @@ To verify offline - Cheque & DD acknowledgement page
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children     
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    check in view cart page    ${camp_name}    ${Camp_val}           
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}           
     View cart proceed button    
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
     Click Element    xpath=//label[@class='off-container' and contains(text(),'Cheque & DD')]/span
     Sleep    30s 
-    Click Element    id=off-edit-actions-next
-    Sleep    10s      
-    Banner Alert
-    ${order_ID}=    Get Text   xpath=//div[@class='payment-success-message1']/p
-    Log To Console    ${order_ID}    
-    ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
-    Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
-    ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
-    Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} is displayed in payment page"    ELSE    Fail    "${camp_val} was not displayed in payment page"  
-      
+    Click Element    id=off-edit-actions-next    
+    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
 To verify offline - UPI acknowledgement page
+    [Tags]    Payment Acknowlodgement for Indian Passport Holder
+    
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
@@ -2224,24 +2220,18 @@ To verify offline - UPI acknowledgement page
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children    
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    check in view cart page    ${camp_name}    ${Camp_val}       
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}       
     View cart proceed button    
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
     Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
     Sleep    30s 
     Click Element    id=off-edit-actions-next
-    Sleep    10s
-    Banner Alert
-    ${order_status}=    Get Text   xpath=//div[@class='payment-success-message1']/p
-    Log To Console    ${order_status}
-    ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
-    Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
-    ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
-    Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} is displayed in payment page"    ELSE    Fail    "${camp_val} was not displayed in payment page"  
-    
+    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
 To verify offline - Paytm acknowledgement page
+    [Tags]    Payment Acknowlodgement for Indian Passport Holder
+    
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
@@ -2253,24 +2243,18 @@ To verify offline - Paytm acknowledgement page
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children    
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    check in view cart page    ${camp_name}    ${Camp_val}  
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}  
     View cart proceed button    
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
     Click Element    xpath=//label[@class='off-container' and contains(text(),'Paytm')]/span
     Sleep    30s 
     Click Element    id=off-edit-actions-next
-    Sleep    10s      
-    Banner Alert
-    ${order_status}=    Get Text   xpath=//div[@class='payment-success-message1']/p
-    Log To Console    ${order_status}
-    ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
-    Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
-    ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
-    Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} is displayed in payment page"    ELSE    Fail    "${camp_val} was not displayed in payment page"  
-    
+    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
 To verify offline - Bank transfer acknowledgement page
+    [Tags]    Payment Acknowlodgement for Indian Passport Holder
+    
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
@@ -2282,25 +2266,14 @@ To verify offline - Bank transfer acknowledgement page
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Educate Children    
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    check in view cart page    ${camp_name}    ${Camp_val}        
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}        
     View cart proceed button    
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
     Click Element    xpath=//label[@class='off-container' and contains(text(),'Bank Transfer')]/span
     Sleep    30s 
     Click Element    id=off-edit-actions-next
-    Sleep    10s      
-    Banner Alert
-    ${order_status}=    Get Text   xpath=//div[@class='payment-success-message1']/p
-    Log To Console    ${order_status}
-    ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
-    Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
-    ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
-    Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} is displayed in payment page"    ELSE    Fail    "${camp_val} was not displayed in payment page"  
-  
-
-
-
+    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
 
 *** Keywords ***
