@@ -267,17 +267,15 @@ To verify login through valid mobile number with invalid password
     Run Keyword If    'True'!='${username_validation}'    Fail    "Enter valid mobile number and invalid password, 'Incorrect username or password' error msg not display"
 
 To verify login through valid mobile number with valid password
-    Jenkins browser launch
-    #Local browser launch
+    [Tags]    LOGIN
+    
+    Jenkins browser launch    
     Click Element    xpath=//a[contains(text(),'Login')]
-    Click Element    id=edit-name
-    Input Text    id=edit-name    7777777777
-    Click Element    id=edit-pass
-    Input Text    id=edit-pass    test
-    Click Element    xpath=//div[@class='login-form__submit']//button
+    Direct login
     Wait Until Element Is Visible    xpath=//li[@class='welcomesponsor']    60s
     ${postlogin_homepage_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='welcomesponsor']
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login Or Post login Page doesnt Load"
+    
 
 To verify login through valid email ID with valid password
     #Local browser launch
