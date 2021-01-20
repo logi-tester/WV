@@ -529,7 +529,8 @@ To sponsor a Educate Children Campaign using Checkout flow
     CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
 To sponsor a Save Malnourished Children Campaign using Checkout flow
-    #Local browser launch
+    [Tags]    Save Malnourished Children Campaign
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -538,14 +539,16 @@ To sponsor a Save Malnourished Children Campaign using Checkout flow
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Save Malnourished Children
     Sleep    5s
-    ${val_1}    ${val_2}    Checkout flow campaign
-    check in view cart page    ${val_1}    ${val_2}
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
     
 To sponsor a Childhood Rescue Campaign using Checkout flow
-    #Local browser launch
+    [Tags]    Childhood Rescue Campaign
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -554,11 +557,12 @@ To sponsor a Childhood Rescue Campaign using Checkout flow
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    Childhood Rescue
     Sleep    5s
-    ${val_1}    ${val_2}    Checkout flow campaign
-    check in view cart page    ${val_1}    ${val_2}
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
 To sponsor a Hunger Free Campaign as a one time donation using Checkout flow
     [Tags]    Hunger Free Campaign
@@ -1745,6 +1749,8 @@ To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
     CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Protect Girl Children Campaign using Checkout flow
+    [Tags]    Protect Girl Children Campaign
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -1752,24 +1758,41 @@ To sponsor a Protect Girl Children Campaign using Checkout flow
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    End Child Sexual Abuse
-    Sleep    5s
-    Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    Click Element    id=ChkForSI
-    Sleep    10s    
-    ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    ${Camp_amt}=    Get Substring    ${label_val}    9    16
-    Log To Console    Final val is: ${camp_amt}
-    Sleep    15s   
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']
-    ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
-    Log To Console    View cart page campaign amount: ${view_cart_amount}
-    check in view cart page    ${camp_name}    ${camp_amt}
+    Sleep    5s    
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
     CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+
+# To sponsor a Protect Girl Children Campaign using Checkout flow
+    # Jenkins browser launch
+    # Click Element    xpath=.//a[contains(.,'My Gifts')]
+    # Banner Alert
+    # ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    # ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    # Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    # Mouser hover ways to give campaign    End Child Sexual Abuse
+    # Sleep    5s
+    # Click Element    xpath=.//div[@class='item-image']//img
+    # ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    # Click Element    id=ChkForSI
+    # Sleep    10s    
+    # ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    # ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    # Log To Console    Final val is: ${camp_amt}
+    # Sleep    15s   
+    # Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    
+    # Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    # Click Element    xpath=//a[@class='view_cart']
+    # ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
+    # Log To Console    View cart page campaign amount: ${view_cart_amount}
+    # check in view cart page    ${camp_name}    ${camp_amt}
+    # View cart proceed button
+    # Login
+    # CCavenue payment success flow
+
 
 To Verify title select from the options provided in th the dropdown
     Jenkins browser launch
@@ -1808,6 +1831,8 @@ To Verify User should submit the form without entering any details - End Child s
     END 
     
 To sponsor a Help Hiv aids Campaign using Checkout flow
+    [Tags]    Help Hiv aids Campaign
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -1815,27 +1840,43 @@ To sponsor a Help Hiv aids Campaign using Checkout flow
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
     Mouser hover ways to give campaign    HIV & AIDS
-    Sleep    5s    
-    Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${camp_name}=    Get Substring    ${camp_name}    11    14
-    ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    ${Camp_amt}=    Get Substring    ${label_val}    9    16    
-    # ${del_month_get_val_only}=    Fetch From Right    ${label_val}    3 Months
-    # ${camp_amt}=    Strip String    ${SPACE}${del_month_get_val_only}
-    Log To Console    Final val is: ${camp_amt}
-    Sleep    15s
-    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Click Element    id=ChkForSI
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']
-    ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
-    Log To Console    View cart page campaign amount: ${view_cart_amount}    
-    check in view cart page    ${camp_name}    ${camp_amt}
+    Sleep    5s            
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
-    CCavenue payment success flow    
+    CCavenue payment success flow 
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}    
+    
+# To sponsor a Help Hiv aids Campaign using Checkout flow
+    # Jenkins browser launch
+    # Click Element    xpath=.//a[contains(.,'My Gifts')]
+    # Banner Alert
+    # ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    # ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    # Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    # Mouser hover ways to give campaign    HIV & AIDS
+    # Sleep    5s    
+    # Click Element    xpath=.//div[@class='item-image']//img
+    # ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    # ${camp_name}=    Get Substring    ${camp_name}    11    14
+    # ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    # ${Camp_amt}=    Get Substring    ${label_val}    9    16    
+    # # ${del_month_get_val_only}=    Fetch From Right    ${label_val}    3 Months
+    # # ${camp_amt}=    Strip String    ${SPACE}${del_month_get_val_only}
+    # Log To Console    Final val is: ${camp_amt}
+    # Sleep    15s
+    # Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
+    # Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    # Click Element    id=ChkForSI
+    # Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    # Click Element    xpath=//a[@class='view_cart']
+    # ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
+    # Log To Console    View cart page campaign amount: ${view_cart_amount}    
+    # check in view cart page    ${camp_name}    ${camp_amt}
+    # View cart proceed button
+    # Login
+    # CCavenue payment success flow    
     
 To verify gallery and recent videos in my child page
     Jenkins browser launch
