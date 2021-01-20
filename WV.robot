@@ -14,6 +14,11 @@ ${postlogin_menu_list}    6
 ${edu_child_amt}    4000
 ${val}            000
 ${amount}    1000
+${minimum_amount}    101
+${accurate_amount}    100
+${lesser_amount}    99
+${maximum_amount}    99999
+${higher_amount}    999999
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
 ${user_name}      9999999992
