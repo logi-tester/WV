@@ -2587,7 +2587,8 @@ Educate children campaign with checkout flow
 Checkout flow campaign
     Click Element    xpath=.//div[@class='item-image']//img
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
-    ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
+    #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     ${Camp_amt}=    Get Substring    ${label_val}    9    16
     Log To Console    Final val is: ${camp_amt}
     Sleep    15s
@@ -2605,6 +2606,11 @@ Checkout flow campaign
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
 
     Click Element    xpath=//a[@class='view_cart']
+    
+    # ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
+    # Log To Console    View cart page campaign amount: ${view_cart_amount}
+    
+    [Return]    ${camp_name}    ${camp_amt}
 
 SI flow campaign
     Sleep    10s
