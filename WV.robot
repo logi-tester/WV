@@ -1520,7 +1520,7 @@ To sponsor a Rescue Children Campaign as a one time donation using Checkout flow
 
 
 To sponsor a Save malnourished Children Campaign using Si payment Flow from Educ
-    [Tags]    Save malnourished Children
+    [Tags]    Save Malnourished Children Campaign
     Jenkins browser launch
     Navigation banner close
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
