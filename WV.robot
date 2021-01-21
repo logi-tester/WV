@@ -1074,7 +1074,7 @@ Check Add-on added in view cart page
     ${check_thq_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='thanks_description']/h1
     Run Keyword If    'True'!='${check_thq_page}'    Fail    "After payment through UPI 'Thank You' page text not display"
     
- Ensure overview campaign label in Hosh menu
+Ensure overview campaign label in Hosh menu
     [Tags]    Hope to Shine campaign
     
     Jenkins browser launch
@@ -1106,8 +1106,9 @@ Check Add-on added in view cart page
     Log To Console    ${get_viewcart_list_count}    
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}    
 
-
 Ensure overview campaign label in Back to school
+    [Tags]    Back to school campaign       
+
     Jenkins browser launch
     Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Ways to Give')]
     Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(.,'Overview')]
@@ -1120,11 +1121,15 @@ Ensure overview campaign label in Back to school
     Sleep    5s    
     Click Element    xpath=//div[@class='Gift_add giftBtn']/input
     Ensure default amount in educational need
-    Error default value and check button disable
+    Add to cart functionality    
+    Clear and input text    1000
+    #Error default value and check button disable
     View cart page
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
+    Sleep    10s    
+    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
+    Log To Console    ${get_viewcart_list_count}    
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}    
 
 Ensure overview campaign label in Gift catalog
     #Local browser launch
