@@ -2336,6 +2336,45 @@ To Verify User should submit the form without the Captcha - End Child sexual abu
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='g-recaptcha-response-error']        
     Run Keyword If    '${status}'=='True'    Log    "Recaptcha error message appeared"    ELSE    Fail    "Recaptcha error message doesnt appeared"
 
+To Verify Special Character should not accept except Email Address, Confirm pass
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Register')]    
+       
+    #confirm password
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    newpassword
+    
+    #Re-confirm
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[@for='edit-pass-pass2']
+    Input Text    id=edit-pass-pass2    newpassword
+    
+    ${password1}=    Get Element Attribute    id=edit-pass-pass1    value
+    ${password2}=    Get Element Attribute    id=edit-pass-pass2    value    
+    Sleep    5s    
+    
+    Run Keyword If    '${password1}'=='${password2}'    Element Should Be Visible    xpath=//p[@class='wrong right']    ELSE    Fail    Password macthed icon doesnt show
+    
+    #confirm password
+    Clear Element Text    id=edit-pass-pass1
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    newpassword
+    
+    #Re-confirm
+    Clear Element Text    id=edit-pass-pass2
+    Click Element    //label[@for='edit-pass-pass2']
+    Input Text    id=edit-pass-pass2    passwordnew 
+    
+    ${password1Wrong}=    Get Element Attribute    id=edit-pass-pass1    value
+    ${password2Wrong}=    Get Element Attribute    id=edit-pass-pass2    value
+    Sleep    5s   
+    
+    Run Keyword If    '${password1Wrong}'!='${password2Wrong}'    Element Should Be Visible    xpath=//p[@class='wrong']    ELSE    Fail    Password mismatch icon doesnt show
+    
+
 
 *** Keywords ***
 Jenkins browser launch
