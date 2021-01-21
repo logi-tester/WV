@@ -25,6 +25,7 @@ ${user_name}      9999999992
 ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
+@{email_validation}    asdasdad    934852    )*&%^&^%&^%    @gmail    @gmail.com    @@gmail.com    asdgasd.com    (^*&*^)*&@gmail.com
 @{registration_title}    Mr.    Miss.    Mrs.    Dr.
 ${checkout_payment_list_no}    4
 @{HungerFree_alert}    edit-name-error    edit-date-of-birth-error    edit-email-error    edit-mobile-number-error
