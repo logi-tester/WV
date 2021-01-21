@@ -2274,6 +2274,27 @@ To verify offline - Bank transfer acknowledgement page
     Sleep    30s 
     Click Element    id=off-edit-actions-next
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
+    
+To Verify confirm password Field, User Should enter Password Details with minimu
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Register')]    
+       
+    #confirm password
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    password@123
+    
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    id=edit-pass-pass1-error        
+    Run Keyword If    '${status}'=='True'    Log To Console    Page doesnt throughs error message for password minimum length    ELSE    Fail    Page throughs error message for password minimum length
+        
+    Clear Element Text    id=edit-pass-pass1
+    Click Element    //label[@for='edit-pass-pass1']
+    Input Text    id=edit-pass-pass1    pas
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass1-error        
+    Run Keyword If    '${status}'=='True'    Log To Console    Page throughs error message for password minimum length    ELSE    Fail    Page doesnt throughs error message for password minimum length
 
 
 *** Keywords ***
