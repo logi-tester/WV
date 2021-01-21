@@ -2414,6 +2414,26 @@ To Verify User should submit the form Using Invalid Email ID
     ${title}=    Get Title   
     Run Keyword If    'Contact Us | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted
 
+To Verify User should submit the form Using Invalid Email ID - End Child sexual abuse Page
+    [Tags]    Contacts Us page
+
+    Jenkins browser launch
+    Navigation banner close   
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login    
+    Mouse Over    xpath=//li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'End Child Sexual Abuse')] 
+    Sleep    15s    
+    FOR    ${element}    IN    @{email_validation}
+        Clear Element Text    id=edit-email-
+        Input Text    id=edit-email-    ${element}
+        Click Element    id=edit-actions-submit
+        Sleep    5s    
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-email--error    
+        Run Keyword If    '${status}'!='True'    Fail    Alert message was not displayed
+    END    
+    ${title}=    Get Title   
+    Run Keyword If    'End Child Sexual Abuse | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted
 
 
 
