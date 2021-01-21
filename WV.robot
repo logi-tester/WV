@@ -2395,7 +2395,7 @@ To verify child project meter
     ${to_date}=    Get Text    xpath=//div[contains(@class,'projmeter-unit')]/p[2]    
     Log To Console    Location is: ${location}, From date is: ${from_date} and To date is: ${to_date}
 
-To Verify User should submit the form with Invalid Name
+To Verify User should submit the form Using Invalid Email ID
     [Tags]    Contacts Us page
 
     Jenkins browser launch
