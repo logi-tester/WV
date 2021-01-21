@@ -2296,6 +2296,26 @@ To Verify confirm password Field, User Should enter Password Details with minimu
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass1-error        
     Run Keyword If    '${status}'=='True'    Log To Console    Page throughs error message for password minimum length    ELSE    Fail    Page doesnt throughs error message for password minimum length
 
+To Verify User should submit the form without the Captcha
+    [Tags]    Contacts Us
+    
+    Jenkins browser launch
+    Navigation banner close   
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'About Us')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Contact Us')] 
+    Sleep    15s    
+    Scroll Element Into View    id=edit-actions-submit
+    Input Text    id=edit-name-    testname
+    Input Text    id=edit-email-    test@test.com
+    Input Text    id=edit-contact-    9999999999
+    Click Element    id=edit-query-type-styled
+    Click Element    xpath=//a[text()='Sponsorship']    
+    Input Text    id=edit-message    Dummy message to test Text box1$        
+    Click Element    id=edit-actions-submit 
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='g-recaptcha-response-error']        
+    Run Keyword If    '${status}'=='True'    Log    "Recaptcha error message appeared"    ELSE    Fail    "Recaptcha error message doesnt appeared"
+
 
 *** Keywords ***
 Jenkins browser launch
