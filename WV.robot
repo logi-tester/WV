@@ -2468,14 +2468,15 @@ Checkout flow campaign
 SI flow campaign
     Sleep    10s
     Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
     ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    ${del_month_get_val_only}=    Fetch From Right    ${label_val}    3 Months
-    ${final_val}=    Strip String    ${SPACE}${del_month_get_val_only}
+    ${final_val}=    Get Substring    ${label_val}    9    16
     Log To Console    Final val is:${final_val}
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Click Element    xpath=.//button[@class='btn btn-primary si_modal_btn']
+    ${status}=    Run Keyword And Return Status    Checkbox Should Be Selected    id=ChkForSI    
+    Run Keyword If    'True'!='${status}'    Fail    'Auto Pay check box was not selected'    ELSE    Log To Console    'Checkbox selected by default'    
+    Click Element    xpath=//button[@class='btn btn-primary si_modal_btn']
     
 one time campaign
     Click Element    xpath=.//div[@class='item-image']//img
