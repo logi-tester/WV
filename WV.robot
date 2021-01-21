@@ -2316,6 +2316,26 @@ To Verify User should submit the form without the Captcha
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='g-recaptcha-response-error']        
     Run Keyword If    '${status}'=='True'    Log    "Recaptcha error message appeared"    ELSE    Fail    "Recaptcha error message doesnt appeared"
 
+To Verify User should submit the form without the Captcha - End Child sexual abuse Page 
+    Jenkins browser launch
+    Navigation banner close   
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login    
+    Mouse Over    xpath=//li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'End Child Sexual Abuse')]
+    Sleep    15s    
+    Scroll Element Into View    id=edit-actions-submit
+    Input Text    id=edit-name-    testname
+    Input Text    id=edit-email-    test@test.com
+    Input Text    id=edit-contact-    9999999999
+    Click Element    id=edit-query-type-styled
+    Click Element    xpath=//a[text()='Sponsorship']    
+    Input Text    id=edit-message    Dummy message to test Text box1$        
+    Click Element    id=edit-actions-submit 
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='g-recaptcha-response-error']        
+    Run Keyword If    '${status}'=='True'    Log    "Recaptcha error message appeared"    ELSE    Fail    "Recaptcha error message doesnt appeared"
+
 
 *** Keywords ***
 Jenkins browser launch
