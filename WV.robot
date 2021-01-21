@@ -2395,6 +2395,28 @@ To verify child project meter
     ${to_date}=    Get Text    xpath=//div[contains(@class,'projmeter-unit')]/p[2]    
     Log To Console    Location is: ${location}, From date is: ${from_date} and To date is: ${to_date}
 
+To Verify User should submit the form with Invalid Name
+    [Tags]    Contacts Us page
+
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'About Us')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Contact Us')] 
+    Sleep    15s    
+    FOR    ${element}    IN    @{email_validation}
+        Clear Element Text    id=edit-email-
+        Input Text    id=edit-email-    ${element}
+        Click Element    id=edit-actions-submit
+        Sleep    5s    
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-email--error    
+        Run Keyword If    '${status}'!='True'    Fail    Alert message was not displayed
+    END    
+    ${title}=    Get Title   
+    Run Keyword If    'Contact Us | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted
+
+
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
