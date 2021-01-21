@@ -2374,7 +2374,26 @@ To Verify Special Character should not accept except Email Address, Confirm pass
     
     Run Keyword If    '${password1Wrong}'!='${password2Wrong}'    Element Should Be Visible    xpath=//p[@class='wrong']    ELSE    Fail    Password mismatch icon doesnt show
     
-
+To verify child project meter
+    [Tags]    MyChild Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Sleep    20s    
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log To Console    Details enabled for child:    ${text}    
+    END    
+    Click Element    xpath=//p[contains(text(),'PROJECT METER')]
+    ${location}=    Get Text    xpath=//div[@class='proj_id']
+    ${from_date}=    Get Text    xpath=//div[contains(@class,'projmeter-date')]/p[2]    
+    ${to_date}=    Get Text    xpath=//div[contains(@class,'projmeter-unit')]/p[2]    
+    Log To Console    Location is: ${location}, From date is: ${from_date} and To date is: ${to_date}
 
 *** Keywords ***
 Jenkins browser launch
