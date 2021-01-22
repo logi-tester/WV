@@ -2507,6 +2507,37 @@ To sposor a Emergency Relief Campaign using Checkout flow
     CCavenue payment - cart verification - dynamic    ${campaign_name2}    ${campaign_amt2}    ${cart_quanity2}
     CCavenue payment - cart verification - dynamic    Donation    1000    ${cart_quanity3}
 
+To verify Events functionality
+    [Tags]    Events Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Get Involved')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Events')]
+    Wait Until Element Is Visible    id=recent-evnt    30s
+    ${status}=    Get Element Attribute    id=recent-evnt    class
+    Run Keyword If    '${status}'!='active'    Fail    Recent event was not selected by default
+    
+    ${event_count}=    Get Element Count    xpath=//div[@class='first_blog_title checking']
+    FOR    ${element}    IN RANGE    1    ${event_count}+1
+        ${events}=    Get Text    xpath=(//div[@class='first_blog_title checking'])[${element}]
+        ${day}=    Get Text    xpath=(//span[@class='blog_dates'])[${element}]
+        ${month}=    Get Text    xpath=(//span[@class='first_blog_month'])[${element}]
+        ${year}=    Get Text    xpath=(//span[contains(@class,'first_blog_year')])[${element}]              
+        Log To Console    Past and current event name is: ${events} and its date is ${day}/${month}/${year}    
+    END    
+    
+    #Run Keyword If    ${year}>=2021 and ${month}<='current-month' and ${day}<'current day'
+    Click Element    id=upcmg-evnt
+    Sleep    10s        
+    ${event_count}=    Get Element Count    xpath=//div[@class='first_blog_title checking']
+    FOR    ${element}    IN RANGE    1    ${event_count}+1
+        ${events}=    Get Text    xpath=(//div[@class='first_blog_title checking'])[${element}]
+        ${day}=    Get Text    xpath=(//span[@class='blog_dates'])[${element}]
+        ${month}=    Get Text    xpath=(//span[@class='first_blog_month'])[${element}]
+        ${year}=    Get Text    xpath=(//span[contains(@class,'first_blog_year')])[${element}]              
+        Log To Console    Future event name is: ${events} and will be held on ${day}/${month}/${year}    
+    END
 
 
 *** Keywords ***
