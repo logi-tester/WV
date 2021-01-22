@@ -21,6 +21,9 @@ ${maximum_amount}    99999
 ${higher_amount}    999999
 ${hunger_free_camp_amt}    1000
 ${hunger_camp_name_space}    Free
+${month_input}    April
+${year_input}    2020
+${language_input}    English
 ${user_name}      9999999992
 ${password}       test
 ${addon_val}      100
@@ -2539,41 +2542,50 @@ To verify Events functionality
         Log To Console    Future event name is: ${events} and will be held on ${day}/${month}/${year}    
     END
 
-
-To check with the filters in press release page
+To check whether the filters work properly in Blog page
+    [Tags]    Media
+    
     Jenkins browser launch
     Navigation banner close    
-    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]    
-    ${count}=    Get Element Count    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]//parent::li//li/a        
-    Run Keyword If    '${count}'!='4'    Fail    Media submenus are not matching
-    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]
-    @{media_list}=    Get WebElements    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]//parent::li//li/a
-    FOR    ${element}    IN    @{media_list}
-        ${text}=    Get Text    ${element}
-        Log To Console    Media submenus are : ${text} 
-    END        
-    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Press Releases')]
-    
-    Wait Until Element Is Visible    xpath=//span[contains(text(),'Press Releases')]    30s
-    Click Element    xpath=//span[contains(text(),'Press Releases')]    
-    
-    Scroll Element Into View    id=edit-submit-press-releases-1
-
-    Select From List By Label    id=edit-field-month-target-id    April
-    Select From List By Label    id=edit-field-releases-year-target-id    2020
-    Select From List By Label    id=edit-field-tags-target-id    English
-    
-    Click Element    id=edit-submit-press-releases-1
-    
-    ${month_sort}=    Get Substring    April    1    4
-    
-    Sleep    40s   
-
-    Element Should Be Visible    xpath=//div[@class='media-press-page pressres']    
-    ${month}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-mont']
+    Event Page menu check    Blog
+    Event Submenu Check    Blog
+    Scroll Element Into View    xpath=//input[contains(@id,'edit-submit-press-releases')]
+    Select From List By Label    id=edit-field-month-target-id    ${month_input}
+    Select From List By Label    id=edit-field-releases-year-target-id    ${year_input}    
+    Click Element    xpath=//input[contains(@id,'edit-submit-press-releases')]
+    Sleep    40s
+    ${month_sort}=    Get Substring    ${month_input}    0    3
+    #Element Should Be Visible    xpath=//div[@class='media-press-page pressres']    
+    ${month}=    Get Text    xpath=//div[@class='save-child-image_container']//span[@class='first_blog_month']
     Run Keyword If    '${month_sort}'!='${month}'    Fail    Month mismatch or No data found
-    ${year}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-year']
+    ${year}=    Get Text    xpath=//div[@class='save-child-image_container']//span[@class='first_blog_year']
     Run Keyword If    '2020'!='${year}'    Fail    Month mismatch or No data found
+
+To check with the filters in news articles page
+    [Tags]    Media
+    
+    Jenkins browser launch
+    Navigation banner close    
+    Event Page menu check    News Articles
+    Event Submenu Check    News Articles
+    Event page filter    ${month_input}    2019    ${language_input}            
+    Sleep    40s    
+    ${month_sort}=    Get Substring    ${month_input}    0    3            
+    ${month}=    Get Text    xpath=//div[@class='media-press-page']//span[@class='media-mont']
+    Run Keyword If    '${month_sort}'!='${month}'    Fail    Month mismatch or No data found
+    ${year}=    Get Text    xpath=//div[@class='media-press-page']//span[@class='media-year']
+    Run Keyword If    '2019'!='${year}'    Fail    Month mismatch or No data found
+
+To check with the filters in press release page
+    [Tags]    Media
+    
+    Jenkins browser launch
+    Navigation banner close    
+    Event Page menu check    Press Releases
+    Event Submenu Check    Press Releases
+    Event page filter    ${month_input}    ${year_input}    ${language_input}
+    Sleep    40s   
+    Event page filter verification    ${month_input}    ${year_input}
 
 
 *** Keywords ***
@@ -3380,5 +3392,44 @@ CCavenue payment - cart verification - dynamic
     ${camp_amt_paygt}=    Convert To Integer    ${camp_amt_paygt}
     Run Keyword If    ${Camp_val}!=${camp_amt_paygt}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"    ELSE    Log To Console    ${camp_name} campaign amount is ${camp_amt_paygt}   
     
+Event Page menu check
+    [Arguments]    ${submenu}    
 
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]    
+    ${count}=    Get Element Count    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]//parent::li//li/a        
+    Run Keyword If    '${count}'!='4'    Fail    Media submenus are not matching
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]
+    @{media_list}=    Get WebElements    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]//parent::li//li/a
+    FOR    ${element}    IN    @{media_list}
+        ${text}=    Get Text    ${element}
+        Log To Console    Media submenus are : ${text} 
+    END        
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${submenu}')]
+    
+Event Submenu Check
+    [Arguments]    ${submenu}
+    
+    Wait Until Element Is Visible    xpath=//span[contains(text(),'${submenu}')]    30s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(text(),'${submenu}')]    
+    Run Keyword If    '${status}'!='True'    Fail    Page doesnt redirect to News Articles
+
+Event page filter
+    [Arguments]    ${month}    ${year}    ${language}
+    
+    Scroll Element Into View    xpath=//input[contains(@id,'edit-submit-press-releases')]
+    Select From List By Label    id=edit-field-month-target-id    ${month}
+    Select From List By Label    id=edit-field-releases-year-target-id    ${year}
+    Select From List By Label    id=edit-field-tags-target-id    ${language}
+    
+    Click Element    xpath=//input[contains(@id,'edit-submit-press-releases')]
+
+Event page filter verification    
+    [Arguments]    ${month_input}    ${year_input}
+    
+    ${month_sort}=    Get Substring    ${month_input}    0    3
+    #Element Should Be Visible    xpath=//div[@class='media-press-page pressres']    
+    ${month}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-mont']
+    Run Keyword If    '${month_sort}'!='${month}'    Fail    Month mismatch or No data found
+    ${year}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-year']
+    Run Keyword If    '2019'!='${year}'    Fail    Month mismatch or No data found
 
