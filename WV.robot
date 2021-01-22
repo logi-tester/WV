@@ -2587,6 +2587,32 @@ To check with the filters in press release page
     Sleep    40s   
     Event page filter verification    ${month_input}    ${year_input}
 
+To Verify User should submit the form with Mandatory data - Hungerfree
+    [Tags]    Hunger Free Campaign
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouser hover ways to give campaign    Hungerfree 
+    Sleep    30s    
+    Scroll Element Into View    id=edit-actions-submit
+    
+    Input Text    id=edit-name    testname
+    Click Element    id=edit-date-of-birth    
+    Select From List By Label    class=ui-datepicker-year    1989
+    Select From List By Label    class=ui-datepicker-month    May
+    Click Element    xpath=//a[text()='11']
+    #Click Element    id=edit-state    
+    Select From List By Index    id=edit-state    4
+    Input Text    id=edit-email    test@testa.com
+    Input Text    id=edit-mobile-number    9999999997
+
+    Click Element    id=edit-actions-submit        
+
+    ${message}=    Get Text    xpath=//div[@class='thanks_description']/h1
+    Run Keyword If    '${message}'=='Thank You'    Log To Console    Form submitted successfully    ELSE    Fail    Form was not submitted   
+
 
 *** Keywords ***
 Jenkins browser launch
