@@ -1503,7 +1503,7 @@ To Verify Existing user Email Id and Phone Should not Accept for New User Regist
     Run Keyword If    'True'=='${phone_status}'    Log To Console    "phone number alert is dispayed"    ELSE    Fail    "Phone number alert was not displayed"   
     
 To sponsor a Rescue Children Campaign as a one time donation using Checkout flow
-    [Tags]    Rescue Children
+    [Tags]  Childhood Rescue Campaign
         
     Jenkins browser launch
     Navigation banner close
@@ -1550,7 +1550,7 @@ To sponsor a Save malnourished Children Campaign using Si payment Flow from Educ
     END
 
 To sponsor a Save malnourshied Children Campaign as a one time donation using Checkout flow
-    [Tags]    Save malnourshied Children Campaign
+    [Tags]    Save Malnourshied Children Campaign
 
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
@@ -1747,7 +1747,8 @@ Password should be displayed in masked format rather than showing actual text fo
 
 
 To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
-    [Tags]    HIV aids Campaign
+    [Tags]    Help Hiv aids Campaign
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -1913,7 +1914,7 @@ To verify gallery and recent videos in my child page
     Click Element    xpath=//div[@class='sponsor_header']/img     
     
 To Verify User should submit the form without entering any details - HungerFree page
-    [Tags]    HungerFree page
+    [Tags]    Hunger Free Campaign
     
     Jenkins browser launch
     Navigation banner close
@@ -2311,7 +2312,7 @@ To Verify confirm password Field, User Should enter Password Details with minimu
     Run Keyword If    '${status}'=='True'    Log To Console    Page throughs error message for password minimum length    ELSE    Fail    Page doesnt throughs error message for password minimum length
 
 To Verify User should submit the form without the Captcha
-    [Tags]    Contacts Us
+    [Tags]  Contacts Us page
     
     Jenkins browser launch
     Navigation banner close   
