@@ -2540,6 +2540,42 @@ To verify Events functionality
     END
 
 
+To check with the filters in press release page
+    Jenkins browser launch
+    Navigation banner close    
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]    
+    ${count}=    Get Element Count    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]//parent::li//li/a        
+    Run Keyword If    '${count}'!='4'    Fail    Media submenus are not matching
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]
+    @{media_list}=    Get WebElements    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Media')]//parent::li//li/a
+    FOR    ${element}    IN    @{media_list}
+        ${text}=    Get Text    ${element}
+        Log To Console    Media submenus are : ${text} 
+    END        
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Press Releases')]
+    
+    Wait Until Element Is Visible    xpath=//span[contains(text(),'Press Releases')]    30s
+    Click Element    xpath=//span[contains(text(),'Press Releases')]    
+    
+    Scroll Element Into View    id=edit-submit-press-releases-1
+
+    Select From List By Label    id=edit-field-month-target-id    April
+    Select From List By Label    id=edit-field-releases-year-target-id    2020
+    Select From List By Label    id=edit-field-tags-target-id    English
+    
+    Click Element    id=edit-submit-press-releases-1
+    
+    ${month_sort}=    Get Substring    April    1    4
+    
+    Sleep    40s   
+
+    Element Should Be Visible    xpath=//div[@class='media-press-page pressres']    
+    ${month}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-mont']
+    Run Keyword If    '${month_sort}'!='${month}'    Fail    Month mismatch or No data found
+    ${year}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-year']
+    Run Keyword If    '2020'!='${year}'    Fail    Month mismatch or No data found
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
