@@ -3433,3 +3433,13 @@ Event page filter verification
     ${year}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-year']
     Run Keyword If    '2019'!='${year}'    Fail    Month mismatch or No data found
 
+Kerala flood campaign
+    [Arguments]    ${value}
+    
+    ${campaign_name}=    Get Text    xpath=(//div[@class='emergency_flood_relief_content'])[${value}]/div[1]
+    ${campaign_amt}=    Get Text    xpath=(//div[@class='emergency_flood_relief_content'])[${value}]/div[4]
+    ${campaign_amt}=    Remove String Using Regexp    ${campaign_amt}    \\D        
+    ${campaign_amt}=    Convert To Integer    ${campaign_amt}
+    Log To Console     Campain name is: ${campaign_name} donation is : ${campaign_amt}
+    
+    [Return]    ${campaign_name}    ${campaign_amt}
