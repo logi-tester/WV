@@ -2451,6 +2451,63 @@ To Verify User should submit the form Using Invalid Email ID - End Child sexual 
     Run Keyword If    'End Child Sexual Abuse | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted
 
 
+To sposor a Emergency Relief Campaign using Checkout flow
+    [Tags]    Emergency Relief Campaign
+    
+    Jenkins browser launch
+    Navigation banner close
+
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    Emergency Relief
+    Sleep    5s
+    @{emergency_relief}=    Get WebElements    xpath=//h5[@class='campaign-title']/a
+    FOR    ${element}    IN    @{emergency_relief}
+        ${text}=    Get Text    ${element}
+        Log To Console    Current Emergencey reliefs are: ${text}        
+    END 
+    
+    Wait Until Element Is Visible    xpath=//a[text()='Kerala Floods']/ancestor::h5/following-sibling::p[2]/a    40s
+    Click Element    xpath=//a[text()='Kerala Floods']/ancestor::h5/following-sibling::p[2]/a
+        
+    Wait Until Element Is Visible    xpath=.//div[@class='item-image']//img    40s
+    Click Element    xpath=.//div[@class='item-image']//img
+    
+    ${campaign_name}    ${campaign_amt}    Kerala flood campaign    1
+    ${campaign_name2}    ${campaign_amt2}    Kerala flood campaign    2        
+    
+    Add to cart functionality
+    Clear and input text    1000
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input   
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
+    Click Element    xpath=//a[@class='view_cart'] 
+
+    ${cart_quanity}    check in view cart page - dynamic    ${campaign_name}    ${campaign_amt}
+    ${cart_quanity2}    check in view cart page - dynamic    ${campaign_name2}    ${campaign_amt2}    
+    ${cart_quanity3}    check in view cart page - dynamic    Donation    1000
+    
+    ${total_calc}=    Evaluate    ${campaign_amt}+${campaign_amt2}+1000
+
+    ${total_cart_value}    Total cart value
+    
+    Should Be Equal As Integers    ${total_calc}    ${total_cart_value}    
+
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    
+    CCavenue payment - cart verification - dynamic    ${campaign_name}    ${campaign_amt}    ${cart_quanity}
+    CCavenue payment - cart verification - dynamic    ${campaign_name2}    ${campaign_amt2}    ${cart_quanity2}
+    CCavenue payment - cart verification - dynamic    Donation    1000    ${cart_quanity3}
+
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -3217,4 +3274,44 @@ CCavenue payment - cart verification
     Run Keyword If    '${cart_quanity}'=='${campaign_quanity}'    Log To Console    "campaign quantity ${campaign_quanity} is displayed in payment page"    ELSE    Fail    "campaign quantity ${cart_quanity} was not displayed in payment page"   
     ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
     Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"    
+
+Total cart value
+    ${total_cart_value}=    Get Text    xpath=//div[contains(@class,'order-total-line__total')]/span[2]
+    ${total_cart_value}=    Remove String Using Regexp    ${total_cart_value}    \\D        
+    ${total_cart_value}=    Convert To Integer    ${total_cart_value}
+    
+    [Return]    ${total_cart_value}
+    
+check in view cart page - dynamic
+    [Arguments]    ${camp_name}    ${camp_amt}
+        
+    ${camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]
+    Run Keyword If    'True'!='${camp_viewcart}'    Fail    "${camp_name} campaign not display in view cart page"
+    ${camp_amt_viewcart}=    Get Text    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]/following-sibling::td[3]
+    ${camp_amt_viewcart}=    Remove String Using Regexp    ${camp_amt_viewcart}    \\D        
+    ${camp_amt_viewcart}=    Convert To Integer    ${camp_amt_viewcart}
+    Run Keyword If    ${camp_amt}!=${camp_amt_viewcart}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"   
+    ${cart_quanity}=    Get Element Attribute    xpath=//span[@class='dynamic-quantity']//input    value
+    
+    [Return]    ${cart_quanity}
+    
+CCavenue payment - cart verification - dynamic
+    [Arguments]    ${camp_name}    ${Camp_val}    ${cart_quanity}
+    
+    Sleep    20s    
+    Banner Alert    
+    ${order_status}=    Get Text   xpath=//div[@class='payment-success-message1']/p
+    Log To Console    ${order_status}
+    ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
+    Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
+    ${campaign_quanity}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[2]//span
+    Run Keyword If    '${cart_quanity}'=='${campaign_quanity}'    Log To Console    "campaign quantity ${campaign_quanity} is displayed in payment page"    ELSE    Fail    "campaign quantity ${cart_quanity} was not displayed in payment page"   
+    # ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
+    # Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"
+    ${camp_amt_paygt}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[3]
+    ${camp_amt_paygt}=    Remove String Using Regexp    ${camp_amt_paygt}    \\D        
+    ${camp_amt_paygt}=    Convert To Integer    ${camp_amt_paygt}
+    Run Keyword If    ${Camp_val}!=${camp_amt_paygt}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"    ELSE    Log To Console    ${camp_name} campaign amount is ${camp_amt_paygt}   
+    
+
 
