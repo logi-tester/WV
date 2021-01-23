@@ -2645,6 +2645,22 @@ To verify uncheck and check allow auto debit It should lead to SI flow
         Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
     END
 
+To Verify User should submit form with Valid Sponsor ID
+    [Tags]    Contacts Us page
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'About Us')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Contact Us')] 
+    Sleep    10s    
+    Click Element    xpath=//label[@for='edit-are-you-a-partner-y']    
+    Input Text    id=edit-partner-id    asldkalsdglas
+    Click Element    id=edit-actions-submit
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-partner-id-error    
+    Run Keyword If    '${status}'!='True'    Fail    Alert message was not displayed
+    ${title}=    Get Title   
+    Run Keyword If    'Contact Us | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitte
+
 
 
 *** Keywords ***
