@@ -2615,6 +2615,37 @@ To Verify User should submit the form with Mandatory data - Hungerfree
     ${message}=    Get Text    xpath=//div[@class='thanks_description']/h1
     Run Keyword If    '${message}'=='Thank You'    Log To Console    Form submitted successfully    ELSE    Fail    Form was not submitted   
 
+To verify uncheck and check allow auto debit It should lead to SI flow
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Mouser hover ways to give campaign    Childhood Rescue
+    Sleep    10s
+    Click Element    xpath=.//div[@class='item-image']//img
+    Sleep    10s    
+    Click Element    id=ChkForSI
+    Add to cart text change
+    Click Element    id=ChkForSI
+    Proceed to autopay text change        
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
+    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${final_val}=    Get Substring    ${label_val}    9    16
+    Log To Console    Final val is:${final_val}
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label       
+    Click Element    xpath=//button[@class='btn btn-primary si_modal_btn']
+    SI login
+    ${SI_payment_list}=    Get Element Count    xpath=.//div[@class='payment-main-content']/div
+    Run Keyword If    3!=${SI_payment_list}    Fail    "SI Flow payment gateway list mismatch"
+    FOR    ${SI_payment_txt}    IN    @{SI_payment_list_text}
+        ${SI_payment_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']/div[contains(.,'${SI_payment_txt}')]
+        Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
+    END
+
+
 
 *** Keywords ***
 Jenkins browser launch
