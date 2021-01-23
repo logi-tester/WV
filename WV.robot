@@ -1009,7 +1009,7 @@ Check Add-on added in view cart page
     ${chck_total_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='order-total-line order-total-line__total']/span[@class='order-total-line-value'][contains(.,'₹${hungercamp_amt+Add_on_amt_final_val}')]
     Run Keyword If    'True'!='${chck_total_amt_viewcart}'    Fail    "In view cart page campaign amoutn and add-on amount of total amount are differ"
  
- Child add from child rotator and payment success ccavenue
+Child add from child rotator and payment success ccavenue
     #Local browser launch
     Jenkins browser launch        
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details    
@@ -1038,7 +1038,7 @@ Check Add-on added in view cart page
     Login
     CCavenue payment success flow
  
- Child add from child rotator and add extra child from add another child way
+Child add from child rotator and add extra child from add another child way
     #Local browser launch
     Jenkins browser launch
         
