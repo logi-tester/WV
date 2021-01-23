@@ -2695,6 +2695,20 @@ To Verify welcome banner should appear for Donor on Second login
     ${get_banner_text}=    Remove String Using Regexp    ${get_banner_text}    \,.*$
     Run Keyword If    'Welcome Back'!='${get_banner_text}'    Fail    Welcome User message wasnt displayed
 
+To Verify Upcomming Events Banner Functionallity appear by selecting loaction
+    [Tags]    Myworld Page    
+
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login    
+    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    60s    
+    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']
+    Click Element    xpath=//a[text()='Locate Event']    
+    
+    ${location}=    Get Text    xpath=(//div[@class='evt_ltn_stry'])[2]
+    Run Keyword If    'Chennai'!='${location}    Fail    Event was not showing based on the location
+
 
 *** Keywords ***
 Jenkins browser launch
