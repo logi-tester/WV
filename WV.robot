@@ -2293,7 +2293,7 @@ To verify offline - Bank transfer acknowledgement page
     Click Element    id=off-edit-actions-next
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
     
-To Verify confirm password Field, User Should enter Password Details with minimu
+To Verify confirm password Field minimum length registration page
     [Tags]    Registration Page
     
     Jenkins browser launch
