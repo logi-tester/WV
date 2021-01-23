@@ -2682,7 +2682,18 @@ To Verify User should submit form with Valid Sponsor ID - End Child sexual abuse
     ${title}=    Get Text    xpath=//div[contains(@class,'gbl_banner_content')]//h2
     Run Keyword If    'End Child Sexual Abuse'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted    
     
+To Verify welcome banner should appear for Donor on Second login
+    [Tags]    Myworld Page    
 
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login    
+    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 2']    60s    
+    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
+    ${get_banner_text}=    Get Text    xpath=(//div[@class='banner-content'])[2]/h2
+    ${get_banner_text}=    Remove String Using Regexp    ${get_banner_text}    \,.*$
+    Run Keyword If    'Welcome Back'!='${get_banner_text}'    Fail    Welcome User message wasnt displayed
 
 
 *** Keywords ***
