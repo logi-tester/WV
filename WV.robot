@@ -2233,6 +2233,7 @@ To verify offline - UPI acknowledgement page
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Sleep   20s
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
@@ -2256,6 +2257,7 @@ To verify offline - Paytm acknowledgement page
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Sleep   20s
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
@@ -2279,6 +2281,7 @@ To verify offline - Bank transfer acknowledgement page
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
+    Sleep   20s
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
