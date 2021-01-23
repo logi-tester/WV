@@ -1466,7 +1466,7 @@ Verify user should Able to add profile details with Valid Data
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
 
-To verify that user can edit the City , State,& Country even though it is auto Populated or not
+To verify that user can edit the City State Country even though it is auto Populated
     [Tags]    Registration Page
     Jenkins browser launch
     Navigation banner close
