@@ -2662,6 +2662,25 @@ To Verify User should submit form with Valid Sponsor ID
     Run Keyword If    'Contact Us | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitte
 
 
+To Verify User should submit form with Valid Sponsor ID - End Child sexual abuse Page  
+    [Tags]    End Child Sexual Abuse campaign
+
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Ways to Give')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'End Child Sexual Abuse')] 
+    Sleep    10s    
+    Click Element    xpath=//label[@for='edit-are-you-a-partner-y']    
+    Input Text    id=edit-partner-id    asldkalsdglas
+    Click Element    id=edit-actions-submit
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-partner-id-error    
+    Run Keyword If    '${status}'!='True'    Fail    Alert message was not displayed    
+    ${title}=    Get Text    xpath=//div[contains(@class,'gbl_banner_content')]//h2
+    Run Keyword If    'End Child Sexual Abuse'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted    
+    
+
+
 
 *** Keywords ***
 Jenkins browser launch
