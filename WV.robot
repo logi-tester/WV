@@ -2127,7 +2127,9 @@ To verify increment/decrement functionality
     Cart addition check
     Cart reduce check
 
-To Verify Postal Code Field, User should enter Valid Postal Code details to - Auto populate
+To Verify Postal Code Field should Auto populate
+    [Tag]   Registration Page
+
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Register')]     
