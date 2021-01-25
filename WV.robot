@@ -2825,6 +2825,63 @@ To Sponsor 3 child - Direct flow – byspecific
     CCavenue payment - cart verification    ${Child_name}    ${camp_amt}    ${cart_quanity}
     
 
+To Sponsor 5 child - SI flow - byspecific
+    [Tags]    Sponsor a Child
+    
+    Jenkins browser launch
+    Banner Alert        
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Cart campaign check and delete
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
+    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
+    
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]    
+    ${child_details}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]/p
+    ${child_location}=    Get Text    xpath=(//div[@class='bySpecLocation'])[1]/p    
+    
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]
+    
+    ${child_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='overall_banner_pledge'][1]/div[2]/h2[contains(text(),'${Child_name}')]
+    Run Keyword If    'True'=='${child_status}'    Log To Console    "Child found in popup menus"    ELSE    Fail    "Child is mismatching in popup menu"
+    
+    ${recurring_payments}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//input[@id='ChkForSI'])[1]
+    Run Keyword If    'True'=='${recurring_payments}'    Log To Console    "Please use my card details for recurring payments is selected by default"    ELSE    Fail    "Please use my card details for recurring payments is not selected by default"
+    
+    ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
+    Run Keyword If    '0'=='${more_childrens}'    Log To Console    "Sponsor More Children is 0 by default "    ELSE    Fail    "Sponsor More Children is not 0 by default"
+   
+    #select child amount
+    ${camp_amt}=    Get Text    xpath=(//label[contains(text(),'3 Month')])[1]
+    ${camp_amt}=    Convert to price    ${camp_amt}    
+    Click Element    xpath=(//label[contains(text(),'3 Month')])[1]
+    #Click Element    id=ChkForSI    
+    Add to cart text change    
+    #sponsor child count
+    FOR    ${element}    IN RANGE    0    5
+        Click Element    xpath=(//div[@id='sip_increase'])[1]    
+    END    
+    ${child_count}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
+    Run Keyword If    '4'!='${child_count}'    Fail    Sponsored Child count doesnt macth
+    
+    #Add to cart buttton
+    Click Element    xpath=(//button[contains(@class,'si_modal_btn')])[1]
+    #Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input
+    
+    SI login
+    Sleep    10s    
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} are displayed"    
+    END
+
+
 
 *** Keywords ***
 Jenkins browser launch
