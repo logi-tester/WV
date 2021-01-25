@@ -2881,6 +2881,28 @@ To Sponsor 5 child - SI flow - byspecific
         Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} are displayed"    
     END
 
+To check whether filters work properly in magazine page
+    [Tags]    Media
+    
+    Jenkins browser launch
+    Navigation banner close    
+    Event Page menu check    Publication
+
+    Mouse Over    xpath=//h4[text()='Magazines']  
+    Click Element    xpath=//h4[text()='Magazines']/parent::div//a[text()='View more']    
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//h1[text()='Jeevan Sparsh']        
+    Run Keyword If    'True'!='${status}'    Fail    Jeevan Sparsh page doesnt load    ELSE    Log To Console    Jeevan Sparsh page loaded
+
+    Select From List By Label    id=edit-tid-1    Issue 41
+    Click Element    id=edit-submit-jeevan-sparsh-newsletter
+    
+    @{issues41}=    Get WebElements    xpath=//div[contains(@class,'Txt_ctnr')]/h3
+    FOR    ${element}    IN    @{issues41}
+        ${text}=    Get Text    ${element}
+        Log To Console    issue 41: ${text}
+    END
+
 
 
 *** Keywords ***
