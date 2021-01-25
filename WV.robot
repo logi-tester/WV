@@ -2736,6 +2736,32 @@ To verify payment success for ccavenue payment gateway - For other passport hold
     CCavenue payment success flow
     CCavenue payment - cart verification - dynamic    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
+To verify payment failure for cc avenue payment gateway - For other passport holder
+    [Tags]    Payment acknowledgment for other passport holder
+        
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login - Other passport user    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    #Select Hunger free campaign
+    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'Educate Children')]
+    Sleep    10s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button    
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'    ELSE    Log To Console    Payment gateway lists are matching    
+    END
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    CCAvenue payment failure flow
+    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -3597,4 +3623,20 @@ Cart campaign check and delete
     ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
     ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
+
+CCavenue payment - failure cart verification
+    [Arguments]    ${camp_name}    ${Camp_val}    ${cart_quanity}
+    
+    Sleep    20s    
+    Banner Alert        
+    ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
+    Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
+    ${campaign_quanity}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[2]//span
+    Run Keyword If    '${cart_quanity}'=='${campaign_quanity}'    Log To Console    "campaign quantity ${campaign_quanity} is displayed in payment page"    ELSE    Fail    "campaign quantity ${cart_quanity} was not displayed in payment page"   
+    # ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_val}')]
+    # Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"
+    ${camp_amt_paygt}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[3]
+    ${camp_amt_paygt}=    Remove String Using Regexp    ${camp_amt_paygt}    \\D        
+    ${camp_amt_paygt}=    Convert To Integer    ${camp_amt_paygt}
+    Run Keyword If    ${Camp_val}!=${camp_amt_paygt}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"    ELSE    Log To Console    ${camp_name} campaign amount is ${camp_amt_paygt}   
 
