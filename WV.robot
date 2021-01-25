@@ -2709,6 +2709,33 @@ To Verify Upcomming Events Banner Functionallity appear by selecting loaction
     ${location}=    Get Text    xpath=(//div[@class='evt_ltn_stry'])[2]
     Run Keyword If    'Chennai'!='${location}    Fail    Event was not showing based on the location
 
+To verify payment success for ccavenue payment gateway - For other passport holder
+    [Tags]    Payment acknowledgment for other passport holder
+        
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login - Other passport user    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    #Select Hunger free campaign
+    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'Educate Children')]
+    Sleep    10s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'    ELSE    Log To Console    Payment gateway lists are matching    
+    END
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    CCavenue payment success flow
+    CCavenue payment - cart verification - dynamic    ${camp_name}    ${camp_amt}    ${cart_quanity}
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -3565,3 +3592,9 @@ Kerala flood campaign
     Log To Console     Campain name is: ${campaign_name} donation is : ${campaign_amt}
     
     [Return]    ${campaign_name}    ${campaign_amt}
+
+Cart campaign check and delete    
+    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
+    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
+    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
+
