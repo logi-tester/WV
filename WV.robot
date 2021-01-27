@@ -3782,3 +3782,10 @@ CCavenue payment - failure cart verification
     ${camp_amt_paygt}=    Convert To Integer    ${camp_amt_paygt}
     Run Keyword If    ${Camp_val}!=${camp_amt_paygt}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"    ELSE    Log To Console    ${camp_name} campaign amount is ${camp_amt_paygt}   
 
+Convert to price
+    [Arguments]    ${price_std}
+
+    ${price_std}=    Remove String Using Regexp    ${price_std}    \\D        
+    ${price_std}=    Convert To Integer    ${price_std}
+    
+    [Return]    ${price_std}
