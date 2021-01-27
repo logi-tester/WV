@@ -3795,5 +3795,8 @@ Checkout flow campaign - HIV
     
     [Return]    ${camp_name}    ${camp_amt}
     
+Proceed to autopay text change
+    ${button_text}=    Get Text    xpath=//div[@class='SIPopBlock']/div[3]//button
+    Run Keyword If    'PROCEED TO AUTOPAY'=='${button_text}'    Log To Console    "Button changed to PROCEED TO AUTOPAY"    ELSE    Fail    "Button was not changed to  PROCEED TO AUTOPAY"    
     
 
