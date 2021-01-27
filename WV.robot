@@ -450,12 +450,14 @@ To verify search child and donate
     Rotator Child cart validation    ${child_name}    ${sel_child_amt}    
     View cart proceed button
     Login
-    CCavenue payment success flow
+    CCavenue payment success flow        
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Why do you want to quit - PopUp
     Click Element    xpath=.//li[@class='post_lgn']/a
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
     Click Element    xpath=//div[@id='donation']//a[contains(text(),'My Children')]    
     #Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Child')]
-    ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='chld-items itm-sltn-add']//div[@class='cld-nme']/p[contains(.,'${child_name}')]
+    ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[contains(@class,'chld-items itm-sltn-add')]//div[@class='cld-nme']/p[contains(.,'Manoj')]
     Run Keyword If    True!=${check_child_display}    Fail    Payment success, But child details doesnt appear in "My Children" tab
 
 To verify child was donated in between gap while user seraching
@@ -3007,7 +3009,7 @@ SI login
     ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
 
-CCavenue payment success flow
+CCavenue payment success flow    
     #Wait Until Element Is Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by AXIS BANK')]
     #Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by AXIS BANK')]/preceding-sibling::input
     #Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/preceding-sibling::input
@@ -3023,7 +3025,8 @@ CCavenue payment success flow
     Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
     Select From List By Value    id=netBankingBank    AvenuesTest
     Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
-    Click Element    xpath=.//input[@type='submit']
+    Click Element    xpath=.//input[@type='submit']      
+    Banner Alert
     ${payment_success_msg}=    Get Text    xpath=//div[@id='edit-completion-message']//h3
     Run Keyword If    'PAYMENT SUCCESSFULL'!='${payment_success_msg}'    Fail    "Payment successful page not display"
     
@@ -3789,3 +3792,9 @@ Convert to price
     ${price_std}=    Convert To Integer    ${price_std}
     
     [Return]    ${price_std}
+
+Why do you want to quit - PopUp
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[contains(text(),'Why do you want to quit?')]/preceding-sibling::span    
+    Run Keyword If    'True'=='${status}'    Click Element    xpath=//p[contains(text(),'Why do you want to quit?')]/preceding-sibling::span
+
