@@ -1707,19 +1707,26 @@ To select children through gender filter
     ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
     Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
     
+    Execute JavaScript    window.scrollTo(0, 400)
+
     ${gender}=    Get Text    xpath=//label[@for='gender-boy']/span[1]
     ${gender}=    Replace String    ${gender}    B    b
     Click Element    xpath=//label[@for='gender-boy']/span[1]      
+
+    Sleep    15s    
+
+    Wait Until Element Is Visible    xpath=//li[@class='pager__item']/a
+    Click Element    xpath=//li[@class='pager__item']/a            
     
-    Scroll Element Into View    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
-    
-    @{gender_list}=    Get WebElements    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
-    FOR    ${element}    IN    @{gender_list}
-        ${text}=    Get Text    ${element}  
-        Log To Console    ${text}      
-        Run Keyword If    '${text}'!='${gender}'    Fail    "Sorted was not based on the given gender"        
+    Sleep    10s        
+
+    ${gender_count}=    Get Element Count    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
+    Log To Console    No of childrens found: ${gender_count}
+    FOR    ${element}    IN RANGE    1    ${gender_count}+1
+        Mouse Over    xpath=(//div[@class='bySpecHoverContent'][1])[${element}]
+        ${gender_got}=    Get Text    xpath=(//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')])[${element}]    
+        Run Keyword If    '${gender_got}'!='${gender}'    Fail    "Sorted was not based on the given gender"        
     END
-    Log To Console    "Sorted based on the given gender'
 
 
 To verify uncheck and check allow auto debit, It should lead to SI flow
