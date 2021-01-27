@@ -1137,28 +1137,50 @@ Ensure overview campaign label in Back to school
     Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}    
 
 Ensure overview campaign label in Gift catalog
-    #Local browser launch
+    [Tags]    Gift catalog
+
     Jenkins browser launch
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Overview')])[1]
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(.,'Overview')]
     ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
-    Run Keyword If    ${overview_menus_list}!=13    Fail    "In Overview page menu list are mismatch"
-    Click Element    xpath=(.//div[@class='views-element-container']//a)[1]
+    Run Keyword If    ${overview_menus_list}!=12    Fail    "In Overview page menu list are mismatch"
+    Click Element    xpath=(//div[@class='views-element-container']//a)[1]
     Execute JavaScript    window.scrollTo(0, 100)
     Sleep    5s
-    Mouse Over    xpath=.//div[@class='gift-catelogue']/div[1]//div[@class='item-image']
-    Click Element    xpath=.//div[@class='gift-catelogue']/div[1]//input[@class='button--add-to-cart button realGiftsSponsor']
+    Mouse Over    xpath=(//div[@class='bySpecHoverContent'])[1]
+    Click Element    xpath=(//input[contains(@class,'realGiftsSponsor')])[1]
+    
     ${chck_sidediv_enable}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav'])[1]
     Run Keyword If    'True'!='${chck_sidediv_enable}'    Fail    "Side section information tab not display"
+    
+    ${camp_name}=    Get Text    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav'][1])[1]//div[@class='inner_banner_pledge_content']/h2
+    ${camp_name}=    Get Substring    ${camp_name}    0    11
     ${chck_val_sidebar}=    Get Text    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='price'])[1]
-    ${replace_priceval_spl_symbol}=    Replace String    ${chck_val_sidebar}    ,    ${EMPTY}
-    ${final_replace_val}=    Remove String    ${replace_priceval_spl_symbol}    X    ${EMPTY}
-    ${actual}=    Strip String    ${final_replace_val}${SPACE}
-    ${get_val_addtocart_button}=    Get Element Attribute    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]    value
-    ${remove_curlybrace}=    Fetch From Left    ${get_val_addtocart_button}    )
-    ${again_remove_curlybrace}=    Remove String    ${remove_curlybrace}    (    ${EMPTY}
-    ${expected}=    Strip String    ${SPACE}${again_remove_curlybrace}
-    Run Keyword If    '${actual}'!='${expected}'    Fail    "Gift Catalog label amount and 'Add to Cart' button amount are mismatch"
+    ${camp_amt_button}=    Remove String    ${chck_val_sidebar}    .00     
+    ${camp_amt}=    Convert to price    ${camp_amt_button}         
+
+    ${get_val_addtocart_button}=    Get Element Attribute    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]    value    
+    ${button_amt}=    Convert to price    ${get_val_addtocart_button}
+    Run Keyword If    ${camp_amt}!=${button_amt}    Fail    "Gift Catalog label amount and 'Add to Cart' button amount are mismatch"        
+
+    Add to cart functionality - Gift catalog
+
+    Clear Element Text    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/input)[1]
+
+    Click Element    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]    
+
+    Click Element    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav'][1])//a[contains(text(),'Proceed To Checkout')]    
+    
+    ${camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]
+    Run Keyword If    'True'!='${camp_viewcart}'    Fail    "${camp_name} campaign not display in view cart page"
+    ${camp_amt_viewcart}=    Get Text    xpath=//td[@class='views-field views-field-product-id'][contains(.,'Food Basket')]/following-sibling::td[3]
+    ${camp_amt_viewcart}=    Convert to price    ${camp_amt_viewcart}
+    Run Keyword If    ${camp_amt}!=${camp_amt_viewcart}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"   
+    ${cart_quanity}=    Get Element Attribute    xpath=//span[@class='dynamic-quantity']//input    value
+    
+    View cart proceed button
+    Login
+    CCavenue payment success flow
     
 Post login menus check
     #Local browser launch
@@ -3799,4 +3821,47 @@ Proceed to autopay text change
     ${button_text}=    Get Text    xpath=//div[@class='SIPopBlock']/div[3]//button
     Run Keyword If    'PROCEED TO AUTOPAY'=='${button_text}'    Log To Console    "Button changed to PROCEED TO AUTOPAY"    ELSE    Fail    "Button was not changed to  PROCEED TO AUTOPAY"    
     
+Add to cart functionality - Gift catalog
+    
+    Clear and input text - Gift catalog    ${lesser_amount}
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/p)[1]
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert is displayed for amount: ${lesser_amount}"    ELSE    Fail    "Minimum donation amount alert was not displayed for amount: ${lesser_amount}"
+    Add to cart button disable - Gift catalog
+    Sleep    5s
+    
+    Clear and input text - Gift catalog    ${minimum_amount}
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/p)[1]
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert was not displayed for amount: ${minimum_amount}"    ELSE    Fail    "Minimum donation amount alert is displaying for amount: ${minimum_amount}"
+    Add to cart button enabled - Gift catalog
+    Sleep    5s    
+
+    Clear and input text - Gift catalog    ${accurate_amount}
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/p)[1]
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert was not displayed for amount: ${accurate_amount}"    ELSE    Fail    "Minimum donation amount alert is displaying for amount: ${accurate_amount}"
+    Add to cart button enabled - Gift catalog
+    Sleep    5s        
+    
+    Clear and input text - Gift catalog    ${maximum_amount}        
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/p)[1]
+    Run Keyword If    'True'=='${status}'    Log To Console    "Minimum donation amount alert was not displayed for amount: ${maximum_amount}    ELSE    Fail    "Minimum donation amount alert is displaying for amount: ${maximum_amount}"
+    Add to cart button enabled - Gift catalog
+    Sleep    5s
+    
+    Clear and input text - Gift catalog    ${higher_amount}
+    ${max_value}=    Get Element Attribute    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/input)[1]    value
+    Run Keyword If    '100000'=='${max_value}'    Log To Console    "Given amount '${higher_amount}' is changed to : ${max_value} in webpage"    ELSE    Fail    "Given amount is not changed to "₹100000"      
+    Add to cart button enabled - Gift catalog
+    Sleep    5s
+
+Clear and input text - Gift catalog
+    [Arguments]    ${text}
+    Clear Element Text    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/input)[1]
+    Input Text    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='realgift_input_value commerce_manual_inputs']/input)[1]    ${text}
+
+Add to cart button disable - Gift catalog
+    ${button_status}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]
+    Run Keyword If    'True'=='${button_status}'    Log To Console    "Button is disabled"    ELSE    Fail    "Button was not disabled"
+Add to cart button enabled - Gift catalog
+    ${button_status}=    Run Keyword And Return Status    Element Should Be Enabled    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]
+    Run Keyword If    'True'=='${button_status}'    Log To Console    "Button is enabled"    ELSE    Fail    "Button was not enabled"
 
