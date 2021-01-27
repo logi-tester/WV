@@ -1851,52 +1851,20 @@ To Verify User should submit the form without entering any details - End Child s
     END 
     
 To sponsor a Help Hiv aids Campaign using Checkout flow
-    [Tags]    Help Hiv aids Campaign
-    
+    [Tags]    Help Hiv aids Campaign        
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Cart campaign check and delete            
     Mouser hover ways to give campaign    HIV & AIDS
     Sleep    5s            
-    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${camp_name}    ${camp_amt}    Checkout flow campaign - HIV
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
     CCavenue payment success flow 
-    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}    
-    
-# To sponsor a Help Hiv aids Campaign using Checkout flow
-    # Jenkins browser launch
-    # Click Element    xpath=.//a[contains(.,'My Gifts')]
-    # Banner Alert
-    # ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    # ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    # Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    # Mouser hover ways to give campaign    HIV & AIDS
-    # Sleep    5s    
-    # Click Element    xpath=.//div[@class='item-image']//img
-    # ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    # ${camp_name}=    Get Substring    ${camp_name}    11    14
-    # ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    # ${Camp_amt}=    Get Substring    ${label_val}    9    16    
-    # # ${del_month_get_val_only}=    Fetch From Right    ${label_val}    3 Months
-    # # ${camp_amt}=    Strip String    ${SPACE}${del_month_get_val_only}
-    # Log To Console    Final val is: ${camp_amt}
-    # Sleep    15s
-    # Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
-    # Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    # Click Element    id=ChkForSI
-    # Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    # Click Element    xpath=//a[@class='view_cart']
-    # ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
-    # Log To Console    View cart page campaign amount: ${view_cart_amount}    
-    # check in view cart page    ${camp_name}    ${camp_amt}
-    # View cart proceed button
-    # Login
-    # CCavenue payment success flow    
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}          
     
 To verify gallery and recent videos in my child page
     Jenkins browser launch
@@ -3797,4 +3765,35 @@ Why do you want to quit - PopUp
     Sleep    5s    
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[contains(text(),'Why do you want to quit?')]/preceding-sibling::span    
     Run Keyword If    'True'=='${status}'    Click Element    xpath=//p[contains(text(),'Why do you want to quit?')]/preceding-sibling::span
+
+Checkout flow campaign - HIV
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Get Substring    ${camp_name}    11    14
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
+    #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    Log To Console    Final val is: ${camp_amt}
+    Sleep    15s
+    
+    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    10s    
+    Click Element    id=ChkForSI
+    
+    Add to cart text change
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
+    Click Element    xpath=//a[@class='view_cart']
+    
+    # ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
+    # Log To Console    View cart page campaign amount: ${view_cart_amount}
+    
+    [Return]    ${camp_name}    ${camp_amt}
+    
+    
 
