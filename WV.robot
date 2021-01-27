@@ -2902,6 +2902,40 @@ To check whether filters work properly in magazine page
         Log To Console    issue 41: ${text}
     END
 
+Donate single campaign and to verify in make payment page
+
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign     Hungerfree 
+
+    Sleep    10s
+    Click Element    xpath=.//div[@class='add-to-cart-section']
+    ${amount_default}=    Get Element Attribute    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    value
+    Run Keyword If    '${amount_default}'!='1000'    Fail    Default amount 1000Rs was not present in hungerfree campaign page
+    Click Element    class=closebtn    
+
+    ${camp_name}    ${Camp_val}    one time campaign - Hunger Free campaign       
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}    
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')] 
+    Why do you want to quit - PopUp
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')]
+    @{element_count}=    Get WebElements    xpath=//div[@class='user_campheading']/a
+    FOR    ${element}    IN    @{element_count}
+        ${text}=    Get Text    ${element}    
+        ${status}=    Run Keyword And Return Status    Should Contain    ${text}    ${camp_name}
+        Run Keyword If    'True'!='${status}    Fail    Campaign not found    ELSE    Log    Campaign found in MyCampaign page    
+    END
+    Click Element    xpath=//li[@class='post_lgn']/a    
+    Click Element    xpath=//li[@id='oneTime-shwhde']
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='cld-nme']/p[contains(text(),'${camp_name}')]
+    Run Keyword If    '${status}'!='True'    Fail    Selected campaign was not added in mydonation bucket
+    
 
 
 *** Keywords ***
