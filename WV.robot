@@ -776,11 +776,13 @@ Just pre login check hungerfree campaign
     Click Element    class=close-survey    
     ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
     Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
-    ${hunger_get_input_val}=    One time Hunger Free campaign
+    ${hunger_get_input_val}    One time Hunger Free campaign
     Log To Console    Hunger campaign get input amount:${hunger_get_input_val}
     View cart proceed button
     Login
     CCavenue payment success flow
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    Why do you want to quit - PopUp
     Click Element    xpath=.//li[@class='post_lgn']/a
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
     Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
@@ -793,6 +795,8 @@ Just pre login check hungerfree campaign
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
     Log To Console    Overall final hunger free label val:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
+
+
 
 To download tax receipt 
     [Tags]    Tax Receipt Page
