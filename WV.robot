@@ -743,6 +743,8 @@ Just post login check hungerfree campaign
     View cart proceed button
     CCavenue payment success flow
     Click Element    xpath=.//li[@class='post_lgn']/a
+    Why do you want to quit - PopUp
+    Click Element    xpath=.//li[@class='post_lgn']/a
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
     Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
@@ -753,8 +755,7 @@ Just post login check hungerfree campaign
     ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
     Log To Console    Overall hunger free label amount:${get_final_amt}
-    Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
-
+    Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"    
 
    
 Just pre login check hungerfree campaign
