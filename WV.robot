@@ -697,32 +697,37 @@ To sponsor child using SI flow
         Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
     END
     
-Just post login check hungerfree campaign    
+Just post login check hungerfree campaign
+    [Tags]    Post Login 
+    
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login    
-    Wait Until Element Is Visible    xpath=//a[contains(.,'My Gifts')]    40s    
+    Direct login           
     Click Element    xpath=//a[contains(.,'My Gifts')]    
     Banner Alert            
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    Cart campaign check and delete
+    
+    #Make payment menu check
+    Click Element    xpath=//li[@class='post_lgn']/a    
+    Wait Until Element Is Visible    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    60s
+    Click Element    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    Click Element    xpath=//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
     Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not found"
-    #${Hungerfree_label_amt}=    Run Keyword If    'True'=='${hunger_free_label_chck}'    Get Text    xpath=.//div[@class='chld-items    ']//div[@class='cld-nme']/p[contains(.,'Hunger Free')]/parent::div/following-sibling::div/p[1]
-    ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
-    ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
-    ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
-    Log To Console    Before hunger free label amount:${final_label_amt}
-    Mouse Over    xpath=//li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=//li/a[contains(.,'Hungerfree')]
+    
+    ${Hungerfree_label_amt}=    Get Text    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
+    ${final_label_amt}=    Remove String Using Regexp    ${Hungerfree_label_amt}    \\D     
+    Log To Console    Before hunger free label amount:${final_label_amt}    
+    
+    #Move to hungerfree campaign    
+    Mouse hover ways to give after login    Hungerfree    
     Click Element    xpath=.//div[@class='add-to-cart-section']
-    ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    
+    ${hunger_camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
     ${split_Hunger_name_with_rightside}=    Remove String    ${hunger_camp_name}    Free
-    Log To Console    ${split_Hunger_name_with_rightside}    
+    Log To Console    ${split_Hunger_name_with_rightside}
+        
     ${get_input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
     Log To Console    Hunger campaign get input amount:${get_input_val}
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
@@ -2936,6 +2941,125 @@ Donate single campaign and to verify in make payment page
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='cld-nme']/p[contains(text(),'${camp_name}')]
     Run Keyword If    '${status}'!='True'    Fail    Selected campaign was not added in mydonation bucket
     
+sponsor single child and to verify in make payment page - My child
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Banner Alert    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Cart campaign check and delete
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Explore More')]
+    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
+    
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]    
+    ${child_details}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]/p
+    ${child_location}=    Get Text    xpath=(//div[@class='bySpecLocation'])[1]/p    
+    
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]
+    
+    ${child_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='overall_banner_pledge'][1]/div[2]/h2[contains(text(),'${Child_name}')]
+    Run Keyword If    'True'=='${child_status}'    Log To Console    "Child found in popup menus"    ELSE    Fail    "Child is mismatching in popup menu"
+    
+    ${recurring_payments}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//input[@id='ChkForSI'])[1]
+    Run Keyword If    'True'=='${recurring_payments}'    Log To Console    "Please use my card details for recurring payments is selected by default"    ELSE    Fail    "Please use my card details for recurring payments is not selected by default"
+    
+    ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
+    Run Keyword If    '0'=='${more_childrens}'    Log To Console    "Sponsor More Children is 0 by default "    ELSE    Fail    "Sponsor More Children is not 0 by default"
+   
+    #select child amount
+    ${camp_amt}=    Get Text    xpath=(//label[contains(text(),'1 Month')])[1]
+    ${camp_amt}=    Convert to price    ${camp_amt}    
+    Click Element    xpath=(//label[contains(text(),'1 Month')])[1]
+    Click Element    id=ChkForSI    
+    Add to cart text change            
+    
+    #Add to cart buttton
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+    Click Element    xpath=//div[@class='cart-buttons']/a[2]    
+    
+    ${cart_quanity}=    check in view cart page - Checkout flow    ${Child_name}    ${camp_amt}    
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${Child_name}    ${camp_amt}    ${cart_quanity}
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Why do you want to quit - PopUp    
+    Sleep    10s    
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    @{child_name}=    Get WebElements    xpath=//div[@class='child_title']
+    FOR    ${element}    IN    @{child_name}
+        ${child}=    Get Text    ${element}
+        Run Keyword If    '${child}'=='${Child_name}'    Log To Console    Child found in mychild page
+    END
+    
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')]
+
+    Wait Until Element Is Visible    xpath=//li[@id='campsec-shwhde']    60s   
+    Click Element    xpath=//li[@id='campsec-shwhde']    
+    ${Campaign_visible}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='cld-nme']/p[contains(text(),'${Child_name}')]        
+    Run Keyword If    '${Campaign_visible}'!='True'    Fail    Campaign is not showing in my campaign page    ELSE    Log To Console    Campaign is showing in my campaign page
+   
+To sponsor single campaign and to verify in make payment page
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    Mouser hover ways to give campaign    Save Malnourished Children
+    Sleep    5s
+    
+    Click Element    xpath=.//div[@class='item-image']//img        
+
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
+    #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    ${Camp_amt_sorted}=    Remove String Using Regexp    ${Camp_amt}    \\D 
+    Log To Console    Final val is: ${camp_amt}
+    Sleep    15s
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='price save-malnourished-cart-sec current']/label[contains(text(),'1 Year ')]        
+    Run Keyword If    '${status}'!='True'    Fail    Rs 7200 was not selected by default    ELSE    Log    Rs 7200 was selected by default
+
+    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    10s    
+    Click Element    id=ChkForSI
+    
+    Add to cart text change
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
+    Click Element    xpath=//a[@class='view_cart']
+
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification - dynamic    ${camp_name}    ${Camp_amt_sorted}    ${cart_quanity}
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')]
+    Why do you want to quit - PopUp    
+    Sleep    10s    
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')]
+    Wait Until Element Is Visible    xpath=//li[@id='campsec-shwhde']    60s   
+    Click Element    xpath=//li[@id='campsec-shwhde']    
+    ${Campaign_visible}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='cld-nme']/p[contains(text(),'${camp_name}')]        
+    Run Keyword If    '${Campaign_visible}'!='True'    Fail    Campaign is not showing in my campaign page    ELSE    Log To Console    Campaign is showing in my campaign page
+
 
 
 *** Keywords ***
