@@ -3066,6 +3066,32 @@ To sponsor single campaign and to verify in make payment page
     Run Keyword If    '${Campaign_visible}'!='True'    Fail    Campaign is not showing in my campaign page    ELSE    Log To Console    Campaign is showing in my campaign page
 
 
+To verify download tax receipt should not reflect in offline success page
+    
+    [Tags]    Payment Acknowlodgement
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Sleep   20s
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children    
+    ${camp_name}    ${camp_val}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}       
+    View cart proceed button    
+    Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
+    Scroll Element Into View    class=upihead
+    Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
+    Sleep    30s 
+    Click Element    id=off-edit-actions-next
+    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
+    Sleep    10s    
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//a[@id='downloadReceipt']        
+    Run Keyword If    '${status}'!=    Fail    Receipt available for offline payment
+
 
 *** Keywords ***
 Jenkins browser launch
