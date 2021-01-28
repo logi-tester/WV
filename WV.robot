@@ -24,7 +24,7 @@ ${hunger_camp_name_space}    Free
 ${month_input}    April
 ${year_input}    2020
 ${language_input}    English
-${user_name}      9999999992
+${user_name}      8056230775
 ${password}       test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
