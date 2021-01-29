@@ -2947,7 +2947,7 @@ sponsor single child and to verify in make payment page - My child
     Banner Alert    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Cart campaign check and delete
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Explore More')]
+    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
     Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
     
     ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
@@ -2974,6 +2974,7 @@ sponsor single child and to verify in make payment page - My child
    
     #select child amount
     ${camp_amt}=    Get Text    xpath=(//label[contains(text(),'1 Month')])[1]
+    ${Camp_amt}=    Get Substring    ${camp_amt}    9    16
     ${camp_amt}=    Convert to price    ${camp_amt}    
     Click Element    xpath=(//label[contains(text(),'1 Month')])[1]
     Click Element    id=ChkForSI    
@@ -2995,19 +2996,18 @@ sponsor single child and to verify in make payment page - My child
     Why do you want to quit - PopUp    
     Sleep    10s    
     Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
-    @{child_name}=    Get WebElements    xpath=//div[@class='child_title']
-    FOR    ${element}    IN    @{child_name}
-        ${child}=    Get Text    ${element}
-        Run Keyword If    '${child}'=='${Child_name}'    Log To Console    Child found in mychild page
-    END
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='child_title' and contains(text(),'${Child_name}')]        
+    Run Keyword If    'True'!='${status}'    Fail    Child was not visible in Mychild page
     
     Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')]
-
     Wait Until Element Is Visible    xpath=//li[@id='campsec-shwhde']    60s   
     Click Element    xpath=//li[@id='campsec-shwhde']    
     ${Campaign_visible}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='cld-nme']/p[contains(text(),'${Child_name}')]        
     Run Keyword If    '${Campaign_visible}'!='True'    Fail    Campaign is not showing in my campaign page    ELSE    Log To Console    Campaign is showing in my campaign page
    
+
+
 To sponsor single campaign and to verify in make payment page
     [Tags]    Make Payment Page
     
