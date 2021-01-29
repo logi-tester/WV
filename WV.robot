@@ -2221,17 +2221,17 @@ To verify offline - Cheque & DD acknowledgement page
     Sleep    30s    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children     
     ${camp_name}    ${camp_val}    Checkout flow campaign
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}           
-    View cart proceed button    
+    View cart proceed button 
+    Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
+    Sleep    10        
     Click Element    xpath=//label[@class='off-container' and contains(text(),'Cheque & DD')]/span
-    Sleep    30s 
+    Sleep    10s 
     Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
