@@ -2154,6 +2154,8 @@ To Verify Postal Code Field should Auto populate
     Log To Console    Country ${country} is auto populated
 
 To verify schedule a visit
+    [Tags]    MyChild Page
+    
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
@@ -2169,10 +2171,11 @@ To verify schedule a visit
     
     Sleep    10s    
     Click Element    xpath=//input[@class='schedulevisitdate hasDatepicker']    
-    Select From List By Label    class=ui-datepicker-month    Jan
+    Select From List By Label    class=ui-datepicker-month    Feb
     Select From List By Label    class=ui-datepicker-year    2021
-    Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day+7}']        
-    Click Element    xpath=//input[@class='schedulevisittime valid']
+    Click Element    xpath=//td[contains(@class,' ui-datepicker-days-cell-over ')]/a
+    #Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day+7}']        
+    Click Element    xpath=//input[@class='schedulevisittime']
     Click Element    xpath=//a[text()='10:00:00']        
     Click Element    xpath=(//label[@class='disableclick'])[1]    
     Click Element    xpath=//a[contains(@class,'sendrequest')]
