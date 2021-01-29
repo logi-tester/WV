@@ -3086,6 +3086,24 @@ To verify download tax receipt should not reflect in offline success page
     ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//a[@id='downloadReceipt']        
     Run Keyword If    '${status}'!=    Fail    Receipt available for offline payment
 
+To verify child timeline
+    [Tags]    MyChild Page    
+
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Click Element    xpath=(//div[@class='child_title'])[1]
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
+    
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log To Console    Details enabled for child:    ${text}    
+    END    
+    ${timeline}=    Get Element Attribute    xpath=//ul[@class='tab-mnu']/li[1]    class
+    Run Keyword If    '${timeline}'!='Active'    Fail    Cannot able to view timeline
 
 *** Keywords ***
 Jenkins browser launch
