@@ -24,8 +24,8 @@ ${hunger_camp_name_space}    Free
 ${month_input}    April
 ${year_input}    2020
 ${language_input}    English
-${user_name}      8056230775
-${password}       test
+${user_name}      9999999997
+${password}       password
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 @{email_validation}    asdasdad    934852    )*&%^&^%&^%    @gmail    @gmail.com    @@gmail.com    asdgasd.com    (^*&*^)*&@gmail.com
@@ -133,30 +133,30 @@ To register > User should fill all the required fields and click "create new acc
     #${chck_reg_worked}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='modal-content']
     #Run Keyword If    'True'!='${chck_reg_worked}'    Fail    "Register required fields are filled but OTP dialogue box not display"
     
-Verify User should able to edit profile with invalid data
-    [Tags]    My Profile
-    #Local browser launch
-    Jenkins browser launch
-    # Click Login icon in Header
-    Click Element    xpath=//span[@class='Sub_head_Login']
-    # Enter Email-Id or Ph no
-    Click Element    //input[@id='edit-name']
-    Input Text    //input[@id='edit-name']    logimohan@gmail.com
-    # Enter the Password
-    Click Element    //input[@id='edit-pass']
-    Input Password    //input[@id='edit-pass']    logi
-    Click Element    //button[text()='Login']
-    # Click Welcome Button
-    Click Element    //li[@class='welcomesponsor']
-    # Click My Profile
-    Click Link    //a[@href="/user"]
-    # Click Edit Profile
-    Click Element    //a[text()='Edit Profile']
-    # Edit pan Number
-    Input Text    //input[@id='edit-field-pan-number-0-value']    BJTPB90$@AA
-    # Enter valid PAN Number.
-    ${get_invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='edit-field-pan-0-value-error']
-    Run Keyword If    'True'!='${get_invalid_alert}'    Fail    "Enter invalid PAN number, alert is not display"
+# Verify User should able to edit profile with invalid data
+    # [Tags]    My Profile
+    # #Local browser launch
+    # Jenkins browser launch
+    # # Click Login icon in Header
+    # Click Element    xpath=//span[@class='Sub_head_Login']
+    # # Enter Email-Id or Ph no
+    # Click Element    //input[@id='edit-name']
+    # Input Text    //input[@id='edit-name']    logimohan@gmail.com
+    # # Enter the Password
+    # Click Element    //input[@id='edit-pass']
+    # Input Password    //input[@id='edit-pass']    logi
+    # Click Element    //button[text()='Login']
+    # # Click Welcome Button
+    # Click Element    //li[@class='welcomesponsor']
+    # # Click My Profile
+    # Click Link    //a[@href="/user"]
+    # # Click Edit Profile
+    # Click Element    //a[text()='Edit Profile']
+    # # Edit pan Number
+    # Input Text    //input[@id='edit-field-pan-number-0-value']    BJTPB90$@AA
+    # # Enter valid PAN Number.
+    # ${get_invalid_alert}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='edit-field-pan-0-value-error']
+    # Run Keyword If    'True'!='${get_invalid_alert}'    Fail    "Enter invalid PAN number, alert is not display"
 
 Click login link
     [Tags]    LOGIN
@@ -1238,25 +1238,25 @@ Post login ways to give submenu list verification
     # ${again_other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
     # Run Keyword If    'True'=='${again_other}'    Check indian passport holder
     
-Indian citizen should not change to Other passport holder
-    Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login
-    Navigation banner close
-    MyProfile Edit
-    ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
-    Log To Console    Indian is choosed:${ind}      
-    Run Keyword If    'True'=='${ind}'    Check other passport holder 
+# Indian citizen should not change to Other passport holder
+    # Jenkins browser launch
+    # Click Element    xpath=//a[contains(text(),'Login')]
+    # Direct login
+    # Navigation banner close
+    # MyProfile Edit
+    # ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
+    # Log To Console    Indian is choosed:${ind}      
+    # Run Keyword If    'True'=='${ind}'    Check other passport holder 
     
-Other passport holder should not change to Indian passport holder
-    Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login - Other passport user
-    Navigation banner close
-    MyProfile Edit
-    ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
-    Log To Console    Other is choosed:${other}  
-    Run Keyword If    'True'=='${other}'    Check indian passport holder
+# Other passport holder should not change to Indian passport holder
+    # Jenkins browser launch
+    # Click Element    xpath=//a[contains(text(),'Login')]
+    # Direct login - Other passport user
+    # Navigation banner close
+    # MyProfile Edit
+    # ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
+    # Log To Console    Other is choosed:${other}  
+    # Run Keyword If    'True'=='${other}'    Check indian passport holder
 
 
 To verify payment gateways for other passport holder
@@ -1361,16 +1361,16 @@ Max val alert in view cart page
     ${max_erro_msg}=    Run Keyword And Return Status    Element Should Be Visible    //div[@class='max-amount']
     Run Keyword If    'True'!='${max_erro_msg}'    Fail    "Donation is more than 10 lakhs and alert message doesnt appear"
     
-Verify User should able to Edit Existing profile details
-    [Tags]    My Profile
-    Jenkins browser launch
-    Click Element    xpath=//a[text()='Login']
-    Direct login
-    Sleep    20s    
-    Navigation banner close
-    MyProfile Edit
-    Scroll Element Into View    id=edit-submit
-    Click Element    id=edit-submit    
+# Verify User should able to Edit Existing profile details
+    # [Tags]    My Profile
+    # Jenkins browser launch
+    # Click Element    xpath=//a[text()='Login']
+    # Direct login
+    # Sleep    20s    
+    # Navigation banner close
+    # MyProfile Edit
+    # Scroll Element Into View    id=edit-submit
+    # Click Element    id=edit-submit   
     
 To verify app store and google play link appear in postlogin
     [Tags]    Page Footer
@@ -1406,21 +1406,15 @@ To verify my campaign details for existing user
     ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
     Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
 
-To verify my campaign details for new user
-    [Tags]    My Campaign
-    Jenkins browser launch
-    Navigation banner close
-    Registration - Indian
-    # Click Element    xpath=//a[contains(text(),'Login')]
-    # Click Element    id=edit-name
-    # Input Text    id=edit-name    john
-    # Click Element    id=edit-pass
-    # Input Text    id=edit-pass    kennedy
-    # Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'My Campaign')]    
-    ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
-    Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
+# To verify my campaign details for new user
+    # [Tags]    My Campaign
+    # Jenkins browser launch
+    # Navigation banner close
+    # Registration - Indian    
+    # Navigation banner close
+    # Click Element    xpath=//a[contains(text(),'My Campaign')]    
+    # ${campaign_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='userCampHolder']//a    
+    # Run Keyword If    'True'!='${campaign_status}'    Fail    'My campaign details are not visible'    ELSE    MyCampaign List
 
 To verify Overview page
     Jenkins browser launch
@@ -1455,70 +1449,70 @@ To Verify current emergency campaign in overview page
     END
     
     
-Verify user should Able to add profile details with Valid Data
-    [Tags]    My Profile    
+# Verify user should Able to add profile details with Valid Data
+    # [Tags]    My Profile    
 
-    Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login
-    Navigation banner close
-    MyProfile Edit
-    Click Element    xpath=//input[contains(@id,'edit-field-pan-number')]    
+    # Jenkins browser launch
+    # Navigation banner close
+    # Click Element    xpath=//a[contains(text(),'Login')]
+    # Direct login
+    # Navigation banner close
+    # MyProfile Edit
+    # Click Element    xpath=//input[contains(@id,'edit-field-pan-number')]    
     
-    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    NewLastName Test
-    Input Text    Xpath=//input[@id='edit-field-registeraddress-0-value']    New Test address1 Test
-    Input Text    xpath=//input[@id='edit-field-address-2-0-value']    New Test address2 Test
+    # Input Text    xpath=//input[@id='edit-field-last-name-0-value']    NewLastName Test
+    # Input Text    Xpath=//input[@id='edit-field-registeraddress-0-value']    New Test address1 Test
+    # Input Text    xpath=//input[@id='edit-field-address-2-0-value']    New Test address2 Test
     
-    Scroll Element Into View    id=edit-submit    
-    Click Element    id=edit-submit
+    # Scroll Element Into View    id=edit-submit    
+    # Click Element    id=edit-submit
 
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
+    # Mouse Over    xpath=.//li[@class='welcomesponsor']
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
 
-    ${last_Name}=    Get Text    xpath=//span[@class='userspanprofile']/div
-    Run Keyword If    'NewLastName Test'=='${last_Name}'    Log To Console    "LastName Updated in Edit profile"    ELSE    Fail    "Unable to edit Last Name"
-    ${address_1}=    Get Text    xpath=//li[@class='user_address']/div//div[2]
-    Run Keyword If    'New Test address1 Test'=='${address_1}'    Log To Console    "Address field 1 Updated in Edit profile"    ELSE    Fail    "Unable to edit Address field 1"
-    ${address_2}=    Get Text    xpath=(//span[@class='userspanprofile1'])[1]/div
-    Run Keyword If    'New Test address2 Test'=='${address_2}'    Log To Console    "Address field 2 Updated in Edit profile"    ELSE    Fail    "Unable to edit Address field 2"
+    # ${last_Name}=    Get Text    xpath=//span[@class='userspanprofile']/div
+    # Run Keyword If    'NewLastName Test'=='${last_Name}'    Log To Console    "LastName Updated in Edit profile"    ELSE    Fail    "Unable to edit Last Name"
+    # ${address_1}=    Get Text    xpath=//li[@class='user_address']/div//div[2]
+    # Run Keyword If    'New Test address1 Test'=='${address_1}'    Log To Console    "Address field 1 Updated in Edit profile"    ELSE    Fail    "Unable to edit Address field 1"
+    # ${address_2}=    Get Text    xpath=(//span[@class='userspanprofile1'])[1]/div
+    # Run Keyword If    'New Test address2 Test'=='${address_2}'    Log To Console    "Address field 2 Updated in Edit profile"    ELSE    Fail    "Unable to edit Address field 2"
     
-    MyProfile Edit
-    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    NewLastName
-    Input Text    Xpath=//input[@id='edit-field-registeraddress-0-value']    New Test address1
-    Input Text    xpath=//input[@id='edit-field-address-2-0-value']    New Test address2
+    # MyProfile Edit
+    # Input Text    xpath=//input[@id='edit-field-last-name-0-value']    NewLastName
+    # Input Text    Xpath=//input[@id='edit-field-registeraddress-0-value']    New Test address1
+    # Input Text    xpath=//input[@id='edit-field-address-2-0-value']    New Test address2
     
-    Scroll Element Into View    id=edit-submit    
-    Click Element    id=edit-submit
+    # Scroll Element Into View    id=edit-submit    
+    # Click Element    id=edit-submit
     
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
+    # Mouse Over    xpath=.//li[@class='welcomesponsor']
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
 
-To verify that user can edit the City State Country even though it is auto Populated
-    [Tags]    Registration Page
-    Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Register')]     
-    Sleep    10s          
-    Scroll Element Into View    class=singUpRegister    
-    #Click Element    xpath=//input[contains(@id,'edit-field-pin-code')]    
-    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123          
-    # ${chat_box}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='ChatOpen']/div[2]    
-    # Run Keyword If    'True'=='${chat_box}'    Click Element    xpath=//div[@id='ChatOpen']/div[2]     ELSE    Log To Console    "Chat Box was not present"
-    #Pincode
-    #Click Element    xpath=//input[contains(@id,'edit-field-pin-code')]    
-    Clear Element Text    xpath=//input[contains(@id,'edit-field-pin-code')]
-    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600012    
-    #City
-    #Click Element    xpath=//input[contains(@id,'edit-field-city')]    
-    Clear Element Text    xpath=//input[contains(@id,'edit-field-city')]
-    Input Text    xpath=//input[contains(@id,'edit-field-city')]    Chennai
-    #State
-    #Click Element    xpath=//input[contains(@id,'edit-field-regstate')]    
-    Clear Element Text    xpath=//input[contains(@id,'edit-field-regstate')]
-    Input Text    xpath=//input[contains(@id,'edit-field-regstate')]    Tamil Nadu    
-    #Country
-    Select From List By Label    id=edit-field-country    India 
+# To verify that user can edit the City State Country even though it is auto Populated
+    # [Tags]    Registration Page
+    # Jenkins browser launch
+    # Navigation banner close
+    # Click Element    xpath=//a[contains(text(),'Register')]     
+    # Sleep    10s          
+    # Scroll Element Into View    class=singUpRegister    
+    # #Click Element    xpath=//input[contains(@id,'edit-field-pin-code')]    
+    # Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123          
+    # # ${chat_box}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='ChatOpen']/div[2]    
+    # # Run Keyword If    'True'=='${chat_box}'    Click Element    xpath=//div[@id='ChatOpen']/div[2]     ELSE    Log To Console    "Chat Box was not present"
+    # #Pincode
+    # #Click Element    xpath=//input[contains(@id,'edit-field-pin-code')]    
+    # Clear Element Text    xpath=//input[contains(@id,'edit-field-pin-code')]
+    # Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600012    
+    # #City
+    # #Click Element    xpath=//input[contains(@id,'edit-field-city')]    
+    # Clear Element Text    xpath=//input[contains(@id,'edit-field-city')]
+    # Input Text    xpath=//input[contains(@id,'edit-field-city')]    Chennai
+    # #State
+    # #Click Element    xpath=//input[contains(@id,'edit-field-regstate')]    
+    # Clear Element Text    xpath=//input[contains(@id,'edit-field-regstate')]
+    # Input Text    xpath=//input[contains(@id,'edit-field-regstate')]    Tamil Nadu    
+    # #Country
+    # Select From List By Label    id=edit-field-country    India 
 
 To Verify Existing user Email Id and Phone Should not Accept for New User Registration
     [Tags]    Registration Page
