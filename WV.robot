@@ -3076,15 +3076,15 @@ To verify download tax receipt should not reflect in offline success page
     ${camp_name}    ${camp_val}    Checkout flow campaign
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}       
     View cart proceed button    
+    Sleep    10s    
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
-    Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
-    Sleep    30s 
+    #Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
+    Sleep    10s 
     Click Element    id=off-edit-actions-next
-    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
-    Sleep    10s    
+    CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}    
     ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//a[@id='downloadReceipt']        
-    Run Keyword If    '${status}'!=    Fail    Receipt available for offline payment
+    Run Keyword If    '${status}'!='True'    Fail    Receipt available for offline payment
 
 To verify child timeline
     [Tags]    MyChild Page    
