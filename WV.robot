@@ -1960,6 +1960,8 @@ To verify child profile
     Log To Console    Area development details: ${adp}    
 
 To verify schedule a call
+    [Tags]    MyChild Page    
+
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
@@ -1972,14 +1974,15 @@ To verify schedule a call
     
     ${CurrentDate}=    Get Current Date    result_format=%Y-%m-%d
     ${datetime}=    Convert Date    ${CurrentDate}    datetime
-    
-    Click Element    xpath=//input[@class='scheduleavcdate hasDatepicker']    
-    Select From List By Label    class=ui-datepicker-month    Jan
+    Sleep    5s    
+    Click Element    xpath=//input[@class='scheduleavcdate hasDatepicker']
+    Sleep    5s        
+    Select From List By Label    class=ui-datepicker-month    Feb
     Select From List By Label    class=ui-datepicker-year    2021
-    Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day+8}']        
-
+    Click Element    xpath=//td[contains(@class,' ui-datepicker-days-cell-over ')]/a    
+    #Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day}']        
     Click Element    class=scheduleavctime
-    Click Element    xpath=//a[text()='10:00:00']        
+    Click Element    xpath=//a[text()='10:00:00']      
     Click Element    xpath=(//label[@class='disableclick'])[2]    
     Click Element    xpath=//a[contains(@class,'sendcallrequest')]
 
