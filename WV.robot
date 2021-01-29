@@ -1187,19 +1187,19 @@ Ensure overview campaign label in Gift catalog
     CCavenue payment success flow
     
 Post login menus check
-    #Local browser launch
+    
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
     Sleep   15s
-    ${postloginheadermenu_list}=    Get Element Count    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
+    ${postloginheadermenu_list}=    Get Element Count    xpath=//div[@class='main-menu-inner']//nav[@data-menu-name='post-login-menu-section']/div/ul/li
     Log To Console    "No of Post login menus: ${postloginheadermenu_list}"    
     Run Keyword If    '${postloginheadermenu_list}'!='${postlogin_menu_list}'    Fail    "Post login header main menu list size are mismatch"
     #${postlogin_menu_txt}=    Get Text    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li
     FOR    ${postlogin_menu_txt}    IN    @{postlogin_homepage_header_chck_menu_txt}        
         Log To Console    "Post login menus are : ${postlogin_menu_txt}"
-        Mouse Over    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/*[contains(text(),'${postlogin_menu_txt}')]
-        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='main-menu-inner']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/*[contains(text(),'${postlogin_menu_txt}')]    
+        Mouse Over    xpath=//div[@class='main-menu-inner']//nav[@data-menu-name='post-login-menu-section']/div/ul/li/*[contains(text(),'${postlogin_menu_txt}')]
+        ${menu_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='main-menu-inner']//nav[@data-menu-name='post-login-menu-section']/div/ul/li/*[contains(text(),'${postlogin_menu_txt}')]    
         Run Keyword If    'True'!='${menu_txt_chck}'    Fail    "Postlogin home page ${postlogin_menu_txt} text are mismatch"
     END  
     
