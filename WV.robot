@@ -1575,7 +1575,7 @@ To sponsor a Save malnourished Children Campaign using Si payment Flow from Educ
     END
 
 To sponsor a Save malnourshied Children Campaign as a one time donation using Checkout flow
-    [Tags]    Save Malnourshied Children Campaign
+    [Tags]    Save Malnourished Children Campaign 
 
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
