@@ -502,9 +502,7 @@ To verify payment flow using failure banner
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
     Navigation banner close
-    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    60s    
-    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
-    Click Element    xpath=//a[@class='donate-now-btn-pending active']    
+    Payment failure check in home page banner - Click    content    
     CCavenue payment success flow
     Click Element    xpath=//div[@class='header_new_logo']//a/img  
     Banner Alert
@@ -4125,4 +4123,17 @@ Banner text check should be visible
         ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'${content}')]        
         Run Keyword If    '${status}'!='True'    Fail    Tax banner was not Visible    ELSE    Log To Console    Banner is visible   
     END
-
+    
+Payment failure check in home page banner - Click
+    [Arguments]    ${content}
+    
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    ${banner_count}=    Convert To Integer    ${banner_count}    
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        Capture Page Screenshot
+        ${status}=    Run Keyword And Return Status    Element Should Contain    xpath=//div[@class='banner-content']/a[contains(text(),'${content}')]    ${content}            
+        Run Keyword If    '${status}'=='True'    Click Element    xpath=//div[@class='banner-content']/a[contains(text(),'${content}')]    
+        Exit For Loop If    '${status}'=='True'
+    END            
+    Run Keyword If    '${status}'!='True'    Fail    Payment failure banner was not found
