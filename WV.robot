@@ -2231,26 +2231,26 @@ To verify offline - Cheque & DD acknowledgement page
 
 To verify offline - UPI acknowledgement page
     [Tags]    Payment Acknowlodgement for Indian Passport Holder
-    
+        
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Sleep   20s
+    Sleep    30s    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    Mouser hover ways to give campaign    Educate Children    
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children     
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}       
-    View cart proceed button    
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}           
+    View cart proceed button 
+    Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
+    Sleep    10        
     Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
-    Sleep    30s 
-    Click Element    id=off-edit-actions-next
+    Sleep    10s 
+    Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
 To verify offline - Paytm acknowledgement page
@@ -2260,21 +2260,21 @@ To verify offline - Paytm acknowledgement page
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Sleep   20s
+    Sleep    30s    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    Mouser hover ways to give campaign    Educate Children    
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children     
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}  
-    View cart proceed button    
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}           
+    View cart proceed button 
+    Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
+    Sleep    10        
     Click Element    xpath=//label[@class='off-container' and contains(text(),'Paytm')]/span
-    Sleep    30s 
-    Click Element    id=off-edit-actions-next
+    Sleep    10s 
+    Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
 
 To verify offline - Bank transfer acknowledgement page
@@ -2284,21 +2284,21 @@ To verify offline - Bank transfer acknowledgement page
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Sleep   20s
+    Sleep    30s    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    Mouser hover ways to give campaign    Educate Children    
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children     
     ${camp_name}    ${camp_val}    Checkout flow campaign
-    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}        
-    View cart proceed button    
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${Camp_val}           
+    View cart proceed button 
+    Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
+    Sleep    10        
     Click Element    xpath=//label[@class='off-container' and contains(text(),'Bank Transfer')]/span
-    Sleep    30s 
-    Click Element    id=off-edit-actions-next
+    Sleep    10s 
+    Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
     
 To Verify confirm password Field minimum length registration page
