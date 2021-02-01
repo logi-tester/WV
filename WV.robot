@@ -3099,6 +3099,18 @@ To verify child timeline
     ${timeline}=    Get Element Attribute    xpath=//ul[@class='tab-mnu']/li[1]    class
     Run Keyword If    '${timeline}'!='Active'    Fail    Cannot able to view timeline
 
+To verify banner should appear for Donator at the month of March 1st and April 31st
+    [Tags]    Tax Receipt Banner    
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Sleep    10s    
+    ${day}=    Get Current Date    result_format=%Y-%m-%d    
+    ${date}=    Convert Date    ${day}    datetime        
+    Run Keyword If    '${date.month}'=='3' or '${date.month}'=='4'    Tax Banner    ELSE    Log To Console    Current month is not March or April    
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4072,3 +4084,9 @@ Mouse hover ways to give after login
     
     Mouse Over    xpath=//li/span[contains(.,'Ways to Give')]
     Click Element    xpath=//li/a[contains(.,'${submenu}')]
+
+Tax Banner
+    #Element Should Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'80G receipt!')]    60s
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'80G receipt!')]
+    Run Keyword If    '${status}'!='True'    Fail    Tax banner was not Visible    ELSE    Log To Console    Banner visible        
+
