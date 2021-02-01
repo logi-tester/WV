@@ -441,7 +441,8 @@ To verify child rotator
     Child duplicate checking    ${check_sel_child}
  
 To verify search child and donate
-    #Local browser launch
+    [Tags]    Search functionality
+        
     Jenkins browser launch    
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
     Log To Console    Child name: ${child_name} and child amount: ${sel_child_amt} and also child img src: ${sel_child_imgsrc}
@@ -454,10 +455,9 @@ To verify search child and donate
     Click Element    xpath=.//li[@class='post_lgn']/a
     Why do you want to quit - PopUp
     Click Element    xpath=.//li[@class='post_lgn']/a
-    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
+    #Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
     Click Element    xpath=//div[@id='donation']//a[contains(text(),'My Children')]    
-    #Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Child')]
-    ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[contains(@class,'chld-items itm-sltn-add')]//div[@class='cld-nme']/p[contains(.,'${child_name}')]
+    ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[contains(@class,'chld-items')]//div[@class='cld-nme']/p[contains(.,'${child_name}')]
     Run Keyword If    True!=${check_child_display}    Fail    Payment success, But child details doesnt appear in "My Children" tab
 
 To verify child was donated in between gap while user seraching
