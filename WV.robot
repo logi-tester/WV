@@ -2441,7 +2441,7 @@ To Verify User should submit the form Using Invalid Email ID
     Run Keyword If    'Contact Us | World vision'!='${title}'    Fail    'Form was submitted'    ELSE    Log To Console    form was not submitted
 
 To Verify User should submit the form Using Invalid Email ID - End Child sexual abuse Page
-    [Tags]    End Child Sexual Abuse
+    [Tags]    End Child Sexual Abuse campaign
     
     Jenkins browser launch
     Navigation banner close   
