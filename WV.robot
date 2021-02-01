@@ -3109,7 +3109,8 @@ To verify banner should appear for Donator at the month of March 1st and April 3
     ${day}=    Get Current Date    result_format=%Y-%m-%d    
     ${date}=    Convert Date    ${day}    datetime  
     Log To Console    Current month is: ${date.month}
-    Run Keyword If    ${date.month}==3 or ${date.month}==4    Tax Banner    ELSE    Log To Console    Current month is not March or April    
+    Run Keyword If    ${date.month}==3 or ${date.month}==4    Banner text check should be visible    80G receipt    ELSE    Log To Console    Current month is not March or April 
+    
 
 To Verify Tax receipt banner is not appear for the Donator before 28th Feburary
     [Tags]    Tax Receipt Banner    
@@ -3121,7 +3122,7 @@ To Verify Tax receipt banner is not appear for the Donator before 28th Feburary
     ${day}=    Get Current Date    result_format=%Y-%m-%d    
     ${date}=    Convert Date    ${day}    datetime   
     Log To Console    Current month is: ${date.month}          
-    Run Keyword If    ${date.month}!=3 or ${date.month}!=4    Tax Banner should not visible    ELSE    Log To Console    Currrent month is March or April banner should be present    
+    Run Keyword If    ${date.month}!=3 or ${date.month}!=4    Banner text check should not visible    80G receipt    ELSE    Log To Console    Currrent month is March or April banner should be present
 
 
 *** Keywords ***
@@ -4098,14 +4099,23 @@ Mouse hover ways to give after login
     Mouse Over    xpath=//li/span[contains(.,'Ways to Give')]
     Click Element    xpath=//li/a[contains(.,'${submenu}')]
 
-Tax Banner
-    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'80G receipt!')]
-    Run Keyword If    '${status}'!='True'    Fail    Tax banner was not Visible    ELSE    Log To Console    Banner is visible
-
-Tax Banner should not visible
-    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']        
-    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'80G receipt!')]
-    Run Keyword If    '${status}'!='True'    Fail    Tax banner is Visible out of the month match and april    ELSE    Log To Console    Banner is not visible
+Banner text check should not visible
+    [Arguments]    ${content}
     
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'${content}')]
+        Run Keyword If    '${status}'!='True'    Fail    Tax banner is Visible out of the month match and april    ELSE    Log To Console    Banner is not visible   
+    END
+
+Banner text check should be visible
+    [Arguments]    ${content}
+    
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='banner-content']/h2[contains(text(),'${content}')]        
+        Run Keyword If    '${status}'!='True'    Fail    Tax banner was not Visible    ELSE    Log To Console    Banner is visible   
+    END
 
