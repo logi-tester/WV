@@ -4067,3 +4067,8 @@ Add to cart button enabled - Gift catalog
     ${button_status}=    Run Keyword And Return Status    Element Should Be Enabled    xpath=(.//div[@class='gift-catelogue']/div[1]//following-sibling::article/div[@id='mySidenav']//div[@class='kl_flood_sub_or_sec']/input)[1]
     Run Keyword If    'True'=='${button_status}'    Log To Console    "Button is enabled"    ELSE    Fail    "Button was not enabled"
 
+Mouse hover ways to give after login
+    [Arguments]    ${submenu}
+    
+    Mouse Over    xpath=//li/span[contains(.,'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'${submenu}')]
