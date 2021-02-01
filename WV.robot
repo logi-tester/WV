@@ -1592,7 +1592,7 @@ To sponsor a Save malnourshied Children Campaign as a one time donation using Ch
     CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Educate Children Campaign using Si payment Flow from Educate Children campaign page
-    [Tags]    Educate Children
+    [Tags]    Educate Children Campaign
     
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
