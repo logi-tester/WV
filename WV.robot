@@ -480,13 +480,11 @@ To verify child was donated in between gap while user seraching
     END
 
 Payment failure banner
-    #Local browser launch
+    [Tags]    Payment Failure banner Functionallity    
+
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
-    ${get_viewcart_list_count}=    Get Element Count    xpath=.//tbody/tr/td[starts-with(@headers,'view-product-')]
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}        
-    Log To Console    ${get_viewcart_list_count}    
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}
+    Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children
     Sleep    5s
     ${val_1}    ${val_2}    Checkout flow campaign
@@ -495,7 +493,8 @@ Payment failure banner
     Login
     CCAvenue payment failure flow
     Click Element    xpath=//div[@class='header_new_logo']//img
-    Payment failure check in home page banner
+    Sleep    10s    
+    Payment failure check in home page banner    ${button_failure_txt}
     
 To verify payment flow using failure banner
     Jenkins browser launch
@@ -3418,11 +3417,19 @@ CCAvenue payment failure flow
     Log To Console    Payment failure text: ${payment_msg}
     Run Keyword If    'PAYMENTFAILED'!='${payment_msg}'    Fail    "Payment Failure page not display"
 
-Payment failure check in home page banner       
-    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    60s    
-    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
-    ${get_payment_failure_txt}=    Get Text    xpath=//div[@class='swiper-wrapper']/div/div/p
-    Run Keyword If    '${banner_failure_txt}'!='${get_payment_failure_txt}'    Fail    After payment failure, failure section info not display in banner section
+Payment failure check in home page banner
+    [Arguments]    ${content}
+    
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    ${banner_count}=    Convert To Integer    ${banner_count}    
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        Capture Page Screenshot
+        ${status}=    Run Keyword And Return Status    Element Should Contain    xpath=//div[@class='banner-content']/a[contains(text(),'${content}')]    ${content}            
+        Run Keyword If    '${status}'=='True'    Log To Console    Payment Failure banner is visible    
+        Exit For Loop If    '${status}'=='True'
+    END            
+    Run Keyword If    '${status}'!='True'    Fail    Payment failure banner was not found
 
 Check child duplicate
     Local browser launch
