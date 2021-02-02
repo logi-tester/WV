@@ -51,6 +51,8 @@ ${checkout_payment_list_no}    4
 @{post_login_my_world_submenu_txt}
 @{post_login_waysto_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
 ${button_failure_txt}    TRY AGAIN NOW
+${pass1}    abc
+${pass2}    cba
 
 
 *** Test Cases ***
@@ -3235,6 +3237,30 @@ To verify Tax Receipt banner is not appear for Register user after May 1st
     Log To Console    Current month is: ${date.month}          
     Run Keyword If    ${date.month}!=3 or ${date.month}!=4    Banner text check should not visible    80G receipt    ELSE    Log To Console    Currrent month is March or April banner should be present
 
+To Verify Re-confirm password Field, User Should enter Password Details with min
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]     
+    Sleep    10s        
+    Password matching check    
+    Password doesnt matching check
+    #confirm password
+    Clear Element Text    id=edit-pass-pass1
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    ${pass1}    
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass1-error        
+    Run Keyword If    '${status}'=='True'    Log To Console    Page throughs error message for password minimum length    ELSE    Fail    Page doesnt throughs error message for password minimum length          
+    
+    Clear Element Text    id=edit-pass-pass2
+    Click Element    //label[@for='edit-pass-pass2']    
+    Input Text    id=edit-pass-pass2    ${pass1}    
+    Sleep    5s
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass2-error        
+    Run Keyword If    '${status}'=='True'    Log To Console    Page throughs error message for password minimum length    ELSE    Fail    Page doesnt throughs error message for password minimum length                  
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -4310,3 +4336,34 @@ Banner check birthday - should not visible
         Exit For Loop If    '${status}'=='True'
     END            
     Run Keyword If    '${status}'!='True'    Fail    Birthday banner is visible
+
+Password matching check
+    
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    ${pass1}
+    
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[@for='edit-pass-pass2']    
+    Input Text    id=edit-pass-pass2    ${pass1}
+
+    Sleep    3s         
+             
+    ${password}=    Get Element Attribute    xpath=//div[contains(@class,'password-confirm')]/span    class
+    Run Keyword If    '${password}'!='ok'    Fail    Password doesnt match icon visible    ELSE    Log To Console    Password is matching icon visible
+
+
+Password doesnt matching check
+    
+    Clear Element Text    id=edit-pass-pass1
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    ${pass1}
+    
+    Clear Element Text    id=edit-pass-pass2
+    Click Element    //label[@for='edit-pass-pass2']    
+    Input Text    id=edit-pass-pass2    ${pass2}
+    
+    Sleep    3s        
+    
+    ${password}=    Get Element Attribute    xpath=//div[contains(@class,'password-confirm')]/span    class
+    Run Keyword If    '${password}'!='error'    Fail    Password is matching icon visible    ELSE    Log To Console    Password doesnt match icon visible
