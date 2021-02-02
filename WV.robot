@@ -3122,6 +3122,21 @@ To Verify Tax receipt banner is not appear for the Donator before 28th Feburary
     Log To Console    Current month is: ${date.month}          
     Run Keyword If    ${date.month}!=3 or ${date.month}!=4    Banner text check should not visible    80G receipt    ELSE    Log To Console    Currrent month is March or April banner should be present
 
+To Verify Donor birthday banner should appear at the date before and after 15 days
+    [Tags]    Donor birthday banner functionallity
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouse Over    xpath=//li[@class='welcomesponsor']
+    Click Link    xpath=//a[@href="/user"]
+    
+    ${today_date}=    today date complete        
+    ${dob_coverted}=    get DOB from my profile    
+    ${days_have}=    no of days have calculation    ${dob_coverted}    ${today_date}    
+    Run Keyword If    ${days_have}<=15    Banner check birthday    SPREAD THE JOY    ELSE    Log To Console    Donor birthday was not today
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -4138,3 +4153,30 @@ Payment failure check in home page banner - Click
         Exit For Loop If    '${status}'=='True'
     END            
     Run Keyword If    '${status}'!='True'    Fail    Payment failure banner was not found
+
+today date complete    
+    ${today_date}=    Get Current Date    result_format=%Y-%m-%d
+    ${today_date}=    Convert Date    ${today_date}    datetime
+
+    [Return]    ${today_date}
+
+get DOB from my profile
+    ${dob}=    Get Text    xpath=//div[contains(@class,'date-of-birth')]/div[2]
+    ${year}=    Get Substring    ${dob}    6    11        
+    ${dob}=    Replace String    ${dob}    ${year}    2021    
+    ${dob_coverted}=    Convert Date    ${dob}    date_format=%m/%d/%Y    result_format=%Y/%m/%d
+    Log To Console    ${dob_coverted}    
+
+    [Return]    ${dob_coverted}
+
+no of days have calculation
+    [Arguments]    ${dob_coverted}    ${today_date}
+    
+    ${numberofdays}=    Subtract Date From Date    ${dob_coverted}    ${today_date}    verbose
+    ${days_have}=    Convert To String    ${numberofdays}
+    ${days_have}=    Remove String Using Regexp    ${days_have}    \\D
+    ${days_have}=    Convert To Integer    ${days_have}
+    
+    Log To Console    No of days ${days_have}        
+    
+    [Return]    ${days_have}
