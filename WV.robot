@@ -3237,7 +3237,7 @@ To verify Tax Receipt banner is not appear for Register user after May 1st
     Log To Console    Current month is: ${date.month}          
     Run Keyword If    ${date.month}!=3 or ${date.month}!=4    Banner text check should not visible    80G receipt    ELSE    Log To Console    Currrent month is March or April banner should be present
 
-To Verify Re-confirm password Field, User Should enter Password Details with min
+To Verify Reconfirm password Field User Should enter Password Details with min
     [Tags]    Registration Page
     
     Jenkins browser launch
