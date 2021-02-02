@@ -3223,6 +3223,17 @@ To Verify Last name Enter a valid String of Character with minimum length of 2
 
     Run Keyword If    ${length}>30    Fail    Maximum character exceeded in firstname field
 
+To verify Tax Receipt banner is not appear for Register user after May 1st
+    [Tags]    Tax Receipt Banner    
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Sleep    10s    
+    ${day}=    Get Current Date    result_format=%Y-%m-%d    
+    ${date}=    Convert Date    ${day}    datetime   
+    Log To Console    Current month is: ${date.month}          
+    Run Keyword If    ${date.month}!=3 or ${date.month}!=4    Banner text check should not visible    80G receipt    ELSE    Log To Console    Currrent month is March or April banner should be present
 
 
 *** Keywords ***
