@@ -3284,6 +3284,29 @@ To Verify Address 1 Field minimum and maximum
     ${length}=    Get Length    ${address_max}
     Run Keyword If    ${length}>60    Fail    Maximum character exceeded in firstname field    ELSE    Log To Console    Maximum length is maintained in address field    
 
+To Verify Address 2 Field minimum and maximum
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Register')]     
+    Sleep    10s
+    
+    ${address_random_min}=    Generate Random String    length=9
+    ${address_random_max}=    Generate Random String    length=65                        
+    
+    Input Text    xpath=//input[@id='edit-field-address-2-0-value']    ${address_random_min}  
+    Press Keys    xpath=//input[@id='edit-field-address-2-0-value']    TAB
+    ${address_min}=    Get Element Attribute    xpath=//input[@id='edit-field-address-2-0-value']    value
+    ${length}=    Get Length    ${address_min}
+    Run Keyword If    ${length}<10    Element Should Be Visible    id=edit-field-address-2-0-value-error    ELSE    Fail    Minimum length alert was not visible    
+                
+    Clear Element Text    xpath=//input[@id='edit-field-address-2-0-value']
+    Input Text    xpath=//input[@id='edit-field-address-2-0-value']    ${address_random_max}
+    ${address_max}=    Get Element Attribute    xpath=//input[@id='edit-field-address-2-0-value']    value
+    ${length}=    Get Length    ${address_max}
+    Run Keyword If    ${length}>60    Fail    Maximum length is exceeded in address field    ELSE    Log To Console    Maximum length is maintained in address field    
+
 
 *** Keywords ***
 Jenkins browser launch
