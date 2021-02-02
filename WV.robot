@@ -50,7 +50,8 @@ ${checkout_payment_list_no}    4
 @{Partnership_submenu_txt}    Corporate
 @{post_login_my_world_submenu_txt}
 @{post_login_waysto_give}    Overview    HoSh - Hope to Shine    Back to School    Gift Catalogue    Educate Children    Emergency Relief    HIV & AIDS    Hungerfree    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Where Most Needed
-${banner_failure_txt}   Sorry, your previous transaction has not gone through test
+${button_failure_txt}    TRY AGAIN NOW
+
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
