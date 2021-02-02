@@ -3137,6 +3137,23 @@ To Verify Donor birthday banner should appear at the date before and after 15 da
     ${days_have}=    no of days have calculation    ${dob_coverted}    ${today_date}    
     Run Keyword If    ${days_have}<=15    Banner check birthday    SPREAD THE JOY    ELSE    Log To Console    Donor birthday was not today
 
+To Verify Donor Birthday banner should not appear when donor does not have birthday
+    [Tags]    Donor birthday banner functionallity
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Mouse Over    xpath=//li[@class='welcomesponsor']
+    Click Link    xpath=//a[@href="/user"]
+    
+    ${today_date}=    today date complete
+        
+    ${dob_coverted}=    get DOB from my profile
+    
+    ${days_have}=    no of days have calculation    ${dob_coverted}    ${today_date}
+    
+    Run Keyword If    ${days_have}>15    Banner check birthday - should not visible    SPREAD THE JOY    ELSE    Log To Console    Today is donor birthday 
 
 *** Keywords ***
 Jenkins browser launch
@@ -4180,3 +4197,35 @@ no of days have calculation
     Log To Console    No of days ${days_have}        
     
     [Return]    ${days_have}
+
+Banner check birthday
+    [Arguments]    ${content}
+    
+    Click Element    xpath=//div[@class='header_new_logo']//a    
+    Sleep    15s    
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    ${banner_count}=    Convert To Integer    ${banner_count}    
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        Capture Page Screenshot
+        ${status}=    Run Keyword And Return Status    Element Should Contain    xpath=//div[@class='banner-content']/a[contains(text(),'${content}')]    ${content}            
+        Run Keyword If    '${status}'=='True'    Log To Console    Birthday banner is visible        
+        Exit For Loop If    '${status}'=='True'
+    END            
+    Run Keyword If    '${status}'!='True'    Fail    Birthday banner was not visible
+
+Banner check birthday - should not visible
+    [Arguments]    ${content}
+    
+    Click Element    xpath=//div[@class='header_new_logo']//a    
+    Sleep    15s    
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    ${banner_count}=    Convert To Integer    ${banner_count}    
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        Capture Page Screenshot
+        ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//div[@class='banner-content']/a[contains(text(),'${content}')]
+        Run Keyword If    '${status}'=='True'    Log To Console    Birthday banner is not visible        
+        Exit For Loop If    '${status}'=='True'
+    END            
+    Run Keyword If    '${status}'!='True'    Fail    Birthday banner is visible
