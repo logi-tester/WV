@@ -2687,16 +2687,12 @@ To Verify User should submit form with Valid Sponsor ID - End Child sexual abuse
     
 To Verify welcome banner should appear for Donor on Second login
     [Tags]    Myworld Page    
-
     Jenkins browser launch
     Navigation banner close
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login    
-    Wait Until Element Is Visible    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 2']    60s    
-    Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[@aria-label='Go to slide 1']    
-    ${get_banner_text}=    Get Text    xpath=(//div[@class='banner-content'])[2]/h2
-    ${get_banner_text}=    Remove String Using Regexp    ${get_banner_text}    \,.*$
-    Run Keyword If    'Welcome Back'!='${get_banner_text}'    Fail    Welcome User message wasnt displayed
+    Sleep    10s    
+    Welcome user banner text    Welcome
 
 To Verify Upcomming Events Banner Functionallity appear by selecting loaction
     [Tags]    Myworld Page    
@@ -4535,3 +4531,19 @@ Axis payment failure flow
     Element Should Be Visible    id=btnCancel    30s
     Click Element    id=btnCancel     
     Alert Should Be Present    action=ACCEPT    timeout=30s
+
+Welcome user banner text
+    [Arguments]    ${content}
+    
+    Click Element    xpath=//div[@class='header_new_logo']//a    
+    Sleep    15s    
+    ${banner_count}=    Get Element Count    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide')]
+    ${banner_count}=    Convert To Integer    ${banner_count}    
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[@class='swiper-wrapper']/following-sibling::div//span[contains(@aria-label,'Go to slide ${element}')]
+        Capture Page Screenshot
+        ${status}=    Run Keyword And Return Status    Element Should Contain    xpath=//div[@class='banner-content']/h2[contains(text(),'${content}')]    ${content}            
+        Run Keyword If    '${status}'=='True'    Log To Console    Welcome user banner is visible        
+        Exit For Loop If    '${status}'=='True'
+    END            
+    Run Keyword If    '${status}'!='True'    Fail    Welcome user banner was not visible
