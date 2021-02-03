@@ -3318,6 +3318,32 @@ To verify How do you Know about World Vision select from the options provided in
         Run Keyword If    '${status}'=='True'    Select From List By Label    id=edit-field-how-do-you-know-about-worl    ${element}    ELSE    Fail    "${element} is not in how do you know dropdown"
     END 
 
+To verify payment failure for HDFC payment gateway - For indian passport holder
+    [Tags]    Payment Acknowlodgement for Indian Passport Holder          
+      
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    #Select Hunger free campaign
+    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'Educate Children')]
+    Sleep    10s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button    
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    4!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'    ELSE    Log To Console    Payment gateway lists are matching    
+    END
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    HDFC payment failure flow    
+    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
