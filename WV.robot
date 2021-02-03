@@ -53,7 +53,7 @@ ${checkout_payment_list_no}    4
 ${button_failure_txt}    TRY AGAIN NOW
 ${pass1}    abc
 ${pass2}    cba
-
+@{how_do_you_know}    Tele-Caller    Fundraising Volunteer    Existing Donor    Friends and Family    Online Ads    Others
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
@@ -3307,6 +3307,16 @@ To Verify Address 2 Field minimum and maximum
     ${length}=    Get Length    ${address_max}
     Run Keyword If    ${length}>60    Fail    Maximum length is exceeded in address field    ELSE    Log To Console    Maximum length is maintained in address field    
 
+To verify How do you Know about World Vision select from the options provided in
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Navigation banner close    
+    Click Element    xpath=//a[contains(text(),'Register')]    
+    FOR    ${element}    IN    @{how_do_you_know}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-field-how-do-you-know-about-worl 
+        Run Keyword If    '${status}'=='True'    Select From List By Label    id=edit-field-how-do-you-know-about-worl    ${element}    ELSE    Fail    "${element} is not in how do you know dropdown"
+    END 
 
 *** Keywords ***
 Jenkins browser launch
