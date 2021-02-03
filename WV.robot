@@ -3344,6 +3344,33 @@ To verify payment failure for HDFC payment gateway - For indian passport holder
     HDFC payment failure flow    
     CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
+To verify payment failure for Axis bank payment gateway - For indian passport holder
+    [Tags]    Payment Acknowlodgement for Indian Passport Holder          
+      
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    #Select Hunger free campaign
+    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
+    Click Element    xpath=//li/a[contains(.,'Educate Children')]
+    Sleep    10s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button    
+    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    4!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'    ELSE    Log To Console    Payment gateway lists are matching    
+    END
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    Axis payment failure flow    
+    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4218,7 +4245,13 @@ CCavenue payment - failure cart verification
     [Arguments]    ${camp_name}    ${Camp_val}    ${cart_quanity}
     
     Sleep    20s    
-    Banner Alert        
+    Banner Alert                  
+    ${payment_msg}=    Get Text    xpath=.//div[@class='content block-content']/div/h3/span
+    ${Payment_msg}=    Remove String Using Regexp    ${payment_msg}    \\W*\\d*
+    #Log To Console    Payment failure text: ${payment_msg}    
+    Run Keyword If    'PAYMENTFAILED'!='${payment_msg}'    Fail    "Payment Failure page not display"     
+    ${order_id}=    Get Text    xpath=//div[@class='content block-content']/div/h3/p         
+    Log To Console    ${order_id}     
     ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
     Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name} is displayed in payment page"    ELSE    Fail    "${camp_name} was not displayed in payment page"      
     ${campaign_quanity}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[2]//span
@@ -4464,3 +4497,13 @@ HDFC payment failure flow
     Click Element    id=hdfc_credit
     Sleep    5s      
     Click Element    id=cancel_btn
+
+Axis payment failure flow
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//input[contains(@id,'edit-payment-information-payment-method')]/following-sibling::span[contains(text(),'${checkout_payment_list_text}[1]')]
+    Run Keyword If    '${status}'=='True'    Click Element    xpath=//span[contains(text(),'Powered by AXIS BANK')]//preceding-sibling::input    ELSE    Log    POWERED BY HDFC BANK is not dispalyed
+    Sleep    20s        
+    Click Element    xpath=//div[@id='edit-actions']/button[contains(text(),'pay my contribution')]               
+    Element Should Be Visible    id=btnCancel    30s
+    Click Element    id=btnCancel     
+    Alert Should Be Present    action=ACCEPT    timeout=30s
