@@ -4449,3 +4449,18 @@ Password doesnt matching check
     
     ${password}=    Get Element Attribute    xpath=//div[contains(@class,'password-confirm')]/span    class
     Run Keyword If    '${password}'!='error'    Fail    Password is matching icon visible    ELSE    Log To Console    Password doesnt match icon visible
+
+HDFC payment failure flow
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//input[contains(@id,'edit-payment-information-payment-method')]/following-sibling::span[contains(text(),'${checkout_payment_list_text}[2]')]
+    Run Keyword If    '${status}'=='True'    Click Element    xpath=//span[contains(text(),'POWERED BY HDFC BANK')]//preceding-sibling::input    ELSE    Log    POWERED BY HDFC BANK is not dispalyed
+    Sleep    20s    
+    Click Element    xpath=//div[@id='edit-actions']/button[contains(text(),'pay my contribution')]
+    
+    Wait Until Element Is Visible    xpath=//li[contains(text(),'Pay with')]    30s    
+    Click Element    xpath=//li[contains(text(),'Pay with')]    
+    Sleep    5s        
+    Mouse Over    id=hdfc_credit
+    Click Element    id=hdfc_credit
+    Sleep    5s      
+    Click Element    id=cancel_btn
