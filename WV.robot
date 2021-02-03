@@ -3370,6 +3370,34 @@ To verify payment failure for Axis bank payment gateway - For indian passport ho
     Axis payment failure flow    
     CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
+To verify cart data is maintaining for existing user
+    [Tags]    Cart functionality
+    
+    Jenkins browser launch
+    Banner Alert        
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login        
+    Click Element    xpath=.//a[contains(.,'My Gifts')]    
+    Cart campaign check and delete
+    Sleep    10    
+    
+    Mouser hover ways to give campaign    Educate Children
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    
+    Sleep    10s        
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
+    Click Element    class=close-survey    
+    
+    ${title}=    Get Title    
+    Run Keyword If    '${title}'=='Log in | World vision'    Log To Console    User logged out and redirected to login page    ELSE    Fail    User does not logged out    
+    
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=.//a[contains(.,'My Gifts')]             
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+
 
 *** Keywords ***
 Jenkins browser launch
