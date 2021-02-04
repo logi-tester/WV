@@ -3390,6 +3390,25 @@ To verify payment failure for HDFC payment gateway - For other passport holder
     HDFC payment failure flow    
     CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
+To verify payment using SI with existing onetime donation payment in cart
+    [Tags]    Multiple payment functionality
+    
+    Jenkins browser launch
+    Navigation banner close
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    ${camp_name}    ${Camp_val}    one time campaign
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}        
+    Mouse hover ways to give after login    Educate Children
+    SI flow campaign
+    SI payment gateway check    
+    
+    Click Element    xpath=//div[contains(@class,'net-banking-payment other-bank-opt debit')]    
+    Click Element    xpath=//button[text()='Proceed']
 
 *** Keywords ***
 Jenkins browser launch
@@ -3580,8 +3599,10 @@ SI flow campaign
     Click Element    xpath=//button[@class='btn btn-primary si_modal_btn']
     
 one time campaign
+    Sleep    10s    
     Click Element    xpath=.//div[@class='item-image']//img
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    Sleep    5s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Click Element    id=ChkForSI
     
@@ -3600,6 +3621,7 @@ one time campaign
 
     Click Element    xpath=//a[@class='view_cart']
     ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
+    
     [Return]    ${camp_name}    ${camp_val}
     
 One time Hunger Free campaign
@@ -4576,7 +4598,16 @@ View Myprofile
     Mouse Over    xpath=.//li[@class='welcomesponsor']
     Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
 
-Nationality Check
-        
+Nationality Check        
     ${Nationality}=    Get text    xpath=//div[contains(text(),'Nationality')]/following-sibling::div
     Run Keyword If    'Other Passport Holder'!='${Nationality}'    Fail    "User is a: ${Nationality}"
+
+SI payment gateway check
+    Sleep    15s    
+    ${price_SI}=    Get Text    id=TotalAmtOfOrder
+    ${price_SI}=    Convert to price    ${price_SI}
+    Log To Console    campaign amount is: ${price_SI}         
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} is displayed"    
+    END
