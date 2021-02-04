@@ -1279,50 +1279,23 @@ To verify payment gateways for other passport holder
     Hdfc bank payment gateway check            
 
 To verify payment gateways for indian citizen
-    #Local browser launch
+    [Tags]    Payment gateway Based on Nationality
+
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
-    Click Element    xpath=.//a[contains(.,'Edit Profile')]
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
-    ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
-    Run Keyword If    'True'!='${ind}'    Fail    "By default Indian passport holder should be checked but not like that"
+    View Myprofile
+    Nationality Check - Indian    
     Click Element    xpath=.//a[contains(.,'My Gifts')]    
     Banner Alert   
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}          
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}    
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(text(),'Ways to Give')]
-    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(text(),'Educate Children')]
+    Cart campaign check and delete
+    Mouse hover ways to give after login    Educate Children    
     Sleep    5s
-    Click Element    xpath=.//div[@class='item-image']//img
-    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div        
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Sleep    15s
-    Click Element    id=ChkForSI
-    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
-    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Click Element    xpath=//a[@class='view_cart']    
-    Banner Alert
-    ${replace_val_educate_camp}=    Replace String    ${edu_child_amt}    4    4,
-    ${edu_child_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id' and contains(text(),'${educate_chld_camp_name}')]
-    Run Keyword If    'True'!='${edu_child_camp_viewcart}'    Fail    "Educate children campaign not display in view cart page"
-    ${chck_edu_child_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val_educate_camp}')]
-    Run Keyword If    'True'!='${chck_edu_child_camp_amt_viewcart}'    Fail    "Educate children campaign amount are not display/mismatch in view cart page"
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
-    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
-    Run Keyword If    5!=${checkout_payment_list}    Fail    "Checkout flow Indian passport holder payment list are mismatch"
-    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Indian passport holder Payment Gateway Powered by ${bank_txt} text is mismatch'
-    END
-    FOR    ${checkout_bank_txt}    IN    @{checkout_payment_list_ind_passport}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/label[contains(.,'${checkout_bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Indian passport holder Payment Gateway ${bank_txt} text is mismatch'
-    END
+    Indian payment gateway check - payment type  
+    Indian payment gateway check - payment gateway
  
 Max val alert in view cart page
     Jenkins browser launch
@@ -4611,3 +4584,11 @@ SI payment gateway check
         ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
         Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} is displayed"    
     END
+    
+View Myprofile    
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=//ul[@class='mypro-lgot']/li/a[contains(.,'My Profile')]
+    
+Nationality Check - Indian        
+    ${Nationality}=    Get text    xpath=//div[contains(text(),'Nationality')]/following-sibling::div
+    Run Keyword If    'Indian Citizen'!='${Nationality}'    Fail    "User is a: ${Nationality}"    
