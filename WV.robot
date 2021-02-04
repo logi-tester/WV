@@ -3394,6 +3394,24 @@ To verify cart data is maintaining for existing user
     Click Element    xpath=.//a[contains(.,'My Gifts')]             
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
 
+To verify payment failure for HDFC payment gateway - For other passport holder
+    [Tags]    Payment Acknowledgment for Other Passport Holder
+
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login - Other passport user    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete
+    Mouse hover ways to give after login    Educate Children
+    ${camp_name}    ${camp_amt}    other passport user flow
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    Hdfc bank payment gateway check
+    HDFC payment failure flow    
+    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -4547,3 +4565,33 @@ Welcome user banner text
         Exit For Loop If    '${status}'=='True'
     END            
     Run Keyword If    '${status}'!='True'    Fail    Welcome user banner was not visible
+
+other passport user flow    
+    Click Element    xpath=.//div[@class='item-image']//img
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
+    #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    Log To Console    Final val is: ${camp_amt}
+    Sleep    15s
+    
+    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    10s       
+    
+    Add to cart text change
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+
+    Click Element    xpath=//a[@class='view_cart']        
+    
+    [Return]    ${camp_name}    ${camp_amt}
+
+Hdfc bank payment gateway check    
+    ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'POWERED BY HDFC BANK')]
+    Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    HDFC payment gateway doesnt appear    ELSE    Log To Console    HDFC payment gateway is visible
+
+
