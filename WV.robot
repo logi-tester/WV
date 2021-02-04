@@ -1258,47 +1258,25 @@ Other passport holder should not change to Indian passport holder
     Log To Console    Other is choosed:${other}  
     Run Keyword If    'True'=='${other}'    Check indian passport holder
 
-
 To verify payment gateways for other passport holder
+    [Tags]    Payment gateway Based on Nationality
+
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login - Other passport user
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
-    Click Element    xpath=.//a[contains(.,'Edit Profile')]
-    Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
-    ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
-    Run Keyword If    'True'!='${other}'    Fail    "By default Other passport holder should be checked but not like that"
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Element    xpath=.//a[contains(.,'My Gifts')]    
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
-    #Select Hunger free campaign
-    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
-    Sleep    10s
-    Click Element    xpath=.//div[@class='add-to-cart-section']
-    ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${split_Hunger_name_with_rightside}=    Remove String    ${hunger_camp_name}    Free
-    ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
-    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
-    Click Element    xpath=//a[@class='view_cart']
-    Banner Alert
-    ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${split_Hunger_name_with_rightside}[0]')]
-    Run Keyword If    'True'!='${hunger_camp_viewcart}'    Fail    "Hunger Free campaign not display in view cart page"
-    ${replace_val}=    Replace String    ${input_val}    1    1,
-    ${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val}')]
-    Run Keyword If    'True'!='${hunger_camp_amt_viewcart}'    Fail    "Hunger Free campaign amount is mismatch in view cart page"
+    Cart campaign check and delete
+    View Myprofile    
+    Nationality Check        
+    # ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
+    # Run Keyword If    'True'!='${other}'    Fail    "By default Other passport holder should be checked but not like that"    
+    Mouse hover ways to give after login    Educate Children
+    ${camp_name}    ${camp_amt}    other passport user flow
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
-    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
-    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
-    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
-    END
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    Hdfc bank payment gateway check            
 
 To verify payment gateways for indian citizen
     #Local browser launch
@@ -4594,4 +4572,11 @@ Hdfc bank payment gateway check
     ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'POWERED BY HDFC BANK')]
     Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    HDFC payment gateway doesnt appear    ELSE    Log To Console    HDFC payment gateway is visible
 
+View Myprofile
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
 
+Nationality Check
+        
+    ${Nationality}=    Get text    xpath=//div[contains(text(),'Nationality')]/following-sibling::div
+    Run Keyword If    'Other Passport Holder'!='${Nationality}'    Fail    "User is a: ${Nationality}"
