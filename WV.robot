@@ -505,7 +505,7 @@ To verify payment flow using failure banner
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
     Navigation banner close
-    Payment failure check in home page banner - Click    content    
+    Payment failure check in home page banner - Click   ${button_failure_txt}
     CCavenue payment success flow
     Click Element    xpath=//div[@class='header_new_logo']//a/img  
     Banner Alert
