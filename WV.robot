@@ -980,15 +980,15 @@ Multiple deletion
     ${check_cartpage_after_complete_del}=   Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
     Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart is Empty' text not display"
 
-To add child to a cart
-    #Local browser launch
+To add child to a cart            
+
     Jenkins browser launch
     #Execute Javascript    window.scrollTo(0, 600)
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
     Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}        
     Rotator Payment validation    ${sel_child_imgsrc}
     Click Element    xpath=//a[@class='view_cart']
-    Rotator Child cart validation    ${child_name}    ${sel_child_amt}"
+    Rotator Child cart validation    ${child_name}    ${sel_child_amt}
 
 SI Flow payment gateway list and text check
     #Local browser launch
