@@ -3805,22 +3805,19 @@ Direct login - Other passport user
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]    
     
 MyProfile Edit
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My Profile')]
+    View Myprofile
     Click Element    xpath=.//a[contains(.,'Edit Profile')]
     Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
    
 Check other passport holder        
     ${OtherPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//label[@for='othctzn']        
     Run Keyword If    'True'!='${OtherPassStatus}'    Fail    "INDIAN User can able to select other passport user"
-    Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath=//a[contains(text(),'My Profile')]    
+    View Myprofile    
 
 Check indian passport holder
     ${indianPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//input[@id='indctzn']        
     Run Keyword If    'True'!='${indianPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
-    Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath=//a[contains(text(),'My Profile')]  
+    View Myprofile 
     
 Navigation banner close   
     ${nav_banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='mySidenav']/a    
