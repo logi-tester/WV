@@ -1656,18 +1656,19 @@ To select children through gender filter
     Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
     
     Execute JavaScript    window.scrollTo(0, 400)
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//label[@for='gender-boy']/span[1]        
+    Run Keyword If    '${status}'!='True'    Fail    There is no child currently or Boy gender is not available
 
     ${gender}=    Get Text    xpath=//label[@for='gender-boy']/span[1]
     ${gender}=    Replace String    ${gender}    B    b
     Click Element    xpath=//label[@for='gender-boy']/span[1]      
-
-    Sleep    15s    
-
-    Wait Until Element Is Visible    xpath=//li[@class='pager__item']/a
+    Sleep    15s
+        
+    Wait Until Element Is Visible    xpath=//li[@class='pager__item']/a    60s
     Click Element    xpath=//li[@class='pager__item']/a            
     
     Sleep    10s        
-
     ${gender_count}=    Get Element Count    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
     Log To Console    No of childrens found: ${gender_count}
     FOR    ${element}    IN RANGE    1    ${gender_count}+1
