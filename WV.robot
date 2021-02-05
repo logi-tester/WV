@@ -1093,8 +1093,7 @@ Ensure overview campaign label in Hosh menu
     [Tags]    Hope to Shine campaign
     
     Jenkins browser launch
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(.,'Overview')]
+    Mouser hover ways to give campaign    Overview    
     ${overview_menus_list}=    Get Element Count    xpath=.//div[@class='views-element-container']//a
     Run Keyword If    ${overview_menus_list}!=12    Fail    "In Overview page menu list are mismatch"
     Click Element    xpath=//div[@class='col-md-12 ways-scroll-info']/div[1]//h3
@@ -1107,6 +1106,8 @@ Ensure overview campaign label in Hosh menu
     #${wv_url}=    Get Location
     #Log To Console    WV url is:${wv_url}
     Click Element    xpath=//div[@class='gbl_tabbed_menu']/ul/li[2]
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='IMGSec_cover']    
+    Run Keyword If    '${status}'!='True'    Fail    Current there is no child in the education tab
     Mouse Over    xpath=//div[@class='IMGSec_cover']
     Sleep    5s    
     Click Element    xpath=//div[@class='Gift_add giftBtn']/input    
