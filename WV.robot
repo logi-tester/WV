@@ -327,7 +327,7 @@ To Sponsor a child by SI payment flow from search page
     
     # Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     # Mouse Over    xpath=.//li[@class='welcomesponsor']
-    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My Profile')]
     # Click Element    xpath=.//a[contains(.,'Edit Profile')]
     # Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
     # ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
@@ -353,7 +353,7 @@ To Sponsor a child by SI payment flow from search page
         # Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'
     # END
     # Mouse Over    xpath=.//li[@class='welcomesponsor']
-    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My Profile')]
     # Click Element    xpath=.//a[contains(.,'Edit Profile')]
     # Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
     # Click Element    xpath=.//label[@for='indctzn']
@@ -1226,7 +1226,7 @@ Post login ways to give submenu list verification
     # Input Text    id=edit-pass  test
     # Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
     # Mouse Over    xpath=.//li[@class='welcomesponsor']
-    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    # Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My Profile')]
     # Click Element    xpath=.//a[contains(.,'Edit Profile')]
     # Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
     # ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
@@ -1417,8 +1417,7 @@ Verify user should Able to add profile details with Valid Data
     Scroll Element Into View    id=edit-submit    
     Click Element    id=edit-submit
 
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
+    View Myprofile    
 
     ${last_Name}=    Get Text    xpath=//span[@class='userspanprofile']/div
     Run Keyword If    'NewLastName Test'=='${last_Name}'    Log To Console    "LastName Updated in Edit profile"    ELSE    Fail    "Unable to edit Last Name"
@@ -1435,8 +1434,7 @@ Verify user should Able to add profile details with Valid Data
     Scroll Element Into View    id=edit-submit    
     Click Element    id=edit-submit
     
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]    
+    View Myprofile    
   
 To verify that user can edit the City State Country even though it is auto Populated
     [Tags]    Registration Page
@@ -3808,7 +3806,7 @@ Direct login - Other passport user
     
 MyProfile Edit
     Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My Profile')]
     Click Element    xpath=.//a[contains(.,'Edit Profile')]
     Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
    
@@ -3816,13 +3814,13 @@ Check other passport holder
     ${OtherPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//label[@for='othctzn']        
     Run Keyword If    'True'!='${OtherPassStatus}'    Fail    "INDIAN User can able to select other passport user"
     Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath=//a[contains(text(),'My profile')]    
+    Click Element    xpath=//a[contains(text(),'My Profile')]    
 
 Check indian passport holder
     ${indianPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//input[@id='indctzn']        
     Run Keyword If    'True'!='${indianPassStatus}'    Fail    "OTHER PASSPORT User can able to select Indian Citizen"
     Mouse Over    xpath=//li[@class='welcomesponsor']        
-    Click Element    xpath=//a[contains(text(),'My profile')]  
+    Click Element    xpath=//a[contains(text(),'My Profile')]  
     
 Navigation banner close   
     ${nav_banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='mySidenav']/a    
