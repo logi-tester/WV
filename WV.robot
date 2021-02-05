@@ -4567,10 +4567,6 @@ Hdfc bank payment gateway check
     ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'POWERED BY HDFC BANK')]
     Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    HDFC payment gateway doesnt appear    ELSE    Log To Console    HDFC payment gateway is visible
 
-View Myprofile
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'My profile')]
-
 Nationality Check        
     ${Nationality}=    Get text    xpath=//div[contains(text(),'Nationality')]/following-sibling::div
     Run Keyword If    'Other Passport Holder'!='${Nationality}'    Fail    "User is a: ${Nationality}"
