@@ -3399,6 +3399,59 @@ To verify payment using SI with existing onetime donation payment in cart
     Click Element    xpath=//div[contains(@class,'net-banking-payment other-bank-opt debit')]    
     Click Element    xpath=//button[text()='Proceed']
 
+To verify login through valid email ID with invalid OTP
+    [Tags]    LOGIN
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    
+    Click Element    id=edit-name    
+    Input Text    id=edit-name    wv@wv.com 
+    
+    Click Element    id=ToGetOTP    
+    
+    Wait Until Element Is Visible    class=orngClr    60s
+    
+    ${status}=    Run Keyword And Return Status    Element Should Contain    class=orngClr    OTP has been sent to your Mobile/Email
+    Run Keyword If    'True'=='${status}'    Log    OTP alert message displayed    ELSE    Fail    OTP alert message was not displayed
+
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    123456    
+
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1] 
+    
+    Wait Until Element Is Visible    id=edit-pass-error    60s       
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-error
+    Run Keyword If    'True'=='${status}'    Log    Login failure alert message displayed    ELSE    Fail    Login failure alert message was not displayed
+
+    
+To verify login through valid mobile number with invalid OTP
+    [Tags]    LOGIN    
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    
+    Click Element    id=edit-name    
+    Input Text    id=edit-name    9999999995
+    
+    Click Element    id=ToGetOTP    
+    
+    Wait Until Element Is Visible    class=orngClr    60s
+    
+    ${status}=    Run Keyword And Return Status    Element Should Contain    class=orngClr    OTP has been sent to your Mobile/Email
+    Run Keyword If    'True'=='${status}'    Log    OTP alert message displayed    ELSE    Fail    OTP alert message was not displayed
+
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    123456    
+
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1] 
+    
+    Wait Until Element Is Visible    id=edit-pass-error    60s       
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-error
+    Run Keyword If    'True'=='${status}'    Log    Login failure alert message displayed    ELSE    Fail    Login failure alert message was not displayed
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
