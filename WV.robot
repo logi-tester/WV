@@ -3496,6 +3496,38 @@ To verify amount addition in campaign based on transaction
     ${total_amount}=    Evaluate        ${Camp_val}+${Camp_val2}
     My Next Payment cart check    ${camp_name2}    ${total_amount} 
 
+Bubble Scenario-Offline Payment : Sponsor Payment Mode - Delinquent + Current + Advance
+    [Tags]    Make payment page functionality
+    
+    Jenkins browser launch       
+    Click Login
+    Direct login
+    Click Cart
+    Banner Alert
+    Cart campaign check and delete
+    
+    Click my next payment
+    Click Element    xpath=//li[@id='campsec-shwhde']/a 
+    
+    ${campaign_available}=    Get Element Count    xpath=//div[contains(@class,'itm-sltn-add')]
+    ${campaign_total}=    Get Text    xpath=//div[@class='cost-sumry']//span[2]
+    
+    Click Element    class=pymnt-smt-sec
+    
+    ${cart_total_amt}=    Get Text    xpath=//p[@class='cld-amount-pyble']//span[2]    
+    
+    Run Keyword If    '${cart_total_amt}'!='${campaign_total}'    Fail    Cart amount doesnt match
+    Click Button    id=MP_add_to_cart_btn
+    
+    Click Element    class=view_cart
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//span[@class='order-total-line-value and contains(text(),'${cart_total_amt}'])[2]        
+    Run Keyword If    '${status}'!='True'    Fail    cart amount doesnt macth
+    CCavenue payment success flow
+    
+    Banner Alert
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-paid']//span[contains(text(),'${cart_total_amt}')]        
+    Run Keyword If    '${status}'!='True'    Fail    cart amount doesnt macth
 
 *** Keywords ***
 Jenkins browser launch
