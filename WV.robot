@@ -3452,6 +3452,51 @@ To verify login through valid mobile number with invalid OTP
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-error
     Run Keyword If    'True'=='${status}'    Log    Login failure alert message displayed    ELSE    Fail    Login failure alert message was not displayed
 
+To verify amount addition in campaign based on transaction
+    [Tags]    Make payment page functionality
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    Click Cart
+    Banner Alert
+    Cart campaign check and delete
+    
+    #Donating 1000Rs for Hungerfree campaign
+    Mouse hover ways to give after login    Hungerfree
+    ${camp_name}    ${Camp_val}    one time campaign - Hunger Free campaign - Multiple payment    ${amount}       
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
+    View cart proceed button    
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
+    Banner Alert
+    Click mainmenu    My Campaign 
+    Why do you want to leave - PopUp
+    Click mainmenu    My Campaign 
+    Mycampaign Check    ${camp_name}    
+    Click my next payment
+    ${Camp_val}=    Convert to price    ${Camp_val}
+    My Next Payment cart check    ${camp_name}    ${Camp_val}
+       
+    #Donating 4000Rs for Hungerfree campaign
+    Logout
+    Direct login
+    ${camp_name2}    ${Camp_val2}    one time campaign - Hunger Free campaign - Multiple payment    ${HungerFree_amt}       
+    ${cart_quanity2}    check in view cart page - One time donation flow    ${camp_name2}    ${Camp_val2}
+    View cart proceed button    
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name2}    ${Camp_val2}    ${cart_quanity2}
+    Banner Alert
+    Click mainmenu    My Campaign
+    Why do you want to leave - PopUp
+    Click mainmenu    My Campaign  
+    Mycampaign Check    ${camp_name2}    
+    Click my next payment
+    ${Camp_val2}=    Convert to price    ${Camp_val2}
+    ${total_amount}=    Evaluate        ${Camp_val}+${Camp_val2}
+    My Next Payment cart check    ${camp_name2}    ${total_amount} 
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4665,3 +4710,62 @@ Indian payment gateway check - payment gateway
         ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//input[contains(@id,'edit-payment-information-payment-method')]/following-sibling::label[contains(.,'${checkout_bank_txt}')]
         Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Indian passport holder Payment Gateway ${checkout_bank_txt} text is mismatch'
     END
+
+Main and submenu selection
+    [Arguments]    ${main_menu}    ${sub_menu}
+    
+    Mouse Over    xpath=//div[@class='main-menu-inner']//span[contains(text(),'${main_menu}')]
+    Click Element    xpath=//div[@class='main-menu-inner']//span[contains(text(),'${main_menu}')]//parent::li//li/a[contains(text(),'${sub_menu}')]
+
+Click mainmenu
+    [Arguments]    ${main_menu}
+    
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${main_menu}')]
+
+Click Login    
+    Click Element    xpath=//a[contains(text(),'Login')]
+
+Click Cart
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+
+Click my next payment
+    Click Element    xpath=//li[@class='post_lgn']/a        
+
+Mycampaign Check
+    [Arguments]    ${camp_name}
+    
+    Sleep    10s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='user_campheading']//a[contains(text(),'${camp_name}')]        
+    Run Keyword If    '${status}'!='True'    Fail    Campaign is not added in my campaign page    ELSE    LOG    Campaign is added in my campaign page
+
+Logout    
+    Mouse Over    xpath=.//li[@class='welcomesponsor']
+    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
+    
+one time campaign - Hunger Free campaign - Multiple payment
+    [Arguments]    ${campaign_amount}
+    
+    Sleep    10s
+    Click Element    xpath=.//div[@class='add-to-cart-section']
+    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_name}=    Remove String    ${camp_name}    Free    
+    
+    Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
+    Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${campaign_amount}    
+    Sleep    5s    
+    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
+        
+    Click Element    xpath=//a[@class='view_cart']
+    
+    ${camp_val_1st}=    Get Substring    ${campaign_amount}    0    1   
+    ${camp_val_2st}=    Get Substring    ${campaign_amount}    1    5
+    Log To Console    ${camp_val_1st}    ${camp_val_2st}
+    ${camp_val}=    Evaluate    '${camp_val_1st}'+','+'${camp_val_2st}'
+    #Log To Console    ${camp_val}         
+    
+    [Return]    ${camp_name}    ${camp_val}    
