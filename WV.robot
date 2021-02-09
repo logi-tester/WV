@@ -3529,6 +3529,49 @@ Bubble Scenario-Online Payment : Sponsor Payment Mode - Delinquent + Current + A
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-paid']//span[contains(text(),'${cart_total_amt}')]        
     Run Keyword If    '${status}'!='True'    Fail    cart amount doesnt macth
 
+Bubble Scenario-Offline Payment : Sponsor Payment Mode - Delinquent + Current + Advance
+    [Tags]    Make payment page functionality
+    
+    Jenkins browser launch       
+    Click Login
+    Direct login
+    Click Cart
+    Banner Alert
+    Cart campaign check and delete
+    
+    Click my next payment
+    Click Element    xpath=//li[@id='campsec-shwhde']/a 
+    
+    ${camp_name}=    Get Text    xpath=(//div[@class='cld-nme-dtls'])[1]/div[1]/p
+    Click Element    xpath=(//div[@class='cld-nme-dtls'])[1]
+    
+    ${camp_amt}=    Get Text    xpath=(//span[@class='childCart_total_amount'])[1]                
+    
+    Click Element    class=pymnt-smt-sec
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[@class='cld-amount-pyble']//span[2][contains(text(),'${camp_amt}')]            
+    Run Keyword If    '${status}'!='True'    Fail    Cart amount doesnt match
+    
+    Click Button    id=MP_add_to_cart_btn
+    
+    Click Element    class=view_cart
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//span[@class='order-total-line-value' and contains(text(),'${camp_name}')])[2]        
+    Run Keyword If    '${status}'!='True'    Fail    cart amount doesnt macth        
+    
+    Click Element    id=edit-checkout    
+
+    Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
+    Scroll Element Into View    class=upihead
+    Sleep    10        
+    Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
+    Sleep    10s 
+    Click Element    id=off-edit-actions-next
+    
+    Banner Alert
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-paid']//span[contains(text(),'${camp_amt}')]        
+    Run Keyword If    '${status}'!='True'    Fail    cart amount doesnt macth
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
