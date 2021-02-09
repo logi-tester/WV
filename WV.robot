@@ -3496,7 +3496,7 @@ To verify amount addition in campaign based on transaction
     ${total_amount}=    Evaluate        ${Camp_val}+${Camp_val2}
     My Next Payment cart check    ${camp_name2}    ${total_amount} 
 
-Bubble Scenario-Offline Payment : Sponsor Payment Mode - Delinquent + Current + Advance
+Bubble Scenario-Online Payment : Sponsor Payment Mode - Delinquent + Current + Advance
     [Tags]    Make payment page functionality
     
     Jenkins browser launch       
