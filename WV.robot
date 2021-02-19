@@ -2529,13 +2529,15 @@ To check with the filters in news articles page
     Navigation banner close    
     Event Page menu check    News Articles
     Event Submenu Check    News Articles
-    Event page filter    ${month_input}    2019    ${language_input}            
-    Sleep    40s    
-    ${month_sort}=    Get Substring    ${month_input}    0    3            
-    ${month}=    Get Text    xpath=//div[@class='media-press-page']//span[@class='media-mont']
-    Run Keyword If    '${month_sort}'!='${month}'    Fail    Month mismatch or No data found
-    ${year}=    Get Text    xpath=//div[@class='media-press-page']//span[@class='media-year']
-    Run Keyword If    '2019'!='${year}'    Fail    Month mismatch or No data found
+    Event page filter    ${month_input}    2019    ${language_input}               
+    ${month_sort}=    Get Substring    ${month_input}    0    3                
+    #Scroll Element Into View    id=edit-subscribe
+    Sleep    10s    
+    Scroll Element Into View    xpath=//div[@class='media-press-page']//span[@class='media-mont']
+    ${month}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='media-press-page']//span[@class='media-mont' and contains(text(),'${month_sort}')]           
+    Run Keyword If    'True'!='${month}'    Fail    Month mismatch or No data found
+    ${year}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='media-press-page']//span[@class='media-year' and contains(text(),'2019')]
+    Run Keyword If    'True'!='${year}'    Fail    Year mismatch or No data found
 
 To check with the filters in press release page
     [Tags]    Media
