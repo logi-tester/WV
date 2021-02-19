@@ -4938,3 +4938,8 @@ Rotator Allow Auto Debit status check
     
 Rotator Proceed To Autopay
     Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//button[contains(text(),' PROCEED TO AUTOPAY ')]    
+
+Why do you want to leave - PopUp
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[@class='close-survey2']    
+    Run Keyword If    'True'=='${status}'    Click Element    xpath=//span[@class='close-survey2']
