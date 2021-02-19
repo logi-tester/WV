@@ -26,6 +26,8 @@ ${year_input}    2020
 ${language_input}    English
 ${user_name}      9999999997
 ${password}       password
+${OtherPassportUser}    testmail@test.com
+${OtherPassportPass}    test
 ${addon_val}      100
 ${real_gift_enter_val}    1000
 @{email_validation}    asdasdad    934852    )*&%^&^%&^%    @gmail    @gmail.com    @@gmail.com    asdgasd.com    (^*&*^)*&@gmail.com
