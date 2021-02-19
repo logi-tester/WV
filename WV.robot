@@ -4885,3 +4885,28 @@ one time campaign - Hunger Free campaign - Multiple payment
 I Pledge to Support Click
     Sleep    5s    
     Click Element    xpath=.//div[@class='item-image']//img
+
+SI login - Other Passport
+    Wait Until Element Is Visible    xpath=//input[contains(@id,'exampleInputEmail')]    30s
+    Click Element    xpath=//input[contains(@id,'exampleInputEmail')]    
+    Input Text    xpath=//input[contains(@id,'exampleInputEmail')]    ${OtherPassportUser}
+    Click Element    xpath=//input[contains(@id,'exampleInputPassword')]
+    Input Text    xpath=//input[contains(@id,'exampleInputPassword')]    ${OtherPassportPass}
+    
+    Sleep    10s    
+    Click Element    id=si_login_btn
+    
+SI Other Passport Disabled Alert
+    Sleep    10s    
+    ${OtherPassSIAlert}=    Get Text    xpath=//div[@class='otherHolderFlow']/div
+    Run Keyword If    '${SIOtherPassMessage}'=='${OtherPassSIAlert}'    SI Other Passport alert button click    ELSE    Fail    SI payment restriction alert for Other passport user is not displayed    
+                
+SI Other Passport alert button click
+    Sleep    3s    
+    Click Element    class=otherHolderBtn
+
+Page Title Check and confirm
+    [Arguments]    ${element}
+    
+    ${pageTitle}=    Get Title    
+    Should Contain    ${pageTitle}    ${element} 
