@@ -3587,6 +3587,27 @@ To verify other passport holder SI payment is disabled - PostLogin
     I Pledge to Support Click
     SI Payment disable check
 
+To verify other passport holder SI payment is disabled - PreLogin
+    [Tags]    Payment gateway Based on Nationality
+    
+    Jenkins browser launch  
+    Gift Cart Click      
+    Cart campaign check and delete           
+    Mouser hover ways to give campaign    Educate Children        
+    #SI Payment disable check
+    SI flow campaign     
+    SI login - Other Passport
+    SI Other Passport Disabled Alert    
+    Page Title Check and confirm    Educate Children
+    
+    Gift Cart Click      
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children  
+    ${camp_name}    ${camp_amt}    other passport user flow
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    ${camp_amt}=    Convert to price    ${camp_amt}
+    Hdfc bank payment gateway check
 
 *** Keywords ***
 Jenkins browser launch
