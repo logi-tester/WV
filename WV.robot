@@ -4929,3 +4929,10 @@ Gift Cart Click
     Sleep    2s    
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     
+Rotator Allow Auto Debit status check
+    Sleep    2s    
+    ${status}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//label[@class='chkSIpatent']/input    checked
+    Run Keyword If    '${status}'!='True'    Fail    Auto payment is not checked    ELSE    Log    Auto payment is checked        
+    
+Rotator Proceed To Autopay
+    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//button[contains(text(),' PROCEED TO AUTOPAY ')]    
