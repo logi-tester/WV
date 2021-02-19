@@ -3346,8 +3346,7 @@ To verify cart data is maintaining for existing user
     Direct login        
     Click Element    xpath=.//a[contains(.,'My Gifts')]    
     Cart campaign check and delete
-    Sleep    10    
-    
+    Sleep    10s       
     Mouser hover ways to give campaign    Educate Children
     ${camp_name}    ${camp_amt}    Checkout flow campaign
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
@@ -3707,6 +3706,7 @@ Login
     
   
 Direct login
+    Sleep   5s
     Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
     Click Element    id=edit-pass
