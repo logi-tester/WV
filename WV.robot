@@ -4910,3 +4910,8 @@ Page Title Check and confirm
     
     ${pageTitle}=    Get Title    
     Should Contain    ${pageTitle}    ${element} 
+    
+Gift Cart Click
+    Sleep    2s    
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    
