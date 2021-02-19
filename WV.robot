@@ -2547,7 +2547,7 @@ To check with the filters in press release page
     Event Page menu check    Press Releases
     Event Submenu Check    Press Releases
     Event page filter    ${month_input}    ${year_input}    ${language_input}
-    Sleep    40s   
+    Sleep    15s   
     Event page filter verification    ${month_input}    ${year_input}
 
 To Verify User should submit the form with Mandatory data - Hungerfree
@@ -4478,11 +4478,12 @@ Event page filter verification
     [Arguments]    ${month_input}    ${year_input}
     
     ${month_sort}=    Get Substring    ${month_input}    0    3
-    #Element Should Be Visible    xpath=//div[@class='media-press-page pressres']    
-    ${month}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-mont']
-    Run Keyword If    '${month_sort}'!='${month}'    Fail    Month mismatch or No data found
-    ${year}=    Get Text    xpath=//div[@class='media-press-page pressres']//span[@class='media-year']
-    Run Keyword If    '2019'!='${year}'    Fail    Month mismatch or No data found
+    #Element Should Be Visible    xpath=//div[@class='media-press-page pressres']  
+    Scroll Element Into View    xpath=//div[@class='media-press-page']//span[@class='media-mont' and contains(text(),'${month_sort}')]  
+    ${month}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='media-press-page']//span[@class='media-mont' and contains(text(),'${month_sort}')]
+    Run Keyword If    '${month}'!='True'    Fail    Month mismatch or No data found
+    ${year}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='media-press-page']//span[@class='media-year' and contains(text(),'${year_input}')]
+    Run Keyword If    '${year}'!='True'    Fail    Year mismatch or No data found
 
 Kerala flood campaign
     [Arguments]    ${value}
