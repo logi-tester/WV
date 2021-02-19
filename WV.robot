@@ -3572,6 +3572,22 @@ Bubble Scenario-Offline Payment : Sponsor Payment Mode - Delinquent + Current + 
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-paid']//span[contains(text(),'${camp_amt}')]        
     Run Keyword If    '${status}'!='True'    Fail    cart amount doesnt macth
 
+To verify other passport holder SI payment is disabled - PostLogin
+    [Tags]    Payment gateway Based on Nationality
+    
+    Jenkins browser launch
+    Click Element    xpath=//a[contains(text(),'Login')]
+    Direct login - Other passport user
+    Click Element    xpath=.//a[contains(.,'My Gifts')]    
+    Banner Alert
+    Cart campaign check and delete
+    View Myprofile    
+    Nationality Check
+    Mouse hover ways to give after login    Educate Children
+    I Pledge to Support Click
+    SI Payment disable check
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4844,3 +4860,7 @@ one time campaign - Hunger Free campaign - Multiple payment
     #Log To Console    ${camp_val}         
     
     [Return]    ${camp_name}    ${camp_val}    
+
+I Pledge to Support Click
+    Sleep    5s    
+    Click Element    xpath=.//div[@class='item-image']//img
