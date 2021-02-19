@@ -3611,6 +3611,18 @@ To verify other passport holder SI payment is disabled - PreLogin
     ${camp_amt}=    Convert to price    ${camp_amt}
     Hdfc bank payment gateway check
 
+To verify other passport holder SI payment is disabled in child rotator – PreLogin
+    [Tags]    Other passport SI payment verifiaction
+    
+    Jenkins browser launch    
+    ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
+    Log To Console    Child name:${child_name} and child amount:${sel_child_amt} and also child img src:${sel_child_imgsrc}
+    Rotator Allow Auto Debit status check
+    Rotator Proceed To Autopay
+    SI login - Other Passport    
+    SI Other Passport Disabled Alert    
+    Page Title Check and confirm    My World
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
