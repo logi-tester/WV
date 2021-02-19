@@ -4736,23 +4736,23 @@ other passport user flow
     ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
     #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     ${Camp_amt}=    Get Substring    ${label_val}    9    16
-    Log To Console    Final val is: ${camp_amt}
-    Sleep    15s
-    
+    Log To Console    Final val is: ${camp_amt}    
+    SI Payment disable check
+    Sleep    15s    
     Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Sleep    10s       
-    
-    Add to cart text change
-    
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    
+    Sleep    10s           
+    Add to cart text change    
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']    
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
-
     Click Element    xpath=//a[@class='view_cart']        
     
     [Return]    ${camp_name}    ${camp_amt}
+
+SI Payment disable check    
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    id=ChkForSI
+    Run Keyword If    '${status}'=='True'    Fail    SI Payment is enabled for Other passport user    ELSE    Log    SI Payment is disabled for Other Passport Users
 
 Hdfc bank payment gateway check    
     ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'POWERED BY HDFC BANK')]
