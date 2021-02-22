@@ -56,6 +56,7 @@ ${button_failure_txt}    TRY AGAIN NOW
 ${pass1}    abc
 ${pass2}    cba
 @{how_do_you_know}    Tele-Caller    Fundraising Volunteer    Existing Donor    Friends and Family    Online Ads    Others
+${SIOtherPassMessage}    Auto debit option is not available for the other passport holders, kindly uncheck the “Allow Auto Debit” option and continue your sponsorship.
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
