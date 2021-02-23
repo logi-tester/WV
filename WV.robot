@@ -698,6 +698,7 @@ To sponsor child using SI flow
         Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
     END
     
+
 Just post login check hungerfree campaign
     [Tags]    Post Login 
     
@@ -743,13 +744,14 @@ Just post login check hungerfree campaign
     Run Keyword If    'True'!='${hunger_camp_amt_viewcart}'    Fail    "Hunger Free campaign amount are not display/mismatch in view cart page"
     View cart proceed button
     CCavenue payment success flow
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    Why do you want to quit - PopUp
-    Click Element    xpath=.//li[@class='post_lgn']/a
+    My Next Payment
+    Why do you want to leave - PopUp
+    My Next Payment
     Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
-    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
-    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
+    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]    
+    Page Should Contain Element    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]    
+    # ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
+    # Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
     ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${get_input_val}
     Log To Console    Before hunger label amount + hunger free input value:${add_label_amt+input_amt}
     ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
@@ -4943,3 +4945,6 @@ Why do you want to leave - PopUp
     Sleep    5s    
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[@class='close-survey2']    
     Run Keyword If    'True'=='${status}'    Click Element    xpath=//span[@class='close-survey2']
+    
+My Next Payment
+    Click Element    xpath=.//li[@class='post_lgn']/a    
