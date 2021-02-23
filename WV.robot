@@ -758,23 +758,21 @@ Just post login check hungerfree campaign
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
     Log To Console    Overall hunger free label amount:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"    
-
    
 Just pre login check hungerfree campaign
-    #Local browser launch
+    [Tags]    PreLogin
+
     Jenkins browser launch
     Click Element    xpath=//a[contains(text(),'Login')]
     Direct login
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    My Next Payment
+    My Next Payment Gift Menu Check and Select Submenu    My Donations
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
     ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
     ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
     ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
-    Log To Console    Before hunger free label amount:${final_label_amt}
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]    
+    Log To Console    Before hunger free label amount:${final_label_amt}    
+    Logout    
     Click Element    class=close-survey    
     ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
     Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
@@ -783,11 +781,10 @@ Just pre login check hungerfree campaign
     View cart proceed button
     Login
     CCavenue payment success flow
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    Why do you want to quit - PopUp
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
+    My Next Payment
+    Why do you want to leave - PopUp
+    My Next Payment
+    My Next Payment Gift Menu Check and Select Submenu    My Donations
     ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
     Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
     ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${hunger_get_input_val}
@@ -797,7 +794,6 @@ Just pre login check hungerfree campaign
     ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
     Log To Console    Overall final hunger free label val:${get_final_amt}
     Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
-
 
 
 To download tax receipt 
@@ -4957,3 +4953,11 @@ My Next Payment Gift Menu and My Child Menu Check
     ${status}=    Get Element Attribute    id=childsec-shwhde    class
     #${status}=    Get Element Attribute    xpath=//div[@id='donation']//a[contains(text(),'My Child') or contains(text(),'My Children')]    class
     Run Keyword If    '${status}'!='tog-active'    Fail    My Child was not selected by default    ELSE    Log    My Child was selected by default 
+
+My Next Payment Gift Menu Check and Select Submenu
+    [Arguments]    ${SubMenu}
+    
+    Sleep    5s    
+    ${status}=    Get Element Attribute    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    class
+    Run Keyword If    '${status}'!='active'    Fail    Donation was not selected by default    ELSE    Log    Donation was selected by default    
+    Click Element    xpath=//div[@id='donation']//a[contains(text(),'${SubMenu}')]
