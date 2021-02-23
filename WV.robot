@@ -458,11 +458,10 @@ To verify search child and donate
     View cart proceed button
     Login
     CCavenue payment success flow        
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    Why do you want to quit - PopUp
-    Click Element    xpath=.//li[@class='post_lgn']/a
-    #Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=//div[@id='donation']//a[contains(text(),'My Children')]    
+    My Next Payment
+    Why do you want to leave - PopUp
+    My Next Payment
+    My Next Payment Gift Menu and My Child Menu Check      
     ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[contains(@class,'chld-items')]//div[@class='cld-nme']/p[contains(.,'${child_name}')]
     Run Keyword If    True!=${check_child_display}    Fail    Payment success, But child details doesnt appear in "My Children" tab
 
@@ -4947,4 +4946,14 @@ Why do you want to leave - PopUp
     Run Keyword If    'True'=='${status}'    Click Element    xpath=//span[@class='close-survey2']
     
 My Next Payment
-    Click Element    xpath=.//li[@class='post_lgn']/a    
+    Click Element    xpath=.//li[@class='post_lgn']/a
+    
+My Next Payment Gift Menu and My Child Menu Check
+    
+    Sleep    5s    
+    ${status}=    Get Element Attribute    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    class
+    Run Keyword If    '${status}'!='active'    Fail    Donation was not selected by default    ELSE    Log    Donation was selected by default    
+    
+    ${status}=    Get Element Attribute    id=childsec-shwhde    class
+    #${status}=    Get Element Attribute    xpath=//div[@id='donation']//a[contains(text(),'My Child') or contains(text(),'My Children')]    class
+    Run Keyword If    '${status}'!='tog-active'    Fail    My Child was not selected by default    ELSE    Log    My Child was selected by default 
