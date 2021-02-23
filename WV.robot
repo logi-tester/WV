@@ -592,13 +592,11 @@ To sponsor a Hunger Free Campaign as a one time donation using Checkout flow
 
 To sponsor a Where Most Needed Campaign as a one time donation using Checkout flow
     [Tags]    Where Most Needed Campaign
-
+    
     Jenkins browser launch
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Gift Cart Click
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Cart campaign check and delete          
     Mouser hover ways to give campaign    Where Most Needed
     ${camp_name}    ${Camp_val}    one time campaign - Where Most Needed Campaign       
     ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
