@@ -1293,7 +1293,7 @@ To verify payment gateways for indian citizen
     ${camp_name}    ${camp_amt}    Checkout flow campaign
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
-    Indian payment gateway check - payment type  
+    #Indian payment gateway check - payment type  
     Indian payment gateway check - payment gateway
  
 Max val alert in view cart page
