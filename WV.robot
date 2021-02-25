@@ -3707,6 +3707,42 @@ To verify cart page People have Also Donated for Suggession - campaign below 3 p
     
     Run Keyword If    ${CartCount}<3    People have Also Donated for Content Check    ELSE    Log    Currently there are more than 2 Campaign or child to sponsor
 
+To Verify User should submit form without entering Message
+    [Tags]    Form in contact us page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'About Us')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Contact Us')] 
+    Sleep    15s    
+    Scroll Element Into View    id=edit-actions-submit                
+    Input Text    id=edit-name-    testname
+    Input Text    id=edit-email-    test@test.com
+    Input Text    id=edit-contact-    9999999995    
+    Click Element    id=edit-query-type-styled
+    Click Element    xpath=//a[text()='Sponsorship']           
+    Click Element    id=edit-actions-submit
+    Sleep    5s
+    ${alert}=    Run Keyword And Return Status    Element Should Contain    id=edit-message-error    Message is required
+    Run Keyword If    'True'!='${alert}'    Fail    Message field alert was not displayed    ELSE    Log    Message field alert displayed    
+
+To Verify User should submit the form without Query Type
+    [Tags]    Form in contact us page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'About Us')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'Contact Us')] 
+    Sleep    15s    
+    Scroll Element Into View    id=edit-actions-submit                
+    Input Text    id=edit-name-    testname
+    Input Text    id=edit-email-    test@test.com
+    Input Text    id=edit-contact-    9999999995    
+    Input Text    id=edit-message    test message input
+    Click Element    id=edit-actions-submit
+    Sleep    5s
+    ${alert}=    Run Keyword And Return Status    Element Should Contain    id=edit-query-type-error    Query Type is required
+    Run Keyword If    'True'!='${alert}'    Fail    Query Type field alert was not displayed    ELSE    Log    Query Type field alert displayed
 
 *** Keywords ***
 
