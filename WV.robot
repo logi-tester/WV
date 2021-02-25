@@ -5012,3 +5012,26 @@ Why do you want to leave alert button check
         ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[contains(@class,'modal-content-survey')])[2]/div//span[contains(text(),'${element}')]        
         Run Keyword If    '${status}'!='True'    Fail    ${element}: Button is not visible    ELSE    Log    ${element}: Button is visible
     END
+
+CCavenue payment flow
+    ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
+    Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
+    Sleep    30s
+    Click Element    //button[text()='pay my contribution']        
+    Wait Until Element Is Visible    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]    15s    
+    Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
+    Select From List By Value    id=netBankingBank    AvenuesTest
+    Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
+    Click Element    xpath=.//input[@type='submit']
+
+Share the Joy Alert Capture
+    Wait Until Element Is Visible    xpath=(//h6[text()='Share the Joy'])[1]    60s
+    ${banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//h6[text()='Share the Joy'])[1]
+    Run Keyword If    'True'=='${banner_status}'    Log    Share the joy Dialog Box Displayed     ELSE    Log To Console    Share the joy Dialog Box is not Displayed
+    
+Share The Joy Email Section
+    Click Element    xpath=(//a[text()='Email'])[1]
+    Input Text    class=refer_share_email    test@test.com
+    Input Text    class=refer_share_phone    password
+    Element Should Be Visible    class=wv_refer_email_content    60s
+    Click Element    class=wv_refer_email_btn     
