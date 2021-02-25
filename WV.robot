@@ -3672,6 +3672,23 @@ To verify share the joy alert email section funtionality
     Share the Joy Alert Capture
     Share The Joy Email Section  
 
+To verify share the joy alert Copy URL section funtionality 
+    [Tags]    Share the Joy functionality
+    
+    Jenkins browser launch
+    Gift Cart Click
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment flow
+    Share the Joy Alert Capture
+    Share The Joy Copy URL Section
+
 *** Keywords ***
 
 Jenkins browser launch
@@ -5052,3 +5069,9 @@ Share The Joy Email Section
     Input Text    class=refer_share_phone    password
     Element Should Be Visible    class=wv_refer_email_content    60s
     Click Element    class=wv_refer_email_btn     
+
+Share The Joy Copy URL Section
+    Click Element    xpath=(//a[text()='Copy URL'])[1]    
+    Click Element    Class=cpyButton
+    Sleep    5s    
+    Element Should Be Visible    id=copiedURL    60s 
