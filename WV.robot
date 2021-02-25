@@ -57,6 +57,7 @@ ${pass1}    abc
 ${pass2}    cba
 @{how_do_you_know}    Tele-Caller    Fundraising Volunteer    Existing Donor    Friends and Family    Online Ads    Others
 ${SIOtherPassMessage}    Auto debit option is not available for the other passport holders, kindly uncheck the “Allow Auto Debit” option and continue your sponsorship.
+@{whyDoYouWantToLeave}    Will Donate Later    Know more about us    Already a Donor    Want to add more gifts
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
@@ -3636,7 +3637,26 @@ To verify share the joy alert functionality
     CCavenue payment success flow
     Banner Alert Capture
 
+To verify Why do you want to Leave Alert in Payment Page    
+    [Tags]    Payment Page Quit Alert
+    
+    Jenkins browser launch
+    Gift Cart Click
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment success flow        
+    Banner Alert
+    My Next Payment
+    Why do you want to leave alert button check
+
 *** Keywords ***
+
 Jenkins browser launch
     Set Selenium Speed    .5s
     ${chrome_options} =    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
@@ -4982,3 +5002,13 @@ Banner Alert Capture
     Wait Until Element Is Visible    xpath=(//h6[text()='Share the Joy'])[1]    60s
     ${banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//h6[text()='Share the Joy'])[1]
     Run Keyword If    'True'=='${banner_status}'    Log    Share the joy Dialog Box Displayed     ELSE    Log To Console    Share the joy Dialog Box is not Displayed    
+
+Why do you want to leave alert button check    
+    Wait Until Element Is Visible    xpath=//p[contains(text(),'Do you want to leave without gifting?')]    60s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[contains(text(),'Do you want to leave without gifting?')]    
+    Run Keyword If    'True'=='${status}'    Log To Console    Why do you want to leave dialog box appeared    ELSE    Fail    Why do you want to leave dialog box doesn't appear
+    
+    FOR    ${element}    IN    @{whyDoYouWantToLeave}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[contains(@class,'modal-content-survey')])[2]/div//span[contains(text(),'${element}')]        
+        Run Keyword If    '${status}'!='True'    Fail    ${element}: Button is visible    ELSE    Log    ${element}: Button is not visible
+    END
