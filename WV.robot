@@ -3689,6 +3689,25 @@ To verify share the joy alert Copy URL section funtionality
     Share the Joy Alert Capture
     Share The Joy Copy URL Section
 
+To verify cart page People have Also Donated for Suggession - campaign below 3 products 
+    [Tags]    Cart functionality
+    
+    Jenkins browser launch
+    Gift Cart Click
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}        
+    
+    ${CartCount}=    Get Element Count    class=views-field views-field-product-id
+    ${CartCount}=    Evaluate    ${CartCount}-1    
+    ${CartCount}=    Convert To Integer    ${CartCount}    
+    
+    Run Keyword If    ${CartCount}<3    People have Also Donated for Content Check    ELSE    Log    Currently there are more than 2 Campaign or child to sponsor
+
+
 *** Keywords ***
 
 Jenkins browser launch
@@ -5075,3 +5094,13 @@ Share The Joy Copy URL Section
     Click Element    Class=cpyButton
     Sleep    5s    
     Element Should Be Visible    id=copiedURL    60s 
+    
+People have Also Donated for Content Check
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//h3[contains(text(),'People have Also Donated for')]    
+    Run Keyword If    '${status}'!='True'    Fail    "People have also donated for" message is not visible    ELSE    Log    "People have also donated for" message is visible
+
+    FOR    ${element}    IN    @{peopleHaveDonateButton}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[@href='${element}']    
+        Run Keyword If    '${status}'!='True'    Fail    Button is not visible    ELSE    Log    Button is visible    
+    END
