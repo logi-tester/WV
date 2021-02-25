@@ -3634,8 +3634,8 @@ To verify share the joy alert functionality
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
-    CCavenue payment success flow
-    Banner Alert Capture
+    CCavenue payment flow
+    Share the Joy Alert Capture
 
 To verify Why do you want to Leave Alert in Payment Page    
     [Tags]    Payment Page Quit Alert
@@ -3654,6 +3654,23 @@ To verify Why do you want to Leave Alert in Payment Page
     Banner Alert
     My Next Payment
     Why do you want to leave alert button check
+
+To verify share the joy alert email section funtionality 
+    [Tags]    Share the Joy functionality
+    
+    Jenkins browser launch
+    Gift Cart Click
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment flow
+    Share the Joy Alert Capture
+    Share The Joy Email Section  
 
 *** Keywords ***
 
