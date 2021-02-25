@@ -3620,6 +3620,22 @@ To verify other passport holder SI payment is disabled in child rotator – PreL
     SI Other Passport Disabled Alert    
     Page Title Check and confirm    My World
 
+To verify share the joy alert functionality
+    [Tags]    Share the Joy functionality
+    
+    Jenkins browser launch
+    Gift Cart Click
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    Banner Alert Capture
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4961,3 +4977,8 @@ My Next Payment Gift Menu Check and Select Submenu
     ${status}=    Get Element Attribute    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    class
     Run Keyword If    '${status}'!='active'    Fail    Donation was not selected by default    ELSE    Log    Donation was selected by default    
     Click Element    xpath=//div[@id='donation']//a[contains(text(),'${SubMenu}')]
+    
+Banner Alert Capture       
+    Wait Until Element Is Visible    xpath=(//h6[text()='Share the Joy'])[1]    60s
+    ${banner_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//h6[text()='Share the Joy'])[1]
+    Run Keyword If    'True'=='${banner_status}'    Log    Share the joy Dialog Box Displayed     ELSE    Log To Console    Share the joy Dialog Box is not Displayed    
