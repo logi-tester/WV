@@ -5010,5 +5010,5 @@ Why do you want to leave alert button check
     
     FOR    ${element}    IN    @{whyDoYouWantToLeave}
         ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[contains(@class,'modal-content-survey')])[2]/div//span[contains(text(),'${element}')]        
-        Run Keyword If    '${status}'!='True'    Fail    ${element}: Button is visible    ELSE    Log    ${element}: Button is not visible
+        Run Keyword If    '${status}'!='True'    Fail    ${element}: Button is not visible    ELSE    Log    ${element}: Button is visible
     END
