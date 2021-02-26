@@ -59,6 +59,7 @@ ${pass2}    cba
 ${SIOtherPassMessage}    Auto debit option is not available for the other passport holders, kindly uncheck the “Allow Auto Debit” option and continue your sponsorship.
 @{whyDoYouWantToLeave}    Will Donate Later    Know more about us    Already a Donor    Want to add more gifts
 @{peopleHaveDonateButton}    by-specifics    educate-children    save-malnourished-children    landingPages/child/index-3.html
+@{SocialMedia}    facebook    twitter    linkedin
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
@@ -3745,8 +3746,82 @@ To Verify User should submit the form without Query Type
     ${alert}=    Run Keyword And Return Status    Element Should Contain    id=edit-query-type-error    Query Type is required
     Run Keyword If    'True'!='${alert}'    Fail    Query Type field alert was not displayed    ELSE    Log    Query Type field alert displayed
 
-*** Keywords ***
+To Verify User should submit the form without Query Type - End Child sexual abuse Page    
+    [Tags]    Form in End Child sexual abuse Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Mouser hover ways to give campaign    End Child Sexual Abuse 
+    Sleep    15s    
+    Scroll Element Into View    id=edit-actions-submit                
+    Input Text    id=edit-name-    testname
+    Input Text    id=edit-email-    test@test.com
+    Input Text    id=edit-contact-    9999999995    
+    Input Text    id=edit-message    test message input
+    Click Element    id=edit-actions-submit
+    Sleep    5s
+    ${alert}=    Run Keyword And Return Status    Element Should Contain    id=edit-query-type-error    Query Type is required
+    Run Keyword If    'True'!='${alert}'    Fail    Query Type field alert was not displayed    ELSE    Log    Query Type field alert displayed
+    
+To Verify User should submit form without entering Message - End Child sexual abuse Page
+    [Tags]    Form in End Child sexual abuse Page
+    
+    Jenkins browser launch
+    Navigation banner close
+    Mouser hover ways to give campaign    End Child Sexual Abuse 
+    Sleep    15s    
+    Scroll Element Into View    id=edit-actions-submit                
+    Input Text    id=edit-name-    testname
+    Input Text    id=edit-email-    test@test.com
+    Input Text    id=edit-contact-    9999999995    
+    Click Element    id=edit-query-type-styled
+    Click Element    xpath=//a[text()='Sponsorship']           
+    Click Element    id=edit-actions-submit
+    Sleep    5s
+    ${alert}=    Run Keyword And Return Status    Element Should Contain    id=edit-message-error    Message is required
+    Run Keyword If    'True'!='${alert}'    Fail    Message field alert was not displayed    ELSE    Log    Message field alert displayed
+    
+To verify share the joy alert Social Media section funtionality 
+    [Tags]    Share the Joy functionality
+    
+    Jenkins browser launch
+    Gift Cart Click
+    Banner Alert
+    Cart campaign check and delete
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment flow
+    Share the Joy Alert Capture
+    Share The Joy Social Media Section    
 
+To verify interruption While registering new user and cancel continue where you left
+    [Tags]    Registration Page
+    
+    Jenkins browser launch - Without Incognito
+    Click Register
+    Select Title    Mr.
+    Enter First Name    TestNameF
+    Enter Last Name    TestNameL
+    Enter Email ID    test@test.test
+    Enter Phone Number    8888888880
+    Enter Password    password
+    Enter Confirm Password    password
+    Enter Address Field I    Test address 1    
+    Scroll Element Into View    class=singUpRegister
+    Click Create My Account    
+    Sleep    5s            
+    Close Browser
+    Sleep    5s       
+    Jenkins browser launch - Without Incognito
+    Wait Until Element Is Visible    xpath=//h4[contains(text(),'continue where you left')]    30s
+    Click Element    xpath=//button[contains(@class,'alredy-no')]  
+
+
+*** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
     ${chrome_options} =    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
@@ -5141,3 +5216,61 @@ People have Also Donated for Content Check
         ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[@href='${element}']    
         Run Keyword If    '${status}'!='True'    Fail    Button is not visible    ELSE    Log    Button is visible    
     END
+    
+Share The Joy Social Media Section
+    Click Element    Xpath=(//a[text()='Social Media'])[1]    
+    
+    FOR    ${element}    IN    @{SocialMedia}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//span[contains(@class,'${element}')])[1]    
+        Run Keyword If    '${status}'!='True'    Fail    Button is not visible    ELSE    Log    Button is visible
+    END
+    
+Click Register
+    Click Element    xpath=//a[contains(text(),'Register')]
+
+Select Title
+    [Arguments]    ${Title}
+    
+    Select From List By Label    id=edit-field-title    ${Title}
+    
+Enter First Name
+    [Arguments]    ${FirstName}    
+
+    Input Text    id=edit-field-first-name-0-value    ${FirstName}
+
+Enter Last Name
+    [Arguments]    ${LastName}    
+
+    Input Text    id=edit-field-last-name-0-value    ${LastName}
+
+Enter Email ID
+    [Arguments]    ${Email}
+
+    Input Text    id=edit-mail    ${Email}
+    
+Enter Phone Number
+    [Arguments]    ${Phone}
+    
+    Input Text    id=edit-field-mobile-verify-0-mobile    ${Phone}
+
+Enter Password
+    [Arguments]    ${InputPassword}
+    
+    Wait Until Element Is Visible    id=edit-pass-pass1    20s
+    Click Element    //label[@for='edit-pass-pass1']    
+    Input Text    id=edit-pass-pass1    ${InputPassword}
+
+Enter Confirm Password
+    [Arguments]    ${ConfirmPassword}
+
+    Wait Until Element Is Visible    id=edit-pass-pass2    20s
+    Click Element    //label[@for='edit-pass-pass2']
+    Input Text    id=edit-pass-pass2    ${ConfirmPassword}
+
+Enter Address Field I
+    [Arguments]    ${AddressI}
+    
+    Input Text    id=edit-field-registeraddress-0-value    ${AddressI}
+
+Click Create My Account    
+    Click Element    class=singUpRegister    
