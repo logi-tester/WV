@@ -3820,6 +3820,28 @@ To verify interruption While registering new user and cancel continue where you 
     Wait Until Element Is Visible    xpath=//h4[contains(text(),'continue where you left')]    30s
     Click Element    xpath=//button[contains(@class,'alredy-no')]  
 
+Verify user should submit the form without DOB 
+    [Tags]      Hunger Free Campaign
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    Mouse hover ways to give after login    Hungerfree
+    Scroll Element Into View    id=edit-actions-submit
+    
+    Input Text    id=edit-name    Test Name  
+    Select From List By Value    id=edit-state    Chhattisgarh
+    Input Text    id=edit-email    test@test.com    
+    Input Text    id=edit-mobile-number    9999999999
+    
+    Click Element    id=edit-actions-submit
+    Click Element    class=head_first    
+    
+    Sleep    5s    
+
+    ${status}=    Run Keyword And Return Status    Element Should Contain    id=edit-date-of-birth-error    Date of Birth* is required.
+    Run Keyword If    '${status}'!='True'    Fail    Alert message for DOB is not displayed    ELSE    Log    Alert message for DOB is displayed
+
 
 *** Keywords ***
 Jenkins browser launch
