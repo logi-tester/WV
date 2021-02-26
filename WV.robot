@@ -3834,6 +3834,18 @@ Jenkins browser launch
     Set Window Size    1920    1080
     Go To    ${baseurl}
     Set Browser Implicit Wait    60s
+    
+Jenkins browser launch - Without Incognito
+    Set Selenium Speed    .5s
+    ${chrome_options} =    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver    
+    Call Method    ${chrome_options}    add_argument    headless
+    Call Method    ${chrome_options}    add_argument    disable-gpu
+    Call Method    ${chrome_options}    add_argument    no-sandbox
+    Call Method    ${chrome_options}    add_argument    disable-notifications
+    Create WebDriver    Chrome    chrome_options=${chrome_options}
+    Set Window Size    1920    1080
+    Go To    ${baseurl}
+    Set Browser Implicit Wait    20s    
 
 Local browser launch
     Set Selenium Speed    .5s
