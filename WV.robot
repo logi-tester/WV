@@ -60,6 +60,8 @@ ${SIOtherPassMessage}    Auto debit option is not available for the other passpo
 @{whyDoYouWantToLeave}    Will Donate Later    Know more about us    Already a Donor    Want to add more gifts
 @{peopleHaveDonateButton}    by-specifics    educate-children    save-malnourished-children    landingPages/child/index-3.html
 @{SocialMedia}    facebook    twitter    linkedin
+@{Months}    Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
+
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
