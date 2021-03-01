@@ -5479,3 +5479,9 @@ Checkout flow campaign - search and donate
     Click Element    xpath=//a[@class='view_cart']
     
     [Return]    ${camp_amt}
+    
+Mouse Hover main menu and click submenu
+    [Arguments]    ${mainmenu}    ${submenu}
+    
+    Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${mainmenu}')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${submenu}')]    
