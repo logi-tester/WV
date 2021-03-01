@@ -308,15 +308,37 @@ To verify login through valid email ID with valid password
     Run Keyword If    'True'!='${postlogin_homepage_chck}'    Fail    "Valid user can't able to login"
 
 To Sponsor a child by SI payment flow from search page
-    #Local browser launch
+    [Tags]    To Sponsor a Child
+    
     Jenkins browser launch
-    Click Element    xpath=.//span[@class='Sub_head_search']
-    Input Text    id=edit-search-api-fulltext    hjfhjhf
-    Click Element    id=edit-submit-wv-custom-search
-    ${search_child_count}=    Get Element Count    xpath=.//div[@class='search-page']
-    Run Keyword If    4!=${search_child_count}    Fail    "Enter irrelavent data list of 4 child list not display"
-    Mouse Over    xpath=(.//div[@class='search-page']/div[@class='search-page-childimg test']/h4)[1]
-    Click Element    xpath=(.//div[@class='add-cart-btn'])[1]
+    Main Menu Search Button Click
+    Input Data Into Search Box    asdgasgdas
+    Press Keys    id=edit-search-api-fulltext    ENTER    
+    Search Page Child List    
+    ${childName}    Click Add to Cart in Search Page
+    Element Status Check    xpath=(//div[@class='inner_banner_pledge_content'])[1]/h2[contains(text(),'${childName}')]    Selected Child is Displayed    Selected Child is not Displayed    
+    ${camp_Amt}=    Click 3Month package
+    SI Payment Check Verify
+    Proceed to Pay Button
+    SI login
+    SI payment gateway check
+
+To Sponsor a child by Checkout payment flow from search page
+    [Tags]    To Sponsor a Child
+    
+    Jenkins browser launch
+    Main Menu Search Button Click
+    Input Data Into Search Box    asdgasgdas
+    Press Keys    id=edit-search-api-fulltext    ENTER
+    Search Page Child List
+    ${childName}    Click Add to Cart in Search Page
+    Element Status Check    xpath=(//div[@class='inner_banner_pledge_content'])[1]/h2[contains(text(),'${childName}')]    Selected Child is Displayed    Selected Child is not Displayed          
+    ${camp_amt}    Checkout flow campaign - search and donate
+    ${cart_quanity}    check in view cart page - Checkout flow    ${childName}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${childName}    ${camp_amt}    ${cart_quanity}
 
 # Switching indian citizen to other passport holder in my profile page
     # #Local browser launch
@@ -5308,3 +5330,150 @@ Enter Address Field I
 
 Click Create My Account    
     Click Element    class=singUpRegister    
+
+Element Status Check
+    [Arguments]    ${element}    ${alert_Positive_msg}    ${alert_Negative_msg}
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    ${element}
+    Run Keyword If    '${status}'=='True'    Log    ${alert_Positive_msg}    ELSE    Fail    ${alert_Negative_msg}
+    
+BySpecific location click
+    [Arguments]    ${location}
+    
+    Sleep    5s    
+    Click Element    xpath=//span[@class='facet-item__value' and contains(text(),'${location}')]
+    
+Click Above 12 years
+    Sleep    5s    
+    Click Element    xpath=//label[@for='age-range-above-12-years']
+    
+Click Below 12 years
+    Sleep    5s    
+    Click Element    xpath=//label[@for='age-range-6-12-years']    
+
+Click Age Filter
+    [Arguments]    ${age}
+    
+    Sleep    5s    
+    Run Keyword If    ${age}<12    Click Below 12 years    ELSE    Click Below 12 years    
+    
+Click Gender Boy    
+    
+    Sleep    5s    
+    Click Element    xpath=//label[@for='gender-boy']
+    
+Click Gender Girl    
+    
+    Sleep    5s    
+    Click Element    xpath=//label[@for='gender-girl']
+    
+Get Child Details BySpecific Page
+    
+    ${ChildName}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]  
+    ${ChildDOB}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[2]
+    ${day}=    Get Substring    ${ChildDOB}    9   10
+    ${day}=    Convert To Integer    ${day}    
+    ${month}=    Get Substring    ${ChildDOB}    6    7    
+    ${month}=    Convert To Integer    ${month}
+    ${year}=    Get Substring    ${ChildDOB}    0    4
+    ${year}=    Convert To Integer    ${year}
+    
+    ${ChildAge}=    Get Text    xpath(//div[@class='bySpecinfo'])[1]//span[@class='bySpecage']    
+    ${ChildGender}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]//span[@class='bySpecGender']
+    ${Location}=    Get Text    xpath=//div[@class='bySpecLocation']/p
+    ${Location}=    Get Substring    ${Location}    1    7
+    
+    [Return]    ${ChildAge}    ${day}    ${month}    ${year}    ${Location}    ${childGender}
+    
+Click Gender in BySpecific Page
+    [Arguments]    ${gender}
+        
+    Run Keyword If    '${gender}'=='boy'    Click Gender Boy    ELSE    Click Gender Girl   
+
+Click Month Filter in BySpecific Page
+    [Arguments]    ${month}
+    
+    ${month}=    Evaluate    ${month}+1    
+    ${TextMonth}=    Set Variable    ${Months}[${month}]      
+    Click Element    id=monthOnly
+    Click Element    xpath=//span[@class='month' and contains(text(),'${TextMonth}')]  
+    
+Select Date in BySpecific Page
+    [Arguments]    ${day}
+    
+    Click Element    id=dateonly    
+    Click Element    xpath=//td[@data-handler='selectDay' and contains(text(),'${day}')]    
+
+Main Menu Search Button Click
+    Sleep    5s    
+    Click Element    xpath=//li[@class='separate_border header_search'] 
+    
+Input Data Into Search Box
+    [Arguments]    ${data}
+    
+    Wait Until Element Is Visible    id=edit-search-api-fulltext      60s
+    Input Text    id=edit-search-api-fulltext    ${data}
+
+Search Page Child List    
+    ${ElementCount}=    Get Element Count    xpath=//div[@class='search-page-childimg test']
+    Should Be Equal As Integers    4    ${ElementCount}    
+
+Click Add to Cart in Search Page
+    ${childName}=    Get Text    xpath=(//div[@class='search-page-childimg test'])[1]/h4
+    Mouse Over    class=search-page    
+    Click Element    xpath=(//div[@class='add-cart-btn'])[1]    
+
+    [Return]    ${childName}
+    
+Click 3Month package
+    ${Camp_Amount}=    Get Text    xpath=//label[contains(text(),'3 Months')]
+    ${final_val}=    Get Substring    ${Camp_Amount}    9    16
+    Click Element    xpath=//label[contains(text(),'3 Months')]   
+     
+    [Return]    ${final_val}
+SI Payment Check Verify
+    Sleep    5s    
+    ${status}=    Get Element Attribute    id=ChkForSI    checked
+    Run Keyword If    '${status}'!='true'    Fail    SI Payment is unchecked    ELSE    Log    SI Payment is checked
+    
+SI Payment Uncheck Verify
+    Sleep    5s    
+    ${status}=    Get Element Attribute    id=ChkForSI    checked
+    Run Keyword If    '${status}'!='false'    Fail    SI Payment is checked    ELSE    Log    SI Payment is not checked
+
+Proceed to Pay Button
+    Click Element    xpath=(//button[contains(@class,'si_modal_btn')])[1]            
+
+SI payment gateway check
+    Sleep    15s    
+    ${price_SI}=    Get Text    id=TotalAmtOfOrder
+    ${price_SI}=    Convert to price    ${price_SI}
+    Log To Console    campaign amount is: ${price_SI}         
+    FOR    ${element}    IN    @{SI_payment_list_text}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='payment-main-content'])[1]/div[contains(text(),'${element}')]
+        Run Keyword If    '${status}'!='true'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} is displayed"    
+    END
+    
+Click SI CheckBox
+    Click Element    id=ChkForSI    
+
+Click Add To Cart
+    Click Element    xpath=(//div[@class='kl_flood_sub_or_sec'])[1]  
+
+Checkout flow campaign - search and donate      
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]    
+    ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    Log To Console    Final val is: ${camp_amt}
+    Sleep    10s
+    
+    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
+    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    10s    
+    Click Element    id=ChkForSI
+    SI Payment Uncheck Verify        
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']    
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
+    Click Element    xpath=//a[@class='view_cart']
+    
+    [Return]    ${camp_amt}
