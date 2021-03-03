@@ -323,7 +323,7 @@ To Sponsor a child by SI payment flow from search page
     SI Payment Check Verify
     Proceed to Pay Button
     SI login
-    SI payment gateway check
+    SI payment gateway check New
 
 To Sponsor a child by Checkout payment flow from search page
     [Tags]    To Sponsor a Child
@@ -5446,7 +5446,7 @@ SI Payment Uncheck Verify
 Proceed to Pay Button
     Click Element    xpath=(//button[contains(@class,'si_modal_btn')])[1]            
 
-SI payment gateway check
+SI payment gateway check New
     Sleep    15s    
     ${price_SI}=    Get Text    id=TotalAmtOfOrder
     ${price_SI}=    Convert to price    ${price_SI}
