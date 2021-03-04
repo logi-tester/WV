@@ -61,7 +61,7 @@ ${SIOtherPassMessage}    Auto debit option is not available for the other passpo
 @{whyDoYouWantToLeave}    Will Donate Later    Know more about us    Already a Donor    Want to add more gifts
 @{peopleHaveDonateButton}    by-specifics    educate-children    save-malnourished-children    landingPages/child/index-3.html
 @{SocialMedia}    facebook    twitter    linkedin
-@{Months}    Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
+@{Months}    Dummy    Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
 
 
 *** Test Cases ***
@@ -3882,6 +3882,37 @@ To verify Home page Properly working
     ${element}=    Get Element Attribute    xpath=(//div[@class='child_sponsor_image'])[1]/img    src
     ${Logo}=    Remove String    ${element}    https://uat.worldvision.in/
     Identify Status Code    ${Logo}
+
+To Sponsor a child by SI payment flow from by-specific page
+    [Tags]    To Sponsor a Child
+    
+    Jenkins browser launch
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child
+    ${page_title}=    Get Title
+    Should Contain    ${page_title}    By Specifics
+    ${ChildAge}    ${day}    ${month}    ${year}    ${Location}    ${gender}    Get Child Details BySpecific Page
+    BySpecific location click    ${Location}
+    Click Age Filter    ${ChildAge}
+    Click Gender in BySpecific Page    ${gender}
+    Click Month Filter in BySpecific Page    ${month}
+    Select Date in BySpecific Page    ${day}
+    Click ResetAll BySpecific page
+    Click Around You BySpecific page
+    Click By Name BySpecific page
+    Click MostNeed BySpecific page
+    Scroll Element Into View    xpath=//span[text()='Gender']
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]      
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]
+    #Scroll Element Into View    xpath=//h1[text()='Choose a Child to Sponsor']
+    Child Name Verify BySpecific page    ${Child_name}
+    9600 Amount Button Verify BySpecific page
+    SI Checkbox verify BySpecific page
+    Child Quantity verify BySpecific page
+    Proceed to Pay Button
+    SI login
+    Sleep    10s 
+    SI payment gateway check
 
 *** Keywords ***
 Jenkins browser launch
