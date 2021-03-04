@@ -5404,7 +5404,7 @@ Click Age Filter
     [Arguments]    ${age}
     
     Sleep    5s    
-    Run Keyword If    ${age}<12    Click Below 12 years    ELSE    Click Below 12 years    
+    Run Keyword If    ${age}<12    Click Below 12 years    ELSE    Click Above 12 years    
     
 Click Gender Boy    
     
@@ -5420,17 +5420,17 @@ Get Child Details BySpecific Page
     
     ${ChildName}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]  
     ${ChildDOB}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[2]
-    ${day}=    Get Substring    ${ChildDOB}    9   10
+    ${day}=    Get Substring    ${ChildDOB}    8   10
     ${day}=    Convert To Integer    ${day}    
-    ${month}=    Get Substring    ${ChildDOB}    6    7    
+    ${month}=    Get Substring    ${ChildDOB}    5    7    
     ${month}=    Convert To Integer    ${month}
     ${year}=    Get Substring    ${ChildDOB}    0    4
     ${year}=    Convert To Integer    ${year}
-    
-    ${ChildAge}=    Get Text    xpath(//div[@class='bySpecinfo'])[1]//span[@class='bySpecage']    
+    Scroll Element Into View    xpath=//span[text()='Gender']
+    ${ChildAge}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]//span[@class='bySpecage']
     ${ChildGender}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]//span[@class='bySpecGender']
     ${Location}=    Get Text    xpath=//div[@class='bySpecLocation']/p
-    ${Location}=    Get Substring    ${Location}    1    7
+    ${Location}=    Get Substring    ${Location}    0    5
     
     [Return]    ${ChildAge}    ${day}    ${month}    ${year}    ${Location}    ${childGender}
     
@@ -5442,8 +5442,10 @@ Click Gender in BySpecific Page
 Click Month Filter in BySpecific Page
     [Arguments]    ${month}
     
-    ${month}=    Evaluate    ${month}+1    
-    ${TextMonth}=    Set Variable    ${Months}[${month}]      
+    Sleep   5s    
+    Scroll Element Into View    xpath=//span[@class='reset-facets']
+    #${month}=    Evaluate    ${month}+1
+    ${TextMonth}=    Get From List    ${Months}    ${month}      
     Click Element    id=monthOnly
     Click Element    xpath=//span[@class='month' and contains(text(),'${TextMonth}')]  
     
@@ -5554,3 +5556,37 @@ Home Page Banner Image
         ${BannerImage}=    Remove String    ${element}    https://uat.worldvision.in/
         Identify Status Code    ${BannerImage}
     END
+
+Click ResetAll BySpecific page
+    Sleep    5s    
+    Click Element    xpath=//span[@class='reset-facets']
+
+Click Around You BySpecific page
+    Click Element    xpath=//li[contains(@class,'around-you')]
+    
+Click By Name BySpecific page
+    Click Element    xpath=//li[contains(@class,'by-name')]
+    
+Click MostNeed BySpecific page
+    Click Element    xpath=//li[contains(@class,'most-needed')]
+    
+Child Name Verify BySpecific page
+    [Arguments]    ${Child_name}
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='overall_banner_pledge'][1]/div[2]/h2[contains(text(),'${Child_name}')]
+    Run Keyword If    'True'=='${status}'    Log To Console    "Child found in popup menus"    ELSE    Fail    "Child is mismatching in popup menu"
+    
+9600 Amount Button Verify BySpecific page
+    ##Current in xpath means checked##
+    ${Amount_button}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='price save-malnourished-cart-sec current'])[1]
+    Run Keyword If    'True'=='${Amount_button}'    Log To Console    "1 year Rs.9600 is selected by default"    ELSE    Fail    "1 year Rs.9600 is not selected by default"
+    
+SI Checkbox verify BySpecific page
+    ${recurring_payments}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//input[@id='ChkForSI'])[1]
+    Run Keyword If    'True'=='${recurring_payments}'    Log To Console    "Please use my card details for recurring payments is selected by default"    ELSE    Fail    "Please use my card details for recurring payments is not selected by default"
+    
+Child Quantity verify BySpecific page
+    ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
+    Run Keyword If    '0'=='${more_childrens}'    Log To Console    "Sponsor More Children is 0 by default "    ELSE    Fail    "Sponsor More Children is not 0 by default"
+    
+    
