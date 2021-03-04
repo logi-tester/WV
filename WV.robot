@@ -3,6 +3,7 @@ Test Teardown     Close Browser
 Library           SeleniumLibrary
 Library           String
 Library           DateTime
+Library     RequestsLibrary
 Library           BuiltIn
 Library           Collections
 
