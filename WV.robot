@@ -3866,6 +3866,21 @@ Verify user should submit the form without DOB
     ${status}=    Run Keyword And Return Status    Element Should Contain    id=edit-date-of-birth-error    Date of Birth* is required.
     Run Keyword If    '${status}'!='True'    Fail    Alert message for DOB is not displayed    ELSE    Log    Alert message for DOB is displayed
 
+To verify Home page Properly working
+    [Tags]    HomePage
+    
+    Jenkins browser launch
+    ${element}=    Get Element Attribute    xpath=(//a[@class='site-branding-logo'])[1]/img    src
+    ${Logo}=    Remove String    ${element}    https://uat.worldvision.in/
+    Identify Status Code    ${Logo}
+    Home Page Banner Image
+    
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
+    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
+    
+    ${element}=    Get Element Attribute    xpath=(//div[@class='child_sponsor_image'])[1]/img    src
+    ${Logo}=    Remove String    ${element}    https://uat.worldvision.in/
+    Identify Status Code    ${Logo}
 
 *** Keywords ***
 Jenkins browser launch
@@ -5485,3 +5500,25 @@ Mouse Hover main menu and click submenu
     
     Mouse Over    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${mainmenu}')]
     Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'${submenu}')]    
+
+Identify Status Code
+    [Arguments]    ${element_To_Check}
+    
+    Create Session    WorldVision    ${baseurl}
+    ${response}=    Get On Session    WorldVision    ${element_To_Check}
+    ${statusCode}=    Convert To String    ${response.status_code}
+    Should Be Equal    ${statusCode}    200
+    
+Home Page Banner Image 
+    #[Arguments]    ${homepage_banner}
+         
+    ${banner_count}=    Get Element Count    xpath=//div[@class='tp-bgimg defaultimg']
+    ${banner_count}=    Convert To Integer    ${banner_count}
+        
+    FOR    ${element}    IN RANGE    1    ${banner_count}+1
+        Click Element    xpath=//div[contains(@class,'tp-bullet')]/div[contains(@class,'tp-bullet')][${element}]
+        Capture Page Screenshot
+        ${element}=    Get Element Attribute    xpath=(//div[@class='tp-bgimg defaultimg'])[${element}]    src
+        ${BannerImage}=    Remove String    ${element}    https://uat.worldvision.in/
+        Identify Status Code    ${BannerImage}
+    END
