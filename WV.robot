@@ -5430,9 +5430,10 @@ Get Child Details BySpecific Page
     ${ChildAge}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]//span[@class='bySpecage']
     ${ChildGender}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]//span[@class='bySpecGender']
     ${Location}=    Get Text    xpath=//div[@class='bySpecLocation']/p
-    ${Location}=    Get Substring    ${Location}    0    5
+    ${status}=    Remove String Using Regexp    ${Location}    \\W*\\d*
+    ${UpdatedLocation}=    Get Substring    ${Location}    0    5
     
-    [Return]    ${ChildAge}    ${day}    ${month}    ${year}    ${Location}    ${childGender}
+    [Return]    ${ChildAge}    ${day}    ${month}    ${year}    ${UpdatedLocation}    ${childGender}
     
 Click Gender in BySpecific Page
     [Arguments]    ${gender}
