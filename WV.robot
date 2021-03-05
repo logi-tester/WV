@@ -4019,6 +4019,27 @@ To Verify Child banner should display for the Donor if the child does not have a
     CCavenue payment - cart verification    ${childName}    ${camp_amt}    ${cart_quanity}
     Banner check birthday    Birthday 
 
+To verify Footer rotator functionality
+    [Tags]    Footer rotator functionality
+
+    #Local browser launch
+    Jenkins browser launch
+    Scroll Element Into View    xpath=//strong[text()='World Vision India']
+    Child Rotator Status
+    Rotator Child Count        
+    ${status}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//span[@class='home-price' and contains(text(),'9,600')]/parent::p    class
+    Should Contain    ${status}    active            
+    ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
+    Log    Child name: ${child_name} and child amount: ${sel_child_amt} and also child img src: ${sel_child_imgsrc}            
+    Rotator Allow Auto Debit status check
+    Rotator Proceed To Payment Button Text Check
+    Rotator SI checkbox Click    
+    Rotator Add to Cart Button Text Check
+    Rotator SI checkbox Click
+    Rotator Proceed To Autopay
+    SI login
+    SI payment gateway check
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -5713,3 +5734,8 @@ Rotator SI checkbox Click
 Rotator Child Count
     ${get_child_count}=    Get Element Count    xpath=//*[@class='child_sponsor_image']/img
     Run Keyword If    ${get_child_count}<5    Fail    In home page child rotator child are display lessthen 5
+
+Child Rotator Status
+    ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
+    Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
+
