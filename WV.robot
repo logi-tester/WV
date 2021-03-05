@@ -62,7 +62,7 @@ ${SIOtherPassMessage}    Auto debit option is not available for the other passpo
 @{peopleHaveDonateButton}    by-specifics    educate-children    save-malnourished-children    landingPages/child/index-3.html
 @{SocialMedia}    facebook    twitter    linkedin
 @{Months}    Dummy    Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
-
+@{social_medias}    facebook    linkedin    twitter    whatsapp
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
@@ -3913,6 +3913,73 @@ To Sponsor a child by SI payment flow from by-specific page
     SI login
     Sleep    10s 
     SI payment gateway check
+
+To verify share the page to social media
+    [Tags]    Social Media Share functionality
+    
+    Jenkins browser launch    
+    Click Element    xpath=//div[@class='scl-lnks-storie_block_share_block']    
+    @{windows}=    Get Window Handles    
+    ${SocialMediaCount}=    Get Element Count    xpath=//a[contains(@class,'share')]
+    FOR    ${count}    IN RANGE    0    ${SocialMediaCount}
+        Element Should Be Visible    xpath=//a[contains(@class,'${social_medias}[${count}]')]    30s
+        Click Element    xpath=//a[contains(@class,'${social_medias}[${count}]')]
+        Sleep    5s
+    END
+    @{windows}=    Get Window Handles
+    FOR    ${element}    IN RANGE    1    5
+        Switch Window    ${windows}[${element}]
+        ${url}=    Get Location
+        Log    ${url} 
+        Should Contain    ${url}    home
+        Close Window    
+    END
+    
+Stories of change and events page share
+    [Tags]    Social Media Share functionality
+    
+    Jenkins browser launch    
+    Mouse Hover main menu and click submenu    Child Sponsorship    Stories of Change
+    Wait Until Element Is Visible    xpath=//div[@class='scl-lnks-storie_block_share_block']    60s
+    Click Element    xpath=//div[@class='scl-lnks-storie_block_share_block']    
+    @{windows}=    Get Window Handles        
+    ${SocialMediaCount}=    Get Element Count    xpath=//div[@class='scl-lnks-media-sharing']//a[contains(@class,'share')]
+    FOR    ${count}    IN RANGE    0    ${SocialMediaCount}
+        Element Should Be Visible    xpath=//a[contains(@class,'${social_medias}[${count}]')]    30s
+        Click Element    xpath=//a[contains(@class,'${social_medias}[${count}]')]
+        Sleep    5s
+        Switch Window    ${windows}[0]
+    END
+    @{windows}=    Get Window Handles
+    FOR    ${element}    IN RANGE    1    5
+        Switch Window    ${windows}[${element}]
+        ${url}=    Get Location
+        Log    ${url}
+        Should Contain    ${url}    stories
+        Close Window    
+    END
+    
+    Switch Window    ${windows}[0]
+    Mouse Hover main menu and click submenu    Get Involved    Events
+    Wait Until Element Is Visible    xpath=//div[@class='scl-lnks-storie_block_share_block']    60s
+    Click Element    xpath=//div[@class='scl-lnks-storie_block_share_block']    
+    @{windows}=    Get Window Handles    
+    ${SocialMediaCount}=    Get Element Count    xpath=//a[contains(@class,'share')]
+    FOR    ${count}    IN RANGE    0    ${SocialMediaCount}
+        Element Should Be Visible    xpath=//a[contains(@class,'${social_medias}[${count}]')]    30s
+        Click Element    xpath=//a[contains(@class,'${social_medias}[${count}]')]
+        Sleep    5s
+        Switch Window    ${windows}[0]
+    END
+    @{windows}=    Get Window Handles
+    FOR    ${element}    IN RANGE    1    5
+        Switch Window    ${windows}[${element}]
+        ${url}=    Get Location
+        Log    ${url} 
+        Should Contain    ${url}    home
+        Close Window    
+    END
+
 
 *** Keywords ***
 Jenkins browser launch
