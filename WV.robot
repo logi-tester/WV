@@ -5695,4 +5695,21 @@ Child Quantity verify BySpecific page
     ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
     Run Keyword If    '0'=='${more_childrens}'    Log To Console    "Sponsor More Children is 0 by default "    ELSE    Fail    "Sponsor More Children is not 0 by default"
     
-    
+Success text in shadow window
+    ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
+    Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
+
+Rotator Proceed To Payment Button Text Check
+    ${status}=    Run Keyword And Return Status    Element Should Contain    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//button[contains(@class,'si_modal_btn')]    PROCEED TO AUTOPAY
+    Run Keyword If    '${status}'!='True'    Fail    Button Text is not displayed as Proceed To Autopay
+
+Rotator Add to Cart Button Text Check
+    ${status}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//input[contains(@id,'edit-submit')]    value
+    Run Keyword If    '${status}'!='SPONSOR NOW'    Fail    Button Text is not changed to Add to Cart
+
+Rotator SI checkbox Click
+    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//label[@class='chkSIlabel']
+
+Rotator Child Count
+    ${get_child_count}=    Get Element Count    xpath=//*[@class='child_sponsor_image']/img
+    Run Keyword If    ${get_child_count}<5    Fail    In home page child rotator child are display lessthen 5
