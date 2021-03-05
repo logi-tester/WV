@@ -3980,6 +3980,44 @@ Stories of change and events page share
         Close Window    
     END
 
+To Verify Child banner should display for the Donor if the child does not have a birthday
+    [Tags]    Child Birthday Banner Functionality
+    
+    Jenkins browser launch
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]
+    
+    ${ChildDOB}=    Get Text    xpath=//div[@class='bySpecName']/p[2]
+    ${ChildDOBMonth}=    Get Substring    ${ChildDOB}    5    7
+    ${DOB_Month}=    Convert To Integer    ${ChildDOBMonth}
+    Log    Child Birth Month:${DOB_Month}
+
+    ${today_date}=    today date complete
+    ${ThisMonth}=    Set Variable    ${today_date.month}
+    
+    Log    Child Birth Month: ${ThisMonth}     
+    Should Not Be Equal As Integers    ${ThisMonth}    ${DOB_Month}
+    
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]
+    
+    Child Name Verify BySpecific page    ${Child_name}
+    
+    ${CampAmt}=    Get Text    xpath=//label[contains(text(),'3 Months')]    
+    ${Camp_amt}=    Get Substring    ${CampAmt}    9    16        
+    ${Camp_Amount}=    Remove String Using Regexp    ${Camp_amt}    \\D
+    
+    Click Element    xpath=//label[contains(text(),'3 Months')]    
+    Click SI CheckBox
+    Add to cart text change
+    Click Add To Cart
+    Click Proceed To Checkout Button
+    ${cart_quanity}    check in view cart page - dynamic    ${childName}    ${Camp_Amount}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${childName}    ${camp_amt}    ${cart_quanity}
+    Banner check birthday    Birthday 
 
 *** Keywords ***
 Jenkins browser launch
