@@ -4040,6 +4040,45 @@ To verify Footer rotator functionality
     SI login
     SI payment gateway check
 
+To Verify City details getting auto Populated when Valid Postal code is entered
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Register     
+    Element Should Be Visible    class=singUpRegister    60s        
+    Scroll Element Into View    class=singUpRegister 
+    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123
+    Sleep    5s    
+    ${city}=    Get Element Attribute    id=edit-field-city-0-value    value
+    Run Keyword If    '${city}'=='${EMPTY}'    Fail    Country Field doesnt auto populate
+    Log To Console    City ${city} is auto populated
+    
+To Verify State details getting auto Populated when Valid Postal code is entered
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Register     
+    Element Should Be Visible    class=singUpRegister    60s        
+    Scroll Element Into View    class=singUpRegister 
+    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123
+    Sleep    5s    
+    ${state}=    Get Element Attribute    id=edit-field-regstate-0-value    value
+    Run Keyword If    '${state}'=='${EMPTY}'    Fail    Country Field doesnt auto populate
+    Log To Console    state ${state} is auto populated
+
+To Verify Country details getting auto Populated when Valid Postal code is entered
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Register     
+    Element Should Be Visible    class=singUpRegister    60s        
+    Scroll Element Into View    class=singUpRegister 
+    Input Text    xpath=//input[contains(@id,'edit-field-pin-code')]    600123
+    Sleep    5s    
+    ${country}=    Get Element Attribute    id=edit-field-country    value
+    Run Keyword If    '${country}'=='${EMPTY}'    Fail    Country Field doesnt auto populate
+    Log    Country ${country} is auto populated    
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
