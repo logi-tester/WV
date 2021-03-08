@@ -4242,7 +4242,7 @@ CCavenue payment success flow
     #Sleep    4s
     ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
     Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
-    Sleep    30s
+    Sleep    15s
     Click Element    //button[text()='pay my contribution']    
     #Click Element    xpath=.//input[@id='edit-actions-next']
     #${order_id}=    Get Text    xpath=.//span[@class='order-value']
@@ -4401,7 +4401,7 @@ Notification deletion
     #${get_viewcart_list_count}=    Set Variable    ${get_viewcart_list_count + 1}      
     FOR    ${index}    IN RANGE    ${get_viewcart_list_count}    0    -1    
         Click Element    xpath=(//a[@class='remove-btn'])[${index}]    
-        Sleep    10s    
+        Sleep    5s    
     END           
     ${check_cartpage_after_complete_del}=   Get Text    xpath=//div[@class='Empty_basket_Content']/h1    
     Run Keyword If    '${check_cartpage_after_complete_del}'!='Your Gift Cart is Empty'    Fail    "In View cart page after complete deletion 'Your Gift Cart is Empty' text not display"
