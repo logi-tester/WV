@@ -4120,6 +4120,28 @@ To sponsor 10 child - SI flow
     ${TotalPrice}=    Evaluate    ${camp_amt}*10    
     Should Be Equal As Integers    ${TotalCartPrice}    ${TotalPrice}
 
+To verify Allow Auto Debit should be visible for already donated campaign using normal payment
+    [Tags]    Payment Gateway Campaign and child
+    
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete           
+    Mouser hover ways to give campaign    Educate Children
+    Sleep    5s
+    ${camp_name}    ${camp_amt}    Checkout flow campaign
+    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    My Next Payment campaign Check    Educate Children
+    Click Element    xpath=//div[@class='cld-nme']//p[contains(text(),'Educate Children')]   
+    My Next Payment Proceed Button
+    My Next Payment SI Checkbox Enabled Verify
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4282,29 +4304,20 @@ Educate children campaign with checkout flow
 
 Checkout flow campaign
     Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
-    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
-    #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Sleep    5s    
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div/p
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]     
     ${Camp_amt}=    Get Substring    ${label_val}    9    16
     Log To Console    Final val is: ${camp_amt}
-    Sleep    15s
     
-    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
+    Wait Until Element Is Visible    xpath=//label[contains(text(),'3 Months')]    30s    
+    Click Element    xpath=//label[contains(text(),'3 Months')]
     Sleep    10s    
-    Click Element    id=ChkForSI
-    
+    Click SI CheckBox
     Add to cart text change
-    
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
-    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
-
-    Click Element    xpath=//a[@class='view_cart']
-    
-    # ${view_cart_amount}=    Get Text    xpath=//td[@class='views-field views-field-total-price__number views-align-center']
-    # Log To Console    View cart page campaign amount: ${view_cart_amount}
+    Click Add To Cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
     
     [Return]    ${camp_name}    ${camp_amt}
 
@@ -5831,3 +5844,22 @@ No of Child Addition in BySpecific page
     FOR    ${element}    IN RANGE    1    ${NoOfChild}
         Click Element    xpath=(//div[@id='sip_increase'])[1]    
     END
+
+My Next Payment MainMenu and SubMenu
+    [Arguments]    ${mainMenu}    ${subMenu}
+
+    Click Element    xpath=//a[text()='${mainMenu}']    
+    Click Element    xpath=//a[text()='${subMenu}'] 
+    
+My Next Payment campaign Check
+    [Arguments]    ${campaign}
+  
+    Element Status Check    xpath=//div[@class='cld-nme']//p[contains(text(),'${campaign}')]    ${campaign} is added to My Campaign bucket    ${campaign} was not added to My Campaign bucket
+
+My Next Payment Proceed Button
+    Click Element    class=pymnt-smt-sec 
+    
+My Next Payment SI Checkbox Enabled Verify
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=si_checkbox
+    Run Keyword If    '${status}'!='True'    Fail    SI Payment is disabled in My Next Payment Page     ELSE    Log    SI Payment is enabled in My Next Payment Page    
