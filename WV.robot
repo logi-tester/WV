@@ -2858,7 +2858,7 @@ To Sponsor 5 child - SI flow - byspecific
     #Click Element    id=ChkForSI    
     Add to cart text change    
     #sponsor child count
-    FOR    ${element}    IN RANGE    0    5
+    FOR    ${element}    IN RANGE    1    5
         Click Element    xpath=(//div[@id='sip_increase'])[1]    
     END    
     ${child_count}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
