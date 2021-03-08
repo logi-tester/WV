@@ -4076,6 +4076,50 @@ To Verify Country details getting auto Populated when Valid Postal code is enter
     Run Keyword If    '${country}'=='${EMPTY}'    Fail    Country Field doesnt auto populate
     Log    Country ${country} is auto populated    
 
+To sponsor 10 child - SI flow
+    [Tags]    Sponsor a Child    
+    
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Cart campaign check and delete
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child
+    
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]    
+    ${child_details}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]/p
+    ${child_location}=    Get Text    xpath=(//div[@class='bySpecLocation'])[1]/p    
+    
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]
+    
+    Child Name Verify BySpecific page    ${Child_name}
+    9600 Amount Button Verify BySpecific page
+    SI Checkbox verify BySpecific page
+    Child Quantity default verify BySpecific page    
+    #Click 3Month package
+    ${camp_amount}=    Get Text    xpath=(//label[contains(text(),'3 Month')])[1]
+    ${final_val}=    Get Substring    ${camp_amount}    9    16
+    ${camp_amt}=    Convert to price    ${final_val} 
+    Click Element    xpath=(//label[contains(text(),'3 Month')])[1]
+    #Click Element    id=ChkForSI    
+    Add to cart text change    
+    No of Child Addition in BySpecific page    10
+    Sleep    5s    
+    Child Quantity verify BySpecific page    9
+    Proceed to Pay Button
+    SI login   
+    SI payment gateway check
+    
+    ${price_SI}=    Get Text    id=TotalAmtOfOrder
+    ${TotalCartPrice}=    Convert To Integer    ${price_SI}    
+    ${TotalPrice}=    Evaluate    ${camp_amt}*10    
+    Should Be Equal As Integers    ${TotalCartPrice}    ${TotalPrice}
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -5741,8 +5785,8 @@ Child Name Verify BySpecific page
     
 9600 Amount Button Verify BySpecific page
     ##Current in xpath means checked##
-    ${Amount_button}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='price save-malnourished-cart-sec current'])[1]
-    Run Keyword If    'True'=='${Amount_button}'    Log To Console    "1 year Rs.9600 is selected by default"    ELSE    Fail    "1 year Rs.9600 is not selected by default"
+    ${ActiveStatus}=    Get Element Attribute    xpath=(//label[@for='9600'])[1]/parent::div    class
+    Should Contain    ${ActiveStatus}    current
     
 SI Checkbox verify BySpecific page
     ${recurring_payments}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//input[@id='ChkForSI'])[1]
@@ -5775,3 +5819,15 @@ Child Rotator Status
     ${footer_status}=    Run Keyword And Return Status    Element Should Be Visible    id=myCarousel
     Run Keyword If    'True'!='${footer_status}'    Fail    "Home Page Footer child rotator section not displayed"
 
+Child Quantity verify BySpecific page
+    [Arguments]    ${NoOfChild}
+    
+    ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[1]    value
+    Run Keyword If    '${NoOfChild}'=='${more_childrens}'    Log    "Sponsor More Children is ${NoOfChild}"    ELSE    Fail    "Sponsor More Children is not ${NoOfChild}"
+
+No of Child Addition in BySpecific page
+    [Arguments]    ${NoOfChild}
+    
+    FOR    ${element}    IN RANGE    1    ${NoOfChild}
+        Click Element    xpath=(//div[@id='sip_increase'])[1]    
+    END
