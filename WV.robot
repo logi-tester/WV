@@ -2869,11 +2869,8 @@ To Sponsor 5 child - SI flow - byspecific
     #Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input
     
     SI login
-    Sleep    10s    
-    FOR    ${element}    IN    @{SI_payment_list_text}
-        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
-        Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} are displayed"    
-    END
+    Sleep    5s    
+    SI payment gateway check
 
 To check whether filters work properly in magazine page
     [Tags]    Media
