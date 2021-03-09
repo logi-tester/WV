@@ -4142,6 +4142,52 @@ To verify Allow Auto Debit should be visible for already donated campaign using 
     My Next Payment Proceed Button
     My Next Payment SI Checkbox Enabled Verify
 
+To verify Allow Auto Debit should not be visible for one time donation
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    Mouser hover ways to give campaign     Hungerfree 
+    ${camp_name}    ${Camp_val}    one time campaign - Hunger Free campaign       
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    My Next Payment campaign Check    ${camp_name}
+    Click Element    xpath=//div[@class='cld-nme']//p[contains(text(),'${camp_name}')]
+    My Next Payment Proceed Button
+    My Next Payment SI Checkbox Disabled Verify
+    
+    
+For a one time donation no Delinquency condition should be applied
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Banner Alert
+    Cart campaign check and delete            
+    Mouser hover ways to give campaign     Hungerfree 
+    ${camp_name}    ${Camp_val}    one time campaign - Hunger Free campaign       
+    ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    My Next Payment campaign Check    ${camp_name}
+    Click Element    xpath=//div[@class='cld-nme']//p[contains(text(),'${camp_name}')]
+    ${colour}=    Get CSS Attribute Value    locator=//div[@class='cld-nme']//p[contains(text(),'Hunger')]//parent::div/parent::div/parent::div    attribute=border-left
+    Log To Console    ${colour}
+    Should Contain    ${colour}    ${green}
+    Should Not Contain    ${colour}    ${red}
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -4863,10 +4909,10 @@ one time campaign - Help HIV aids Campaign
 one time campaign - Hunger Free campaign
     
     Sleep    10s
-    Click Element    xpath=.//div[@class='add-to-cart-section']
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    Click Element    xpath=//div[@class='add-to-cart-section']
+    Sleep    5s    
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
     ${camp_name}=    Remove String    ${camp_name}    Free
-
     Add to cart text change
     Add to cart functionality
     
@@ -4882,7 +4928,8 @@ one time campaign - Hunger Free campaign
         
     Click Element    xpath=//a[@class='view_cart']
     ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
-    [Return]    ${camp_name}    ${camp_val}    
+    
+    [Return]    ${camp_name}    ${camp_val}     
 
 check in view cart page - Checkout flow
     [Arguments]    ${camp_name}    ${camp_amt}
@@ -5863,3 +5910,22 @@ My Next Payment SI Checkbox Enabled Verify
     Sleep    5s    
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=si_checkbox
     Run Keyword If    '${status}'!='True'    Fail    SI Payment is disabled in My Next Payment Page     ELSE    Log    SI Payment is enabled in My Next Payment Page    
+
+My Next Payment SI Checkbox Disabled Verify
+    Sleep    5s    
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    id=si_checkbox
+    Run Keyword If    '${status}'!='True'    Fail    SI Payment is enable in My Next Payment Page     ELSE    Log    SI Payment is disabled in My Next Payment Page
+
+Get CSS Attribute Value
+    [Arguments]    ${locator}    ${attribute}
+    
+    # Get element using Xpath in JavaScript.
+    # Note there are other options like getElementById/Class/Tag
+    ${element}=    Set Variable    document.evaluate("${locator}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+    # Get css attribute value using getComputedStyle()
+    ${attribute_value}=    Execute Javascript    return window.getComputedStyle(${element},null).getPropertyValue('${attribute}');
+    Log   ${attribute_value}
+    
+    [Return]    ${attribute_value}
+    
+    
