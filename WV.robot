@@ -63,6 +63,9 @@ ${SIOtherPassMessage}    Auto debit option is not available for the other passpo
 @{SocialMedia}    facebook    twitter    linkedin
 @{Months}    Dummy    Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
 @{social_medias}    facebook    linkedin    twitter    whatsapp
+${green}    (0, 196, 166)
+${red}    (244, 65, 52, 1)
+${yellow}    (253, 212, 94, 1)
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
