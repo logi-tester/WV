@@ -6014,3 +6014,17 @@ CCavenue payment - cart verification sponsor a child
         # ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[3][contains(text(),'${camp_val}')]
         # Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"    
     END    
+    
+BySpecific Selected By Default
+    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
+    Run Keyword If    '${by_specific}'=='True'    Log    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    
+Most Needed Child Selected By Default
+    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
+    Run Keyword If    '${most_needed}'=='True'    Log    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"    
+
+Click SI CheckBox BySpecific Page
+    Click Element    xpath=(//input[@id='ChkForSI'])[1]
+    
+Click Add to Cart BySpecific Page
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input     
