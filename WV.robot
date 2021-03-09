@@ -4190,6 +4190,50 @@ For a one time donation no Delinquency condition should be applied
     Should Contain    ${colour}    ${green}
     Should Not Contain    ${colour}    ${red}
 
+To verify Allow Auto Debit should be visible for already donated child using normal payment
+    [Tags]    Make Payment Page
+
+    Jenkins browser launch
+    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Cart campaign check and delete
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child    
+    
+    BySpecific Selected By Default
+    Most Needed Child Selected By Default
+    
+    ${Child_name}=    Get Text    xpath=(//div[@class='bySpecName'])[1]/p[1]    
+    ${child_details}=    Get Text    xpath=(//div[@class='bySpecinfo'])[1]/p
+    ${child_location}=    Get Text    xpath=(//div[@class='bySpecLocation'])[1]/p
+    
+    Mouse Over    xpath=(//div[@class='bySpecContHolder'])[1]
+    Click Element    xpath=(//input[@value='SPONSOR NOW'])[1]
+    
+    Child Name Verify BySpecific page    ${Child_name}
+    9600 Amount Button Verify BySpecific page
+    SI Checkbox verify BySpecific page
+    #Child Quantity default verify BySpecific page
+    Click SI CheckBox BySpecific Page
+    
+    ${camp_amount}=    Get Text    xpath=(//label[contains(text(),'3 Month')])[1]
+    ${final_val}=    Get Substring    ${camp_amount}    9    16
+    ${camp_amt}=    Convert to price    ${final_val}
+
+    Click Element    xpath=(//label[contains(text(),'3 Month')])[1]
+    Add to cart text change
+    Click Add to Cart BySpecific Page
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    ${cart_quanity}=    check in view cart page - Checkout flow to sponsor a child    ${Child_name}    ${camp_amt}    
+    View cart proceed button
+    Login
+    CCavenue payment success flow
+    CCavenue payment - cart verification sponsor a child    ${Child_name}    ${camp_amt}    ${cart_quanity}
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    My Next Payment campaign Check    ${Child_name}
+    Click Element    xpath=//div[@class='cld-nme']//p[contains(text(),'${Child_name}')]   
+    My Next Payment Proceed Button
+    My Next Payment SI Checkbox Enabled Verify
 
 *** Keywords ***
 Jenkins browser launch
@@ -5931,4 +5975,42 @@ Get CSS Attribute Value
     
     [Return]    ${attribute_value}
     
+check in view cart page - Checkout flow to sponsor a child
+    [Arguments]    ${camp_name}    ${camp_amt}
+
+    Sleep    10s    
+        
+    ${camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]
+    Run Keyword If    'True'!='${camp_viewcart}'    Fail    "${camp_name} campaign not display in view cart page"
     
+    ${camp_amt_viewcart}=    Get Text    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]/following-sibling::td[3]
+    ${cart_amt}=    Convert to price    ${camp_amt_viewcart}
+    Run Keyword If    ${camp_amt}!=${cart_amt}    Fail    "${camp_name} campaign amount are not display or mismatch in view cart page"    
+    
+    ${cart_quanity}=    Get Element Attribute    xpath=//span[@class='dynamic-quantity']//input    value
+    
+    [Return]    ${cart_quanity}
+    
+CCavenue payment - cart verification sponsor a child
+    [Arguments]    ${camp_name}    ${Camp_val}    ${cart_quanity}
+    
+    Sleep    20s    
+    Banner Alert
+    ${order_status}=    Get Text   xpath=//div[@class='payment-success-message1']/p
+    Log To Console    ${order_status}
+        
+    ${count}=    Get Element Count    xpath=//td[contains(@class,'views-field-product-id')]
+    FOR    ${element}    IN RANGE    1    ${count}+1
+        ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
+        Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name}" is displayed in payment page    ELSE    Fail    "${camp_name} was not displayed in payment page"
+        
+        ${campaign_quanity}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[2]//span
+        Run Keyword If    '${cart_quanity}'=='${campaign_quanity}'    Log To Console    campaign quantity is: ${campaign_quanity}    ELSE    Fail    campaign quantity was not displayed
+        
+        ${camp_amt_viewcart}=    Get Text    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${camp_name}')]/following-sibling::td[3]
+        ${cart_amt}=    Convert to price    ${camp_amt_viewcart}
+        Run Keyword If    ${cart_amt}==${Camp_val}    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"    
+
+        # ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[3][contains(text(),'${camp_val}')]
+        # Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"    
+    END    
