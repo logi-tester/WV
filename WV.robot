@@ -6028,3 +6028,6 @@ Click SI CheckBox BySpecific Page
     
 Click Add to Cart BySpecific Page
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']/input     
+
+Click Proceed To Checkout Button
+    Click Element    class=view_cart
