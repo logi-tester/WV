@@ -66,6 +66,7 @@ ${SIOtherPassMessage}    Auto debit option is not available for the other passpo
 ${green}    (0, 196, 166)
 ${red}    (244, 65, 52, 1)
 ${yellow}    (253, 212, 94, 1)
+${SICartColour}    (80, 189, 189, 1)
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
@@ -4250,6 +4251,81 @@ To verify Allow Auto Debit should not be visible for already SI donated campaign
     My Next Payment Proceed Button
     My Next Payment SI Checkbox Disabled Verify
 
+To verify cart function for child donated with SI payment and campaign donated with normal payment 
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${childName}=    Select Child Paid As SI in My Next Payment Page
+    ${childAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount'] 
+
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    ${campaignName}=    Select campaign Not Paid As SI in My Next Payment Page
+    ${TotalCartAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    
+    ${campaignAmt}=    Evaluate    ${TotalCartAmt}-${childAmt}
+    
+    My Next Payment Proceed Button  
+    Shadown Cart Total Amount    ${TotalCartAmt}
+    Shadown Window Product verify    ${childName}
+    Shadown Window Product verify    ${campaignAmt}
+    
+    My Next Payment Allow To Auto Debit click
+    
+    ${after_content}=    Get Pseudo Element CSS Attribute Value    //p[@class='si_title' and contains(text(),'${campaignName}')]/parent::div/parent::div/parent::div    pseudo_element=':after'   attribute=background-color
+    Should Contain    ${after_content}    ${SICartColour}
+    
+    Shadown Cart Total Amount    ${campaignAmt}
+
+    
+
+To verify redonate for donated child in make payment page
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck   
+    Scroll Element Into View    xpath=//a[text()='Donation']
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${after_content}=    Get Pseudo Element CSS Attribute Value    (//div[@class='cld-nme'])[1]//p[contains(text(),'')]/parent::div/parent::div    pseudo_element=':after'   attribute=content
+    Should Not Contain    ${after_content}    Paid as SI
+    Click Element    xpath=(//div[@class='cld-nme-dtls'])[1]
+    Footer Cart Amout Hidder click
+    Sleep    3s    
+    My Next Payment Proceed Button
+
+    ${childName}=    Get Text    xpath=(//div[@class='cld-nme-dtls'])[1]/div[1]/p
+    ${ChildAmount}=    Get Text    xpath=(//span[@class='childCart_total_amount'])[1]
+
+    #Shadown window
+    ${ShadowWindowAmount}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[@class='childCart_total_amount' and contains(text(),'${ChildAmount}')]
+    Run Keyword If    '${ShadowWindowAmount}'!='True'    Fail    Child ${ChildAmount} is not visible in shadow window    ELSE    Log    Child ${ChildAmount} is visible in shadow window    
+    
+    ${ShadowWindowChild}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[@class='si_title' and contains(text(),'${childName}')]    
+    Run Keyword If    '${ShadowWindowChild}'!='True'    Fail    Child ${childName} is not visible in shadow window    ELSE    Log    Child ${childName} is visible in shadow window    
+    
+    Click Element    id=MP_add_to_cart_btn    
+    
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    ${cart_quanity}    check in view cart page - Checkout flow    ${childName}    ${ChildAmount}
+    View cart proceed button
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${childName}    ${ChildAmount}    ${cart_quanity}
+
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -6047,3 +6123,76 @@ Click Add to Cart BySpecific Page
 
 Click Proceed To Checkout Button
     Click Element    class=view_cart
+
+My Donation Bucket Uncheck
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    Footer Cart Amout Hidder click
+    ${childCount}=    Get Element Count    xpath=//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')]
+    FOR    ${element}    IN RANGE    1    ${childCount}+1
+        ${classValue}=    Get Element Attribute    xpath=(//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')])[${element}]    class
+        ${status}=    Run Keyword And Return Status    Should Contain    ${classValue}    itm-sltn-add
+        Scroll Element Into View    xpath=(//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')])[${element}]//div[@class='cld-nme']
+        Run Keyword If    '${status}'=='True'    Click Element    xpath=(//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')])[${element}]//div[@class='cld-nme']    ELSE    Log    Item is not selected            
+    END
+
+My Children Bucket Uncheck
+    My Next Payment MainMenu and SubMenu    Donation    My Children    
+    ${childCount}=    Get Element Count    xpath=//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')]
+    FOR    ${element}    IN RANGE    1    ${childCount}+1
+        ${classValue}=    Get Element Attribute    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]    class
+        ${status}=    Run Keyword And Return Status    Should Contain    ${classValue}    itm-sltn-add
+        Scroll Element Into View    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']
+        Run Keyword If    '${status}'=='True'    Click Element    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]    ELSE    Log    Item is not selected    
+    END
+
+My Campaign Bucket Uncheck
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns    
+    ${childCount}=    Get Element Count    xpath=//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')]
+    FOR    ${element}    IN RANGE    1    ${childCount}+1
+        ${classValue}=    Get Element Attribute    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]    class
+        ${status}=    Run Keyword And Return Status    Should Contain    ${classValue}    itm-sltn-add
+        Scroll Element Into View    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']
+        Run Keyword If    '${status}'=='True'    Click Element    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']    ELSE    Log    Item is not selected            
+    END
+
+Select Child Paid As SI in My Next Payment Page
+    ${childCount}=    Get Element Count    xpath=//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')]
+    FOR    ${element}    IN RANGE   1    ${childCount}+1
+        ${after_content}=    Get Pseudo Element CSS Attribute Value    (//div[contains(@class,'mychildren-section')]//div[@class='cld-nme']//p[contains(text(),'')]/parent::div/parent::div)[${element}]    pseudo_element=':after'   attribute=content
+        ${status}=    Run Keyword And Return Status    Should Contain    ${after_content}    Paid as SI
+        Run Keyword If    '${status}'!='True'    Continue For Loop    ELSE    Click Donated SI Child    ${element}
+        Exit For Loop If    '${status}'=='True'
+    END
+    Run Keyword If    '${status}'!='True'    Fail    Currently there is are no child donated with SI Payment
+    ${childName}=    Get Text    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']/p
+
+    [Return]    ${childName}
+
+Select campaign Not Paid As SI in My Next Payment Page
+    ${campaignCount}=    Get Element Count    xpath=//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')]
+    FOR    ${element}    IN RANGE   1    ${campaignCount}+1
+        ${after_content}=    Get Pseudo Element CSS Attribute Value    (//div[contains(@class,'mycampine-section')]//div[@class='cld-nme']//p[contains(text(),'')]/parent::div/parent::div)[${element}]    pseudo_element=':after'   attribute=content
+        ${status}=    Run Keyword And Return Status    Should Not Contain    ${after_content}    Paid as SI
+        Run Keyword If    '${status}'!='True'    Continue For Loop    ELSE    Click Donated Campaign in Normal Payment    ${element}
+        Exit For Loop If    '${status}'=='True'
+    END
+    Run Keyword If    '${status}'!='True'    Fail    Currently there is are no campaign donated with normal Payment
+    ${campaignName}=    Get Text    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']/p
+    
+    [Return]    ${campaignName}
+    
+Shadown Cart Total Amount
+    [Arguments]    ${totalCartAmount}
+
+    Element Status Check    xpath=//p[@class='cld-amount-pyble']/span[contains(text(),'${totalCartAmount}')]    Total Cart amount is matching    Total Cart amount doesnt match
+
+Shadown Window Product verify
+    [Arguments]    ${element}
+
+    Element Status Check    xpath=//p[@class='si_title' and contains(text(),'${element}')]    ${element} is visible in Shadow Window    ${element} is not visible in Shadow Window    
+
+My Next Payment Allow To Auto Debit click
+    Click Element    id=si_checkbox  
+    
+Footer Cart Amout Hidder click
+    Click Element    xpath=//div[@class='fixed-footerHider']/a    
