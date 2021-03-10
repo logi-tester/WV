@@ -4235,6 +4235,22 @@ To verify Allow Auto Debit should be visible for already donated child using nor
     My Next Payment Proceed Button
     My Next Payment SI Checkbox Enabled Verify
 
+To verify Allow Auto Debit should not be visible for already SI donated campaign 
+    [Tags]    Make Payment Page
+        
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    Sleep    5s    
+    ${after_content}=    Get Pseudo Element CSS Attribute Value    //div[@class='cld-nme']//p[contains(text(),'Educate Children')]/parent::div/parent::div    pseudo_element=':after'   attribute=content
+    Should Contain    ${after_content}    "Paid as SI"
+    Click Element    xpath=//div[@class='cld-nme']//p[contains(text(),'Educate Children')]
+    My Next Payment Proceed Button
+    My Next Payment SI Checkbox Disabled Verify
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
