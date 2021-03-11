@@ -4168,7 +4168,7 @@ To verify Allow Auto Debit should not be visible for one time donation
     My Next Payment SI Checkbox Disabled Verify
     
     
-For a one time donation no Delinquency condition should be applied
+To verify Delinquency condition is not applicable for one time donation 
     [Tags]    Make Payment Page
     
     Jenkins browser launch
