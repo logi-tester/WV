@@ -4272,7 +4272,7 @@ To verify cart function for child donated with SI payment and campaign donated w
     ${campaignName}=    Select campaign Not Paid As SI in My Next Payment Page
     ${TotalCartAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
     ${TotalCart}=    Convert to price    ${TotalCartAmt}
-    ${campaignAmt}=    Evaluate    ${TotalCart}-${DonationAmount}
+    ${campaignAmt}=    Evaluate    ${TotalCart}-${ChildAmt}
     
     ${int variable}=    Set Variable    ${campaignAmt}
     ${campaignAmtCart}=      Format String     {:,}    ${int_variable}
