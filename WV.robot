@@ -4251,13 +4251,13 @@ To verify Allow Auto Debit should not be visible for already SI donated campaign
     My Next Payment Proceed Button
     My Next Payment SI Checkbox Disabled Verify
 
-To verify cart function for child donated with SI payment and campaign donated with normal payment 
+To verify cart function for child donated with SI payment and campaign donated with normal payment  
     [Tags]    Make Payment Page
     
     Jenkins browser launch
     Click Login
     Direct login
-    My Next Payment
+    My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
     My Donation Bucket Uncheck
@@ -4265,25 +4265,43 @@ To verify cart function for child donated with SI payment and campaign donated w
     
     My Next Payment MainMenu and SubMenu    Donation    My Children
     ${childName}=    Select Child Paid As SI in My Next Payment Page
-    ${childAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount'] 
+    ${DonationAmount}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${ChildAmt}=    Convert to price    ${DonationAmount} 
 
     My Next Payment MainMenu and SubMenu    Donation    My Campaigns
     ${campaignName}=    Select campaign Not Paid As SI in My Next Payment Page
     ${TotalCartAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${TotalCart}=    Convert to price    ${TotalCartAmt}
+    ${campaignAmt}=    Evaluate    ${TotalCart}-${DonationAmount}
     
-    ${campaignAmt}=    Evaluate    ${TotalCartAmt}-${childAmt}
+    ${int variable}=    Set Variable    ${campaignAmt}
+    ${campaignAmtCart}=      Format String     {:,}    ${int_variable}
     
-    My Next Payment Proceed Button  
+    Footer Cart Amout Hidder click
+    Sleep    5s     
+    My Next Payment Proceed Button 
+    Sleep    5s    
     Shadown Cart Total Amount    ${TotalCartAmt}
     Shadown Window Product verify    ${childName}
-    Shadown Window Product verify    ${campaignAmt}
     
-    My Next Payment Allow To Auto Debit click
+    ${paymentFrequency}=    Get Payment Frequency    ${campaignName}
     
-    ${after_content}=    Get Pseudo Element CSS Attribute Value    //p[@class='si_title' and contains(text(),'${campaignName}')]/parent::div/parent::div/parent::div    pseudo_element=':after'   attribute=background-color
-    Should Contain    ${after_content}    ${SICartColour}
+    My Next Payment Allow To Auto Debit click    
     
-    Shadown Cart Total Amount    ${campaignAmt}
+    ${Frequency}=    Payment Frequency Convertion    ${paymentFrequency}
+    
+    Select From List By Label    id=overall_child_due_quantity    ${Frequency}    
+
+    ${BGColour}=    Get CSS Attribute Value    locator=//p[@class='si_title' and contains(text(),'${campaignName}')]/parent::div/parent::div/parent::div    attribute=background-color
+    Should Contain    ${BGColour}    ${SICartColour}
+
+    Shadown Window Product verify    ${campaignName}
+    Shadown Cart Total Amount    ${campaignAmtCart}   
+    
+    My Next Payment SI Proceed To Autopay
+    Sleep    5s            
+    Element Status Check    xpath=//h5[@id='TotalAmtOfOrder']/b[contains(text(),'${campaignAmt}')]    Campaign Amount is visible in Payment gateway    Campaign Amount is not visible in Payment gateway
+    
 
     
 
@@ -6142,7 +6160,7 @@ My Children Bucket Uncheck
         ${classValue}=    Get Element Attribute    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]    class
         ${status}=    Run Keyword And Return Status    Should Contain    ${classValue}    itm-sltn-add
         Scroll Element Into View    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']
-        Run Keyword If    '${status}'=='True'    Click Element    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]    ELSE    Log    Item is not selected    
+        Run Keyword If    '${status}'=='True'    Click Donated SI Child    ${element}    ELSE    Log    Item is not selected    
     END
 
 My Campaign Bucket Uncheck
@@ -6152,7 +6170,7 @@ My Campaign Bucket Uncheck
         ${classValue}=    Get Element Attribute    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]    class
         ${status}=    Run Keyword And Return Status    Should Contain    ${classValue}    itm-sltn-add
         Scroll Element Into View    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']
-        Run Keyword If    '${status}'=='True'    Click Element    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']    ELSE    Log    Item is not selected            
+        Run Keyword If    '${status}'=='True'    Click Donated Campaign in Normal Payment    ${element}    ELSE    Log    Item is not selected            
     END
 
 Select Child Paid As SI in My Next Payment Page
@@ -6196,3 +6214,45 @@ My Next Payment Allow To Auto Debit click
     
 Footer Cart Amout Hidder click
     Click Element    xpath=//div[@class='fixed-footerHider']/a    
+    
+Return One Year
+    ${var}=    Set Variable    1 Year
+    
+    [Return]    ${var}
+    
+Return 6 Months
+    ${var}=    Set Variable    6 Month
+    
+    [Return]    ${var}
+
+Return 3 Months
+    ${var}=    Set Variable    3 Month
+    
+    [Return]    ${var}
+    
+Return 1 Month
+    ${var}=    Set Variable    1 Month
+    
+    [Return]    ${var}
+
+Payment Frequency Convertion
+    [Arguments]    ${paymentFrequency}
+    
+    ${ReturnValue}=        Run Keyword If    '${paymentFrequency}'=='Annually'    Return One Year
+    ...    ELSE IF    '${paymentFrequency}'=='Half Yearly'    Return 6 Months
+    ...    ELSE IF    '${paymentFrequency}'=='Quarterly'    Return 3 Months
+    ...    ELSE    Return 1 Month
+    Log To Console    Result: ${ReturnValue} 
+    
+    [Return]    ${ReturnValue}
+
+Get Payment Frequency
+    [Arguments]    ${productInCart}
+    
+    ${paymentFrequency}=    Get Text    xpath=//p[@class='si_title' and contains(text(),'${productInCart}')]/parent::div/parent::div/following-sibling::div/p
+
+    [Return]    ${paymentFrequency}
+
+My Next Payment SI Proceed To Autopay
+    
+    Click Element    id=SI_Make_payment_add_to_cart_btn     
