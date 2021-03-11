@@ -4468,7 +4468,54 @@ To verify SI cart function for child donated with normal flow and one time donat
     Sleep    5s            
     Element Status Check    xpath=//h5[@id='TotalAmtOfOrder']/b[contains(text(),'${ChildAmt}')]    Campaign Amount is visible in Payment gateway    Campaign Amount is not visible in Payment gateway
     
+To verify SI cart function for campaign donated with normal flow and one time donation
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']
 
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    ${OnetimeDonationName}=    Select One Time Donation in My Next Payment Page
+    ${DonationAmount}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${OneDonationAmt}=    Convert to price    ${DonationAmount}
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    ${campaignName}=    Select campaign Not Paid As SI in My Next Payment Page
+    ${TotalCartAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${TotalCart}=    Convert to price    ${TotalCartAmt}
+    ${campaignAmt}=    Evaluate    ${TotalCart}-${OneDonationAmt}
+    
+    ${int variable}=    Set Variable    ${campaignAmt}
+    ${campaignAmtCart}=      Format String     {:,}    ${int_variable}
+    
+    Footer Cart Amout Hidder click
+    Sleep    5s     
+    My Next Payment Proceed Button 
+    Sleep    5s    
+    Shadown Cart Total Amount    ${TotalCartAmt}
+    Shadown Window OTD Product verify    ${OnetimeDonationName}
+    
+    ${paymentFrequency}=    Get Payment Frequency    ${campaignName}    
+    My Next Payment Allow To Auto Debit click        
+    ${Frequency}=    Payment Frequency Convertion    ${paymentFrequency}
+
+    Select From List By Label    id=overall_child_due_quantity    ${Frequency}    
+
+    ${BGColour}=    Get CSS Attribute Value    locator=//p[@class='si_title' and contains(text(),'${campaignName}')]/parent::div/parent::div/parent::div    attribute=background-color
+    Should Contain    ${BGColour}    ${SICartColour}
+
+    Shadown Window Product verify    ${campaignName}
+    Shadown Cart Total Amount    ${campaignAmtCart}   
+    
+    My Next Payment SI Proceed To Autopay
+    Sleep    5s            
+    Element Status Check    xpath=//h5[@id='TotalAmtOfOrder']/b[contains(text(),'${campaignAmt}')]    Campaign Amount is visible in Payment gateway    Campaign Amount is not visible in Payment gateway    
 
 *** Keywords ***
 Jenkins browser launch
