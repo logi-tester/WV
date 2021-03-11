@@ -4344,6 +4344,131 @@ To verify redonate for donated child in make payment page
     CCavenue payment - cart verification    ${childName}    ${ChildAmount}    ${cart_quanity}
 
 
+To verify Allow Auto Debit should not be visible for already SI donated child 
+    [Tags]    Make Payment Page 
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']    
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${childName}=    Select Child Paid As SI in My Next Payment Page    
+    Footer Cart Amout Hidder click
+    ${DonationAmount}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${ChildAmt}=    Convert to price    ${DonationAmount}         
+    Sleep    5s    
+    My Next Payment Proceed Button
+    Shadown Window Product verify    ${childName}
+    Shadown Cart Total Amount    ${ChildAmt}
+    My Next Payment SI Checkbox Disabled Verify
+
+
+To verify cart function for campaign donated with SI payment and Child donated with normal payment 
+    [Tags]    Make Payment Page
+
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    ${campaignName}=    Select campaign Paid As SI in My Next Payment Page
+    ${DonationAmount}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${campaign}=    Convert to price    ${DonationAmount}
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${childName}=    Select Child Paid Not As SI in My Next Payment Page
+    ${TotalCartAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${TotalCart}=    Convert to price    ${TotalCartAmt}
+    ${ChildAmt}=    Evaluate    ${TotalCart}-${campaign}
+    
+    ${int variable}=    Set Variable    ${ChildAmt}
+    ${ChildAmtCart}=      Format String     {:,}    ${int_variable}
+
+    Footer Cart Amout Hidder click
+    Sleep    5s     
+    My Next Payment Proceed Button 
+    Sleep    5s    
+    Shadown Cart Total Amount    ${TotalCartAmt}
+    Shadown Window Product verify    ${campaignName}
+
+    ${paymentFrequency}=    Get Payment Frequency    ${childName}    
+
+    My Next Payment Allow To Auto Debit click    
+    
+    ${Frequency}=    Payment Frequency Convertion    ${paymentFrequency}
+    
+    Select From List By Label    id=overall_child_due_quantity    ${Frequency} 
+
+    ${BGColour}=    Get CSS Attribute Value    locator=//p[@class='si_title' and contains(text(),'${childName}')]/parent::div/parent::div/parent::div    attribute=background-color
+    Should Contain    ${BGColour}    ${SICartColour}
+
+    Shadown Window Product verify    ${childName}
+    Shadown Cart Total Amount    ${ChildAmtCart} 
+
+    My Next Payment SI Proceed To Autopay
+    Sleep    5s            
+    Element Status Check    xpath=//h5[@id='TotalAmtOfOrder']/b[contains(text(),'${ChildAmt}')]    Campaign Amount is visible in Payment gateway    Campaign Amount is not visible in Payment gateway
+    
+
+To verify SI cart function for child donated with normal flow and one time donation
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    ${OnetimeDonationName}=    Select One Time Donation in My Next Payment Page
+    ${DonationAmount}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${OneDonationAmt}=    Convert to price    ${DonationAmount}
+
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${childName}=    Select Child Paid Not As SI in My Next Payment Page
+    ${TotalCartAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    ${TotalCart}=    Convert to price    ${TotalCartAmt}
+    ${ChildAmt}=    Evaluate    ${TotalCart}-${OneDonationAmt}
+
+    ${int variable}=    Set Variable    ${ChildAmt}
+    ${childAmtCart}=      Format String     {:,}    ${int_variable}
+    
+    Footer Cart Amout Hidder click
+    Sleep    5s     
+    My Next Payment Proceed Button 
+    Sleep    5s    
+    Shadown Cart Total Amount    ${TotalCartAmt}
+    Shadown Window OTD Product verify    ${OnetimeDonationName}
+
+    ${paymentFrequency}=    Get Payment Frequency    ${childName}    
+    My Next Payment Allow To Auto Debit click        
+    ${Frequency}=    Payment Frequency Convertion    ${paymentFrequency}
+    
+    Select From List By Label    id=overall_child_due_quantity    ${Frequency}    
+
+    ${BGColour}=    Get CSS Attribute Value    locator=//p[@class='si_title' and contains(text(),'${childName}')]/parent::div/parent::div/parent::div    attribute=background-color
+    Should Contain    ${BGColour}    ${SICartColour}
+
+    Shadown Window Product verify    ${childName}
+    Shadown Cart Total Amount    ${childAmtCart}   
+    
+    My Next Payment SI Proceed To Autopay
+    Sleep    5s            
+    Element Status Check    xpath=//h5[@id='TotalAmtOfOrder']/b[contains(text(),'${ChildAmt}')]    Campaign Amount is visible in Payment gateway    Campaign Amount is not visible in Payment gateway
+    
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -6256,3 +6381,27 @@ Get Payment Frequency
 My Next Payment SI Proceed To Autopay
     
     Click Element    id=SI_Make_payment_add_to_cart_btn     
+
+Select One Time Donation in My Next Payment Page
+    ${campaignCount}=    Get Element Count    xpath=//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')]
+    FOR    ${element}    IN RANGE   1    ${campaignCount}+1
+        ${after_content}=    Get Pseudo Element CSS Attribute Value    (//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[@class='cld-nme']//p[contains(text(),'')]/parent::div/parent::div)[${element}]    pseudo_element=':after'   attribute=content
+        ${status}=    Run Keyword And Return Status    Should Not Contain    ${after_content}    Paid as SI
+        Run Keyword If    '${status}'!='True'    Continue For Loop    ELSE    Click OneTimeDonated Campaign    ${element}
+        Exit For Loop If    '${status}'=='True'
+    END
+    Run Keyword If    '${status}'!='True'    Fail    Currently there is are no campaign donated with normal Payment
+    ${campaignName}=    Get Text    xpath=(//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')])[${element}]//div[@class='cld-nme']/p
+    
+    [Return]    ${campaignName}
+    
+Shadown Window OTD Product verify
+    [Arguments]    ${element}
+
+    Element Status Check    xpath=//div[@id='sideopenbar']//div[@class='cld-nme']/p[contains(text(),'${element}')]    ${element} is visible in Shadow Window    ${element} is not visible in Shadow Window    
+
+Click OneTimeDonated Campaign
+    [Arguments]    ${element}
+
+    Click Element    xpath=(//div[contains(@class,'mycampine-section oneTime-shwhde')]//div[contains(@class,'donation chld-items')])[${element}]//div[@class='cld-nme']    
+    
