@@ -5286,7 +5286,7 @@ CCavenue payment - cart verification
     [Arguments]    ${camp_name}    ${Camp_val}    ${cart_quanity}
     
     Sleep    20s    
-    Banner Alert    
+    Banner Alert
     ${order_status}=    Get Text   xpath=//div[@class='payment-success-message1']/p
     Log To Console    ${order_status}
         
@@ -5295,10 +5295,10 @@ CCavenue payment - cart verification
         ${status_campaign}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]
         Run Keyword If    'True'=='${status_campaign}'    Log To Console    "${camp_name}" is displayed in payment page    ELSE    Fail    "${camp_name} was not displayed in payment page"
         
-        ${campaign_quanity}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[2]//span
+        ${campaign_quanity}=    Get Text    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[3]//span
         Run Keyword If    '${cart_quanity}'=='${campaign_quanity}'    Log To Console    campaign quantity is: ${campaign_quanity}    ELSE    Fail    campaign quantity was not displayed
         
-        ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[3][contains(text(),'${camp_val}')]
+        ${status_price}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_name}')]/following-sibling::td[4][contains(text(),'${camp_val}')]
         Run Keyword If    'True'=='${status_price}'    Log To Console    "${camp_val} campaign value is displayed in payment page"    ELSE    Fail    "${camp_val} campaign value was not displayed in payment page"    
     END 
 
