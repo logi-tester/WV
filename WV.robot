@@ -6594,3 +6594,20 @@ Select Child Paid Not As SI in My Next Payment Page
     ${childName}=    Get Text    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']/p
 
     [Return]    ${childName}
+
+My Next Payment Add to cart
+    Click Element    id=MP_add_to_cart_btn
+    
+Gift For The Child Apply Gift Button
+    Click Element    xpath=//div[@id='GiftfortheChild']//a[@class='giftsubmit']    
+
+Click Gift 500Rs
+    Click Element    xpath=(//div[@id='GiftfortheChild']//span[contains(text(),'500')])[1]
+
+Click Select All
+    Click Element    xpath=//div[@id='GiftfortheChild']//div[@class='selectallchi']/label/input
+
+Click Child Gift Amount
+    [Arguments]    ${childName}
+    
+    Click Element    xpath=//div[@id='GiftfortheChild']//div[@class='cld-nme']/p[contains(text(),'${childName}')]/parent::div/parent::div/following-sibling::label//span[2]
