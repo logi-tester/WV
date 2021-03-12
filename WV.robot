@@ -6474,3 +6474,16 @@ Select campaign Paid As SI in My Next Payment Page
     ${campaignName}=    Get Text    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']/p
     
     [Return]    ${campaignName}
+
+Select Child Paid Not As SI in My Next Payment Page
+    ${childCount}=    Get Element Count    xpath=//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')]
+    FOR    ${element}    IN RANGE   1    ${childCount}+1
+        ${after_content}=    Get Pseudo Element CSS Attribute Value    (//div[contains(@class,'mychildren-section')]//div[@class='cld-nme']//p[contains(text(),'')]/parent::div/parent::div)[${element}]    pseudo_element=':after'   attribute=content
+        ${status}=    Run Keyword And Return Status    Should Not Contain    ${after_content}    Paid as SI
+        Run Keyword If    '${status}'!='True'    Continue For Loop    ELSE    Click Donated SI Child    ${element}
+        Exit For Loop If    '${status}'=='True'
+    END
+    Run Keyword If    '${status}'!='True'    Fail    Currently there is are no child donated with SI Payment
+    ${childName}=    Get Text    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']/p
+
+    [Return]    ${childName}
