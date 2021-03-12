@@ -4241,7 +4241,7 @@ To verify Allow Auto Debit should not be visible for already SI donated campaign
         
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment
     My Next Payment MainMenu and SubMenu    Donation    My Campaigns
     Sleep    5s    
@@ -4256,7 +4256,7 @@ To verify cart function for child donated with SI payment and campaign donated w
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4310,7 +4310,7 @@ To verify redonate for donated child in make payment page
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4349,7 +4349,7 @@ To verify Allow Auto Debit should not be visible for already SI donated child
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4372,7 +4372,7 @@ To verify cart function for campaign donated with SI payment and Child donated w
 
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4424,7 +4424,7 @@ To verify SI cart function for child donated with normal flow and one time donat
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4473,7 +4473,7 @@ To verify SI cart function for campaign donated with normal flow and one time do
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4522,7 +4522,7 @@ To verify gift a particular child using default amount in make my payment page
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Next Payment MainMenu and SubMenu    Gifts    Gift for the Child    
     Click Gift 500Rs    
@@ -4549,7 +4549,7 @@ To verify select payment package for a child using Drop down in shadow pop windo
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4590,7 +4590,7 @@ To verify select payment package for a campaign using Drop down in shadow pop wi
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Children Bucket Uncheck
     My Campaign Bucket Uncheck
@@ -4629,7 +4629,7 @@ To verify gift a particular child using manually given amount in make my payment
     
     Jenkins browser launch
     Click Login
-    Direct login
+    Direct login for Make Payment
     My Next Payment 
     My Next Payment MainMenu and SubMenu    Gifts    Gift for the Child    
     Click Edit Gift Amount
@@ -6639,3 +6639,11 @@ Click Child Gift Amount
     [Arguments]    ${childName}
     
     Click Element    xpath=//div[@id='GiftfortheChild']//div[@class='cld-nme']/p[contains(text(),'${childName}')]/parent::div/parent::div/following-sibling::label//span[2]
+
+Direct login for Make Payment
+    Sleep    5s    
+    Click Element    id=edit-name
+    Input Text    id=edit-name    9600185121
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    123456
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
