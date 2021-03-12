@@ -6461,3 +6461,16 @@ Get Pseudo Element CSS Attribute Value
     ${attribute_value}=    Execute Javascript    return window.getComputedStyle(${element},${pseudo_element}).getPropertyValue('${attribute}');
     Log   ${attribute_value}
     [Return]    ${attribute_value}
+
+Select campaign Paid As SI in My Next Payment Page
+    ${campaignCount}=    Get Element Count    xpath=//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')]
+    FOR    ${element}    IN RANGE   1    ${campaignCount}+1
+        ${after_content}=    Get Pseudo Element CSS Attribute Value    (//div[contains(@class,'mycampine-section')]//div[@class='cld-nme']//p[contains(text(),'')]/parent::div/parent::div)[${element}]    pseudo_element=':after'   attribute=content
+        ${status}=    Run Keyword And Return Status    Should Contain    ${after_content}    Paid as SI
+        Run Keyword If    '${status}'!='True'    Continue For Loop    ELSE    Click Donated Campaign in Normal Payment    ${element}
+        Exit For Loop If    '${status}'=='True'
+    END
+    Run Keyword If    '${status}'!='True'    Fail    Currently there is are no campaign donated with normal Payment
+    ${campaignName}=    Get Text    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']/p
+    
+    [Return]    ${campaignName}
