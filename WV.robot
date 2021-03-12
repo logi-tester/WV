@@ -4517,6 +4517,113 @@ To verify SI cart function for campaign donated with normal flow and one time do
     Sleep    5s            
     Element Status Check    xpath=//h5[@id='TotalAmtOfOrder']/b[contains(text(),'${campaignAmt}')]    Campaign Amount is visible in Payment gateway    Campaign Amount is not visible in Payment gateway    
 
+To verify gift a particular child using default amount in make my payment page
+    [Tags]    Make Payment Page - GIFT TAB
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Next Payment MainMenu and SubMenu    Gifts    Gift for the Child    
+    Click Gift 500Rs    
+    Gift For The Child Apply Gift Button
+    Sleep    5s    
+    Click Select All
+    ${childName}=    Get Text    xpath=(//div[@id='GiftfortheChild']//div[@class='cld-nme']/p)[1]
+    Click Child Gift Amount    ${childName}
+    Sleep    5s    
+    ${ChildAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    My Next Payment Proceed Button    
+    Shadown Window OTD Product verify    ${childName}
+    Shadown Cart Total Amount    ${ChildAmt}
+    My Next Payment Add to cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    ${cart_quanity}    check in view cart page - One time donation flow    ${childName}    ${ChildAmt}
+    View cart proceed button
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${childName}    ${ChildAmt}    ${cart_quanity}
+
+To verify select payment package for a child using Drop down in shadow pop window 
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${childName}=    Select Child Paid Not As SI in My Next Payment Page
+    ${ChildAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    
+    Footer Cart Amout Hidder click
+    Sleep    5s    
+    My Next Payment Proceed Button     
+    Sleep    5s    
+    Shadown Cart Total Amount    ${ChildAmt}
+    Shadown Window Product verify    ${childName}
+    
+    ###Seleting Donation amount from DropDown###
+    Select From List By Label    class=due_month_dropdown    ${NewPrice}
+        
+    ${SelectedPrice}=    Convert to price    ${NewPrice}
+    ${int variable}=    Set Variable    ${SelectedPrice}
+    ${NewChildAmt}=      Format String     {:,}    ${int_variable}
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[@class='cld-amount-pyble']/span[contains(text(),'${NewChildAmt}')]        
+    Run Keyword If    '${status}'!='True'    Fail    Cart Price is not updated    ELSE    Log    cart price is update to selected amount    
+    My Next Payment Add to cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    ${cart_quanity}    check in view cart page - Checkout flow    ${childName}    ${NewChildAmt}
+    View cart proceed button
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${childName}    ${NewChildAmt}    ${cart_quanity}
+    
+
+To verify select payment package for a campaign using Drop down in shadow pop window 
+    [Tags]    Make Payment Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Children Bucket Uncheck
+    My Campaign Bucket Uncheck
+    My Donation Bucket Uncheck
+    Scroll Element Into View    xpath=//a[text()='Donation']
+    
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    ${campaignName}=    Select campaign Not Paid As SI in My Next Payment Page
+    ${campaignAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    
+    Footer Cart Amout Hidder click
+    Sleep    5s    
+    My Next Payment Proceed Button     
+    Sleep    5s    
+    Shadown Cart Total Amount    ${campaignAmt}
+    Shadown Window Product verify    ${campaignName}
+    
+    Select From List By Label    class=due_month_dropdown    ${NewCampaignPrice}
+    
+    ${SelectedPrice}=    Convert to price    ${NewCampaignPrice}
+    ${int variable}=    Set Variable    ${SelectedPrice}
+    ${NewCamapignAmt}=      Format String     {:,}    ${int_variable}
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//p[@class='cld-amount-pyble']/span[contains(text(),'${NewCamapignAmt}')]        
+    Run Keyword If    '${status}'!='True'    Fail    Cart Price is not updated    ELSE    Log    cart price is update to selected amount    
+    My Next Payment Add to cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    ${cart_quanity}    check in view cart page - Checkout flow    ${campaignName}    ${NewCamapignAmt}
+    View cart proceed button
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${campaignName}    ${NewCamapignAmt}    ${cart_quanity}
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
