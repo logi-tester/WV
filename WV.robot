@@ -4624,6 +4624,34 @@ To verify select payment package for a campaign using Drop down in shadow pop wi
     CCavenue payment success flow
     CCavenue payment - cart verification    ${campaignName}    ${NewCamapignAmt}    ${cart_quanity}
 
+To verify gift a particular child using manually given amount in make my payment page
+    [Tags]    Make Payment Page - GIFT TAB
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment 
+    My Next Payment MainMenu and SubMenu    Gifts    Gift for the Child    
+    Click Edit Gift Amount
+    Enter Gift Amount    501
+    Gift For The Child Apply Gift Button
+    Sleep    5s    
+    Click Select All
+    ${childName}=    Get Text    xpath=(//div[@id='GiftfortheChild']//div[@class='cld-nme']/p)[1]
+    Click Child Gift Amount    ${childName}
+    Sleep    5s    
+    ${ChildAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    My Next Payment Proceed Button    
+    Shadown Window OTD Product verify    ${childName}
+    Shadown Cart Total Amount    ${ChildAmt}
+    My Next Payment Add to cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    ${cart_quanity}    check in view cart page - One time donation flow    ${childName}    ${ChildAmt}
+    View cart proceed button
+    CCavenue payment success flow
+    CCavenue payment - cart verification    ${childName}    ${ChildAmt}    ${cart_quanity}
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
