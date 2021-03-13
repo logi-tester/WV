@@ -766,9 +766,44 @@ Just post login check hungerfree campaign
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
+Just post login check hungerfree campaign
+    [Tags]    Post Login 
+    
+    Jenkins browser launch
+    Click Login
+    Direct login           
+    Click Element    xpath=//a[contains(.,'My Gifts')]    
+    Banner Alert            
+    Cart campaign check and delete
+    
+    #Make payment menu check
+    My Next Payment    
+    Wait Until Element Is Visible    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    60s
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    
+    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
+    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not found"
+    
+    ${Hungerfree_label_amt}=    Get Text    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
+    ${final_label_amt}=    Remove String Using Regexp    ${Hungerfree_label_amt}    \\D     
+    Log To Console    Before hunger free label amount:${final_label_amt}    
+    
+    #Move to hungerfree campaign    
+    Mouse hover ways to give after login    Hungerfree    
+    Click Element    xpath=//div[@class='add-to-cart-section']
+        
+    Wait Until Element Is Visible    xpath=//div[@class='inner_banner_pledge_content']/h2/div    
+    ${campName}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
+    ${camp_Name}=    Remove String    ${campName}    Free    
+        
+    ${get_input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
+    Log To Console    Hunger campaign get input amount:${get_input_val}
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
     Click Element    xpath=//a[@class='view_cart']
     Banner Alert       
-    ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${split_Hunger_name_with_rightside}')]
+    ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[contains(text(),'${camp_Name}')]
     Run Keyword If    'True'!='${hunger_camp_viewcart}'    Fail    "Hunger Free campaign not display in view cart page"
     ${replace_val}=    Replace String    ${get_input_val}    1    1,
     ${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'₹${replace_val}')]
@@ -776,20 +811,24 @@ Just post login check hungerfree campaign
     View cart proceed button
     CCavenue payment success flow
     My Next Payment
-    Why do you want to leave - PopUp
-    My Next Payment
-    Click Element    xpath=.//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=.//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]    
-    Page Should Contain Element    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]    
+    My Next Payment MainMenu and SubMenu    Donation    My Donations 
+    Page Should Contain Element    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Nutrition for every child-${campName}free campaign')]
+    
+    ${today_date}=    Get Current Date    result_format=%Y-%m-%d
+    ${today_date}=    Convert Date    ${today_date}    result_format=%d-%m-%Y
+    
+    Element Should Be Visible    xpath=//p[contains(.,'Nutrition for every child-${campName}free campaign')]/parent::div/following-sibling::div/p[3][contains(text(),'${today_date}')]    60s
+      
+
     # ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
     # Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
-    ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${get_input_val}
-    Log To Console    Before hunger label amount + hunger free input value:${add_label_amt+input_amt}
-    ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
-    ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
-    ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
-    Log To Console    Overall hunger free label amount:${get_final_amt}
-    Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"    
+    # ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${get_input_val}
+    # Log To Console    Before hunger label amount + hunger free input value:${add_label_amt+input_amt}
+    # ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
+    # ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
+    # ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
+    # Log To Console    Overall hunger free label amount:${get_final_amt}        
+    # Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"    
    
 Just pre login check hungerfree campaign
     [Tags]    PreLogin
