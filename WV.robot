@@ -5906,6 +5906,7 @@ Nationality Check - Indian
     Run Keyword If    'Indian Citizen'!='${Nationality}'    Fail    "User is a: ${Nationality}"    
 
 Indian payment gateway check - payment gateway
+    Sleep   5s
     FOR    ${checkout_bank_txt}    IN    @{checkout_payment_list_ind_passport}
         ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//input[contains(@id,'edit-payment-information-payment-method')]/following-sibling::label[contains(.,'${checkout_bank_txt}')]
         Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Indian passport holder Payment Gateway ${checkout_bank_txt} text is mismatch'
