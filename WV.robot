@@ -3708,8 +3708,8 @@ To verify Why do you want to Leave Alert in Payment Page
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     Login
-    CCavenue payment success flow        
-    Banner Alert
+    ${PG_Title}=    Get Title
+    Should Contain    ${PG_Title}    Order information    
     My Next Payment
     Why do you want to leave alert button check
 
