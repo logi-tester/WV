@@ -4830,7 +4830,8 @@ Educate children campaign with checkout flow
     Click Element    xpath=(.//li/a[contains(.,'Educate Children')])[1]
     Sleep    10s
     Click Element    xpath=.//div[@class='item-image']//img
-    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    Sleep    5s
+    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div/p
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     #${check_label_checked}=    Get Element Attribute    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    class
     #Run Keyword If    '${check_label_checked}'!='price save-malnourished-cart-sec current'    Fail    "Selected label not be in checked mode"
