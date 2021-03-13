@@ -1308,9 +1308,8 @@ Post login ways to give submenu list verification
     
 Indian citizen should not change to Other passport holder
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Navigation banner close
     MyProfile Edit
     ${ind}=    Execute Javascript    return window.jQuery('#indctzn').prop('checked')
     Log To Console    Indian is choosed:${ind}      
@@ -5123,8 +5122,8 @@ MyProfile Edit
     Click Element    xpath=.//a[contains(.,'Edit Profile')]
     Scroll Element Into View    xpath=.//label[@for='edit-field-nationality']
    
-Check other passport holder        
-    ${OtherPassStatus}=    Run Keyword And Return Status    Element Should Be Disabled    xpath=//label[@for='othctzn']        
+Check other passport holder
+    ${OtherPassStatus}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//label[@for='othctzn']        
     Run Keyword If    'True'!='${OtherPassStatus}'    Fail    "INDIAN User can able to select other passport user"
     View Myprofile    
 
