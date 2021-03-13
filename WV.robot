@@ -1890,7 +1890,7 @@ To Verify User should submit the form without entering any details - End Child s
     
 To sponsor a Help Hiv aids Campaign using Checkout flow
     [Tags]    Help Hiv aids Campaign        
-
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
@@ -5603,6 +5603,7 @@ Why do you want to quit - PopUp
 
 Checkout flow campaign - HIV
     Click Element    xpath=.//div[@class='item-image']//img
+    Sleep   5s
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     ${camp_name}=    Get Substring    ${camp_name}    11    14
     ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
