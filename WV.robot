@@ -654,13 +654,11 @@ To sposor a Educate Children Campaign as a one time donation using Checkout flow
     CCavenue payment - cart verification    ${camp_name}    ${Camp_val}    ${cart_quanity}
 
 To sponsor a Rescue Children Campaign using Si payment Flow from Educate Children campaign page
-    #Local browser launch
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Cart campaign check and delete           
     Mouser hover ways to give campaign    Childhood Rescue
     SI flow campaign
     SI login
@@ -4802,8 +4800,8 @@ SI login
     Sleep    10s    
     Click Element    id=si_login_btn
     
-    Wait Until Element Is Visible    xpath=//div[@class='payment-main-content']    30s    
-    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']
+    Wait Until Element Is Visible    class=safeNsecure    60s        
+    ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    class=safeNsecure
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
 
 CCavenue payment success flow    
@@ -4873,8 +4871,8 @@ Checkout flow campaign
 SI flow campaign
     Sleep    10s
     Click Element    xpath=.//div[@class='item-image']//img
-    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
-    ${educate_chld_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
+    Sleep    5s    
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div/p
     ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     ${final_val}=    Get Substring    ${label_val}    9    16
     Log To Console    Final val is:${final_val}
