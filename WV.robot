@@ -1327,9 +1327,9 @@ Other passport holder should not change to Indian passport holder
 
 To verify payment gateways for other passport holder
     [Tags]    Payment gateway Based on Nationality
-
+    
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login - Other passport user
     Click Element    xpath=.//a[contains(.,'My Gifts')]    
     Banner Alert
@@ -1343,7 +1343,7 @@ To verify payment gateways for other passport holder
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     ${camp_amt}=    Convert to price    ${camp_amt}
-    Hdfc bank payment gateway check            
+    Hdfc bank payment gateway check          
 
 To verify payment gateways for indian citizen
     [Tags]    Payment gateway Based on Nationality
@@ -5854,11 +5854,11 @@ Welcome user banner text
     END            
     Run Keyword If    '${status}'!='True'    Fail    Welcome user banner was not visible
 
-other passport user flow    
+other passport user flow
     Click Element    xpath=.//div[@class='item-image']//img
+    Sleep    5s    
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
     ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
-    #${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     ${Camp_amt}=    Get Substring    ${label_val}    9    16
     Log To Console    Final val is: ${camp_amt}    
     SI Payment disable check
@@ -5866,9 +5866,10 @@ other passport user flow
     Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Sleep    10s           
-    Add to cart text change    
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']    
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Add to cart text change
+    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Sleep    3s        
+    ${success_mgs}=    Get Text    xpath=//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
     Click Element    xpath=//a[@class='view_cart']        
     
