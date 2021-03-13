@@ -1636,10 +1636,10 @@ To sponsor a Protect Girl Children Campaign as a one time donation using Checkou
 
 To select children through location filter
     [Tags]    Sponsor a Child
+    
     Jenkins browser launch
     Banner Alert
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
-    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child
     
     Sleep    15s    
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
@@ -1651,14 +1651,16 @@ To select children through location filter
     ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
     Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
     
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]           
+    Run Keyword If    ${status}!='True'    Fail    Currently childrens are not available
+    
     ${state}=    Get Text    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]
     Click Element    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]  
     
     Scroll Element Into View    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]
     
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]        
-    Run Keyword If    'True'!='${status}'    Fail    "Childrens are not available on the state you selected"    ELSE    Log To Console    "Childrens are available on the selected state"        
-   
+    Run Keyword If    'True'!='${status}'    Fail    "Childrens are not available on the state you selected"    ELSE    Log To Console    "Childrens are available on the selected state"           
 
 To select children through age filter
     [Tags]    Sponsor a Child
