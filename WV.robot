@@ -1586,13 +1586,11 @@ To sponsor a Save malnourished Children Campaign using Si payment Flow from Educ
 
 To sponsor a Save malnourshied Children Campaign as a one time donation using Checkout flow
     [Tags]    Save Malnourished Children Campaign 
-
+    
     Jenkins browser launch
     Click Element    xpath=.//a[contains(.,'My Gifts')]
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count} 
+    Cart campaign check and delete
     Mouser hover ways to give campaign    Save Malnourished Children  
     ${camp_name}    ${Camp_val}    one time campaign - Save malnourshied Children Campaign
     ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}
@@ -5230,6 +5228,7 @@ Registration - Indian - Test
 
 one time campaign - Save malnourshied Children Campaign
     Click Element    xpath=.//div[@class='item-image']//img
+    Sleep   5s
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
     ${camp_name}=   Replace String    ${camp_name}    M    m
     ${camp_name}=   Replace String    ${camp_name}    C    c
