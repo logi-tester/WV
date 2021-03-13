@@ -4881,6 +4881,7 @@ One time Hunger Free campaign
     #${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
     ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    Sleep   5s
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
     Click Element    xpath=//a[@class='view_cart']
