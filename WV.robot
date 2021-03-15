@@ -6818,3 +6818,8 @@ Gift child checkbox verify
     
     ${status}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//label[@class='thrd-inpt-chck-gftpay']/input)[${Child}]
     Run Keyword If    '${status}'!='True'    Fail    Checkbox is not selected    ELSE    Log    Checkbox is selected
+
+Click Donated SI Child
+    [Arguments]    ${element}
+    
+    Click Element    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']
