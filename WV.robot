@@ -6823,3 +6823,11 @@ Click Donated SI Child
     [Arguments]    ${element}
     
     Click Element    xpath=(//div[contains(@class,'mychildren-section')]//div[contains(@class,'child chld-items')])[${element}]//div[@class='cld-nme']
+
+Click Donated Campaign in Normal Payment
+    [Arguments]    ${element}
+    
+    Click Element    xpath=(//div[contains(@class,'mycampine-section')]//div[contains(@class,'campaign chld-items')])[${element}]//div[@class='cld-nme']
+    
+Click Edit Gift Amount
+    Click Element    xpath=//div[@id='GiftfortheChild']//div[contains(@class,'editgiftamount')]//input    
