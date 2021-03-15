@@ -4682,6 +4682,135 @@ To verify gift a particular child using manually given amount in make my payment
     CCavenue payment success flow
     CCavenue payment - cart verification    ${childName}    ${ChildAmt}    ${cart_quanity}
 
+To verify gift all child using manually given amount in make my payment page
+    [Tags]    Make Payment Page - GIFT TAB
+    
+    Jenkins browser launch
+    Click Login
+    Direct login for Make Payment
+    Click Cart
+    Cart campaign check and delete
+    My Next Payment 
+    My Next Payment MainMenu and SubMenu    Gifts    Gift for the Child    
+    Click Edit Gift Amount
+    Enter Gift Amount    501
+    Gift For The Child Apply Gift Button
+    Sleep    5s
+    
+    ${checkbox}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=//div[@id='GiftfortheChild']//div[@class='selectallchi']//input
+    Run Keyword If    '${checkbox}'!='True'    Fail    Checkbox is not selected    ELSE    Log    Checkbox is selected    
+
+    ${GiftAmt}=    Get Element Attribute    xpath=//div[@id='GiftfortheChild']//input[@id='bdaygift']    value
+
+    @{childName}=    Create List
+    @{childAmt}=    Create List
+
+    ${childCount}=    Get Element Count    xpath=//div[@id='GiftfortheChild']//div[@class='cld-nme']/p
+    FOR    ${child}    IN RANGE    1    ${childCount}+1
+        Gift child checkbox verify    ${child}
+        ${GetchildName}=    Get Text    xpath=(//div[@id='GiftfortheChild']//div[@class='cld-nme']/p)[${child}]
+        Append To List    ${childName}    ${GetchildName}
+        ${GetChildAmt}=    Get Element Attribute    xpath=//div[@id='GiftfortheChild']//div[@class='cld-nme']/p[contains(text(),'${GetchildName}')]/parent::div/parent::div/following-sibling::div//input    value        
+        Append To List    ${childAmt}    ${GetChildAmt}
+    END
+    
+    Log List    ${childName}   
+    Log List    ${childAmt}  
+    
+    ${TotalAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    
+    My Next Payment Proceed Button  
+
+    FOR    ${child}    IN    @{childName}
+        Shadown Window OTD Product verify    ${child}
+    END    
+    
+    FOR    ${i}    IN RANGE    1    ${childCount}+1
+        ${cartValue}=    Get Element Attribute    xpath=(//input[@class='giftChildAmtInp'])[${i}]    value
+        Should Be Equal As Strings    ${cartValue}    ${GiftAmt}
+    END
+
+    Shadown Cart Total Amount    ${TotalAmt}
+    My Next Payment Add to cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    
+    FOR    ${element}    IN    @{childName}
+        ${cart_quanity}    check in view cart page - One time donation flow    ${element}    ${GiftAmt}
+    END
+    View cart proceed button
+    CCavenue payment success flow
+    
+    FOR    ${element}    IN    @{childName}
+        CCavenue payment - cart verification - dynamic    ${element}    ${GiftAmt}    ${cart_quanity}
+    END
+
+
+
+To verify gift all child using default amount in make my payment page
+    [Tags]    Make Payment Page - GIFT TAB
+    
+    Jenkins browser launch
+    Click Login
+    Direct login for Make Payment
+    Click Cart
+    Cart campaign check and delete
+    My Next Payment 
+    My Next Payment MainMenu and SubMenu    Gifts    Gift for the Child    
+    Click Gift 500Rs    
+    Gift For The Child Apply Gift Button
+    Sleep    5s
+    
+    ${checkbox}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=//div[@id='GiftfortheChild']//div[@class='selectallchi']//input
+    Run Keyword If    '${checkbox}'!='True'    Fail    Checkbox is not selected    ELSE    Log    Checkbox is selected    
+
+    ${GiftAmt}=    Get Element Attribute    xpath=//div[@id='GiftfortheChild']//input[@id='bdaygift']    value
+
+    @{childName}=    Create List
+    @{childAmt}=    Create List
+
+    ${childCount}=    Get Element Count    xpath=//div[@id='GiftfortheChild']//div[@class='cld-nme']/p
+    FOR    ${child}    IN RANGE    1    ${childCount}+1
+        Gift child checkbox verify    ${child}
+        ${GetchildName}=    Get Text    xpath=(//div[@id='GiftfortheChild']//div[@class='cld-nme']/p)[${child}]
+        Append To List    ${childName}    ${GetchildName}
+        ${GetChildAmt}=    Get Element Attribute    xpath=//div[@id='GiftfortheChild']//div[@class='cld-nme']/p[contains(text(),'${GetchildName}')]/parent::div/parent::div/following-sibling::div//input    value        
+        Append To List    ${childAmt}    ${GetChildAmt}
+    END
+    
+    Log List    ${childName}   
+    Log List    ${childAmt}  
+    
+    ${TotalAmt}=    Get Text    xpath=//div[@class='bottom-stickey']//span[@class='childCart_total_amount']
+    
+    My Next Payment Proceed Button  
+
+    FOR    ${child}    IN    @{childName}
+        Shadown Window OTD Product verify    ${child}
+    END    
+    
+    FOR    ${i}    IN RANGE    1    ${childCount}+1
+        ${cartValue}=    Get Element Attribute    xpath=(//input[@class='giftChildAmtInp'])[${i}]    value
+        Should Be Equal As Strings    ${cartValue}    ${GiftAmt}
+    END
+
+    Shadown Cart Total Amount    ${TotalAmt}
+    My Next Payment Add to cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    
+    FOR    ${element}    IN    @{childName}
+        ${cart_quanity}    check in view cart page - One time donation flow    ${element}    ${GiftAmt}
+    END
+    View cart proceed button
+    CCavenue payment success flow
+
+    FOR    ${element}    IN    @{childName}
+        CCavenue payment - cart verification - dynamic    ${element}    ${GiftAmt}    ${cart_quanity}
+    END    
+
+
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -6683,3 +6812,9 @@ Direct login for Make Payment
     Click Element    id=edit-pass
     Input Text    id=edit-pass    123456
     Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
+
+Gift child checkbox verify
+    [Arguments]    ${Child}
+    
+    ${status}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//label[@class='thrd-inpt-chck-gftpay']/input)[${Child}]
+    Run Keyword If    '${status}'!='True'    Fail    Checkbox is not selected    ELSE    Log    Checkbox is selected
