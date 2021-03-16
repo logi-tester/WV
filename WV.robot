@@ -1349,13 +1349,13 @@ To verify payment gateways for other passport holder
 
 To verify payment gateways for indian citizen
     [Tags]    Payment gateway Based on Nationality
-
+    
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
     View Myprofile
     Nationality Check - Indian    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]    
+    Click Cart    
     Banner Alert   
     Cart campaign check and delete
     Mouse hover ways to give after login    Educate Children    
@@ -6035,7 +6035,8 @@ Nationality Check - Indian
     Run Keyword If    'Indian Citizen'!='${Nationality}'    Fail    "User is a: ${Nationality}"    
 
 Indian payment gateway check - payment gateway
-    Sleep   5s
+    Sleep    5s   
+    Wait Until Element Is Visible    xpath=//h3[text()='Suggested Payment Gateway']    60s 
     FOR    ${checkout_bank_txt}    IN    @{checkout_payment_list_ind_passport}
         ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//input[contains(@id,'edit-payment-information-payment-method')]/following-sibling::label[contains(.,'${checkout_bank_txt}')]
         Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Indian passport holder Payment Gateway ${checkout_bank_txt} text is mismatch'
