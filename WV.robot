@@ -4009,7 +4009,7 @@ Stories of change and events page share
         Switch Window    ${windows}[${element}]
         ${url}=    Get Location
         Log    ${url} 
-        Should Contain    ${url}    home
+        Should Contain    ${url}    news-events
         Close Window    
     END
 
