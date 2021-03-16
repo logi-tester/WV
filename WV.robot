@@ -6837,3 +6837,8 @@ Click Donated Campaign in Normal Payment
     
 Click Edit Gift Amount
     Click Element    xpath=//div[@id='GiftfortheChild']//div[contains(@class,'editgiftamount')]//input    
+
+Enter Gift Amount
+    [Arguments]    ${GiftAmount}
+
+    Input Text    xpath=//input[@name='giftforchildren' and @type='text']    ${GiftAmount}
