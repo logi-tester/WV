@@ -322,7 +322,8 @@ To Sponsor a child by SI payment flow from search page
     Input Data Into Search Box    asdgasgdas
     Press Keys    id=edit-search-api-fulltext    ENTER    
     Search Page Child List    
-    ${childName}    Click Add to Cart in Search Page
+    ${childName}    Click Add to Cart in Search Page   
+    Sleep   5s
     Element Status Check    xpath=(//div[@class='inner_banner_pledge_content'])[1]/h2[contains(text(),'${childName}')]    Selected Child is Displayed    Selected Child is not Displayed    
     ${camp_Amt}=    Click 3Month package
     SI Payment Check Verify
