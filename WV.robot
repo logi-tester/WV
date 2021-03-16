@@ -66,7 +66,7 @@ ${SIOtherPassMessage}    Auto debit option is not available for the other passpo
 ${green}    (0, 196, 166)
 ${red}    (244, 65, 52, 1)
 ${yellow}    (253, 212, 94, 1)
-${SICartColour}    (80, 189, 189, 1)
+${SICartColour}    (80, 189, 189)
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
