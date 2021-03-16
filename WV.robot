@@ -3187,8 +3187,7 @@ To Verify First name Enter a valid String of Character with minimum length of 2
     [Tags]    Registration Page
     
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Register')]     
+    Click Register    
     
     ${title}=    Get Title                        
     Should Contain    ${title}    Create new account       
@@ -3197,20 +3196,20 @@ To Verify First name Enter a valid String of Character with minimum length of 2
     Input Text    xpath=//input[@id='edit-field-first-name-0-value']    tes    
     Sleep    3s
     ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//strong[@id='edit-field-first-name-0-value-error']        
-    Run Keyword If    '${status}'!='True'    Fail    Minimun character number was not visible
+    Run Keyword If    '${status}'!='True'    Fail    Minimun character number error was not visible
     
     Clear Element Text    xpath=//input[@id='edit-field-first-name-0-value']
     Input Text    xpath=//input[@id='edit-field-first-name-0-value']    a b        
     Sleep    3s            
     ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//strong[@id='edit-field-first-name-0-value-error']        
-    Run Keyword If    '${status}'!='True'    Fail    Minimun character number was not visible
+    Run Keyword If    '${status}'!='True'    Fail    Minimun character number error was not visible
     
     Clear Element Text    xpath=//input[@id='edit-field-first-name-0-value']
     Input Text    xpath=//input[@id='edit-field-first-name-0-value']    ab            
-    Press Keys    //label[@for='edit-field-last-name-0-value']    TAB    
+    Press Keys    //label[@for='edit-field-first-name-0-value']    TAB    
     Sleep    3s            
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='edit-field-first-name-0-value-error']        
-    Run Keyword If    '${status}'!='True'    Fail    Minimun character number was not visible
+    Run Keyword If    '${status}'!='True'    Fail    Minimun character number error was not visible
     
     Clear Element Text    xpath=//input[@id='edit-field-first-name-0-value']        
     ${FirstNameMax}=    Generate Random String    length=54
@@ -3218,7 +3217,7 @@ To Verify First name Enter a valid String of Character with minimum length of 2
     Sleep    3s                
     ${firstname}=    Get Element Attribute    xpath=//input[@id='edit-field-first-name-0-value']    value
     ${length}=    Get Length    ${firstname}
-    Run Keyword If    ${length}>30    Fail    Maximum character exceeded in firstname field
+    Run Keyword If    ${length}>30    Fail    Minimun character number error was not visible
 
 To Verify Last name Enter a valid String of Character with minimum length of 2
     [Tags]    Registration Page
