@@ -3444,9 +3444,9 @@ To verify payment using SI with existing onetime donation payment in cart
     
     Jenkins browser launch
     Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children
@@ -5009,6 +5009,7 @@ SI flow campaign
 one time campaign
     Sleep    10s    
     Click Element    xpath=.//div[@class='item-image']//img
+    Sleep   5s
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     Sleep    5s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
