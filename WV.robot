@@ -5684,6 +5684,7 @@ Event page filter verification
 Kerala flood campaign
     [Arguments]    ${value}
     
+    Sleep   5s
     ${campaign_name}=    Get Text    xpath=(//div[@class='emergency_flood_relief_content'])[${value}]/div[1]
     ${campaign_amt}=    Get Text    xpath=(//div[@class='emergency_flood_relief_content'])[${value}]/div[4]
     ${campaign_amt}=    Remove String Using Regexp    ${campaign_amt}    \\D        
