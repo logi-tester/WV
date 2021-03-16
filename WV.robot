@@ -2331,7 +2331,9 @@ To Verify confirm password Field minimum length registration page
     Clear Element Text    id=edit-pass-pass1
     Click Element    //label[@for='edit-pass-pass1']
     Input Text    id=edit-pass-pass1    pas
-    
+        
+    Click Element    //label[@for='edit-pass-pass2']
+
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=edit-pass-pass1-error        
     Run Keyword If    '${status}'=='True'    Log To Console    Page throughs error message for password minimum length    ELSE    Fail    Page doesnt throughs error message for password minimum length
 
