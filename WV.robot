@@ -340,13 +340,14 @@ To Sponsor a child by Checkout payment flow from search page
     Press Keys    id=edit-search-api-fulltext    ENTER
     Search Page Child List
     ${childName}    Click Add to Cart in Search Page
+    Sleep    5s
     Element Status Check    xpath=(//div[@class='inner_banner_pledge_content'])[1]/h2[contains(text(),'${childName}')]    Selected Child is Displayed    Selected Child is not Displayed          
     ${camp_amt}    Checkout flow campaign - search and donate
     ${cart_quanity}    check in view cart page - Checkout flow    ${childName}    ${camp_amt}
     View cart proceed button
     Login
     CCavenue payment success flow
-    CCavenue payment - cart verification    ${childName}    ${camp_amt}    ${cart_quanity}
+    CCavenue payment - cart verification - dynamic    ${childName}    ${camp_amt}    ${cart_quanity}
 
 # Switching indian citizen to other passport holder in my profile page
     # #Local browser launch
@@ -6408,19 +6409,22 @@ Click SI CheckBox
 Click Add To Cart
     Click Element    xpath=(//div[@class='kl_flood_sub_or_sec'])[1]  
 
-Checkout flow campaign - search and donate      
+Checkout flow campaign - search and donate
     ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]    
-    ${Camp_amt}=    Get Substring    ${label_val}    9    16
+    ${Price}=    Get Substring    ${label_val}    9    16
+    ${Int_Price}=    Convert to price    ${Price}
+    ${camp_amt}=      Format String     {:,}    ${Int_Price}
     Log To Console    Final val is: ${camp_amt}
     Sleep    10s
     
     Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
     Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     Sleep    10s    
-    Click Element    id=ChkForSI
-    SI Payment Uncheck Verify        
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']    
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
+    Click Element    xpath=(//input[@id='ChkForSI'])[1]
+    Sleep    2s
+    #SI Payment Uncheck Verify
+    Click Element    xpath=(//div[@class='kl_flood_sub_or_sec'])[1]    
+    ${success_mgs}=    Get Text    xpath=//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
     Click Element    xpath=//a[@class='view_cart']
     
