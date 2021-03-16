@@ -4996,7 +4996,7 @@ Checkout flow campaign
 SI flow campaign
     Sleep    10s
     Click Element    xpath=.//div[@class='item-image']//img
-    Sleep    5s    
+    Wait Until Element Is Visible    xpath=//div[@class='inner_banner_pledge_content']/h2/div/p    60s
     ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div/p
     ${label_val}=    Get Text    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
     ${final_val}=    Get Substring    ${label_val}    9    16
