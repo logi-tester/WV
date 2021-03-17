@@ -466,20 +466,34 @@ SI flow login with exit user
     Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"    
  
 To verify child rotator
-    #Local browser launch
-    Jenkins browser launch
-    ${get_child_count}=    Get Element Count    xpath=.//*[@class='child_sponsor_image']/img
-    Run Keyword If    ${get_child_count}<5    Fail    In home page child rotator child are display lessthen 5
-    Check allow auto debit select default in child rotator
-    Click Element    xpath=//div[@class='item active']//div[@class='stepwizard-row setup-panel']//div[3]//div[1]//label[1]
-    Click Element    xpath=//div[@class='item active']//button[@class='btn btn-primary si_modal_btn']
-    ${check_sI_login_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='smartwizard']
-    Run Keyword If    True!=${check_sI_login_page}    Fail    "When try to select child get into SI login but SI login page not display"
-    Click Element    xpath=.//div[@class='modal-footer']/button
-    9600 should select defaulty
-    Check rounded checkbox txt and amount
-    ${check_sel_child}=    Add child to view cart
-    Child duplicate checking    ${check_sel_child}
+    [Tags]    Rotator    
+
+    Jenkins browser launch    
+    ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
+    Rotator Child Count    
+    #9600 should select defaulty
+    Rotator Allow Auto Debit status check
+    Rotator Proceed To Autopay Text Check    
+    Rotator Proceed To Autopay
+    #SI login page#
+    Element Status Check    id=exampleModalLabel    SI login page is appeared    SI login page doesnt appear
+    #SI login page close#
+    Click Element    xpath=//button[@class='close']    
+    Rotator SI checkbox Click
+    Rotator Sponsor Now Text Check
+    Rotator Sponsor Now Click
+    Success text in shadow window
+    Sleep    5s    
+    Rotator Right Nav button
+    Sleep    5s    
+    Rotator left Nav button
+    #Sponsor now button visible
+    Sleep    5s    
+    Element Status Check    //a[text()='Sponsor Another Child']    Sponsor Another Child button is visible    Sponsor Another Child button is not visible
+    Element Status Check    //a[text()='Proceed to Checkout']    Proceed to Checkout button is visible    Proceed to Checkout button is not visible    
+    Rotator Proceed to Checkout    
+    Rotator Child cart validation    ${child_name}    ${sel_child_amt} 
+    Child duplicate checking    ${child_name}
  
 To verify search child and donate
     [Tags]    Search functionality
@@ -5113,12 +5127,13 @@ Check rounded checkbox txt and amount
 
 Child duplicate checking
     [Arguments]    ${sel_child}
+    
     Click Element    xpath=(//a[@class='site-branding-logo'])[1]
-    ${get_child_count}=    Get Element Count    xpath=.//*[@class='child_sponsor_image']/img
-    ${chceck}=    Evaluate    ${get_child_count}+1
-    FOR    ${index}    IN RANGE    1    ${chceck}
-        ${currentselece_child_src}=    Get Element Attribute    xpath=(.//*[@class='child_sponsor_image']/img)[${index}]    src
-        Run Keyword If    '${currentselece_child_src}'=='${sel_child}'    Fail    "Child are duplicate"
+    ${get_child_count}=    Get Element Count    xpath=//div[@class='card-detail']//span[@class='chi-name']
+    ${check}=    Evaluate    ${get_child_count}+1
+    FOR    ${index}    IN RANGE    1    ${check}
+        ${ChildInRotator}=    Get Text    xpath=//div[@class='card-detail']//span[@class='chi-name']
+        Run Keyword If    '${ChildInRotator}'=='${sel_child}'    Fail    "Child are duplicate"
     END
     
 Ways to give - 5 items
@@ -6783,3 +6798,9 @@ Enter Gift Amount
     [Arguments]    ${GiftAmount}
 
     Input Text    xpath=//input[@name='giftforchildren' and @type='text']    ${GiftAmount}
+
+Rotator left Nav button
+    Click Element    xpath=//a[@class='left carousel-control']
+
+Rotator Right Nav button
+    Click Element    xpath=//a[@class='right carousel-control']
