@@ -1023,20 +1023,15 @@ To add child to a cart
     Click Element    xpath=//a[@class='view_cart']
     Rotator Child cart validation    ${child_name}    ${sel_child_amt}
 
-SI Flow payment gateway list and text check
-    #Local browser launch
+To verify payment gateway for SI 
+    [Tags]    Payment Gateway For SI
+
     Jenkins browser launch
-    Rescue child campaign
-    SI login
-    ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
-    Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "SI post login page not display"
-    ${SI_payment_list}=    Get Element Count    xpath=.//div[@class='payment-main-content']/div
-    Run Keyword If    3!=${SI_payment_list}    Fail    "SI Flow payment gateway list mismatch"
-    FOR    ${SI_payment_txt}    IN    @{SI_payment_list_text}
-        ${SI_payment_txt_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='payment-main-content']/div[contains(.,'${SI_payment_txt}')]
-        Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
-    END
-    #nedd to check campaign details
+    Cart campaign check and delete          
+    Mouser hover ways to give campaign    Save Malnourished Children
+    SI flow campaign
+    SI login 
+    SI payment gateway check
     
 Check Add-on added in view cart page
     #Local browser launch
