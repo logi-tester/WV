@@ -6804,3 +6804,6 @@ Rotator left Nav button
 
 Rotator Right Nav button
     Click Element    xpath=//a[@class='right carousel-control']
+
+Rotator Sponsor Now Click
+    Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//input[contains(@id,'edit-submit')]    
