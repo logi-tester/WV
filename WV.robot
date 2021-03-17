@@ -6807,3 +6807,7 @@ Rotator Right Nav button
 
 Rotator Sponsor Now Click
     Click Element    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//input[contains(@id,'edit-submit')]    
+
+Rotator Sponsor Now Text Check
+    ${status}=    Get Element Attribute    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//input[contains(@id,'edit-submit')]    value
+    Run Keyword If    '${status}'!='SPONSOR NOW'    Fail    Button Text is not changed to Add to Cart
