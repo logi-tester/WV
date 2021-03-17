@@ -729,43 +729,6 @@ To sponsor child using SI flow
         Run Keyword If    'True'!='${SI_payment_txt_chck}'    Fail    "SI flow payment gateway ${SI_payment_txt} text are mismatch"
     END
     
-
-Just post login check hungerfree campaign
-    [Tags]    Post Login 
-    
-    Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login           
-    Click Element    xpath=//a[contains(.,'My Gifts')]    
-    Banner Alert            
-    Cart campaign check and delete
-    
-    #Make payment menu check
-    Click Element    xpath=//li[@class='post_lgn']/a    
-    Wait Until Element Is Visible    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    60s
-    Click Element    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]
-    Click Element    xpath=//div[@class='tog-top-sec']/ul/li[contains(.,'My Donations')]
-    
-    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
-    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not found"
-    
-    ${Hungerfree_label_amt}=    Get Text    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
-    ${final_label_amt}=    Remove String Using Regexp    ${Hungerfree_label_amt}    \\D     
-    Log To Console    Before hunger free label amount:${final_label_amt}    
-    
-    #Move to hungerfree campaign    
-    Mouse hover ways to give after login    Hungerfree    
-    Click Element    xpath=.//div[@class='add-to-cart-section']
-    
-    ${hunger_camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
-    ${split_Hunger_name_with_rightside}=    Remove String    ${hunger_camp_name}    Free
-    Log To Console    ${split_Hunger_name_with_rightside}
-        
-    ${get_input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
-    Log To Console    Hunger campaign get input amount:${get_input_val}
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
-    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
 Just post login check hungerfree campaign
     [Tags]    Post Login 
     
