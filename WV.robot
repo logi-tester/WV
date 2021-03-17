@@ -2732,33 +2732,6 @@ To verify payment success for ccavenue payment gateway - For other passport hold
     # CCavenue payment success flow
     # CCavenue payment - cart verification - dynamic    ${camp_name}    ${camp_amt}    ${cart_quanity}
 
-To verify payment failure for cc avenue payment gateway - For other passport holder
-    [Tags]    Payment acknowledgment for other passport holder
-        
-    Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
-    Direct login - Other passport user    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
-    Banner Alert
-    Cart campaign check and delete            
-    #Select Hunger free campaign
-    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
-    Click Element    xpath=//li/a[contains(.,'Educate Children')]
-    Sleep    10s
-    ${camp_name}    ${camp_amt}    Checkout flow campaign
-    ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
-    View cart proceed button    
-    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
-    Run Keyword If    3!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
-    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'    ELSE    Log To Console    Payment gateway lists are matching    
-    END
-    ${camp_amt}=    Convert to price    ${camp_amt}
-    CCAvenue payment failure flow
-    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
-
-
 To Sponsor 3 child - Direct flow – byspecific
     [Tags]    Sponsor a Child
     
@@ -3398,19 +3371,20 @@ To verify payment failure for HDFC payment gateway - For other passport holder
     [Tags]    Payment Acknowledgment for Other Passport Holder
 
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login - Other passport user    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete
     Mouse hover ways to give after login    Educate Children
     ${camp_name}    ${camp_amt}    other passport user flow
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
-    ${camp_amt}=    Convert to price    ${camp_amt}
-    Hdfc bank payment gateway check
+    ${camp_amt_int}=    Convert to price    ${camp_amt}
+    Element Status Check    xpath=//span[contains(text(),'POWERED BY HDFC BANK')]    HDFC payment gateway is visible    HDFC payment gateway is not visible        
+    Element Status Check    class=netbanking    CREDIT CARD is visible    CREDIT CARD is not visible
     HDFC payment failure flow    
-    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
+    CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt_int}    ${cart_quanity}
 
 To verify payment using SI with existing onetime donation payment in cart
     [Tags]    Multiple payment functionality
