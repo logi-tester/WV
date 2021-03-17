@@ -494,8 +494,6 @@ To verify search child and donate
     Login
     CCavenue payment success flow        
     My Next Payment
-    Why do you want to leave - PopUp
-    My Next Payment
     My Next Payment Gift Menu and My Child Menu Check      
     ${check_child_display}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[contains(@class,'chld-items')]//div[@class='cld-nme']/p[contains(.,'${child_name}')]
     Run Keyword If    True!=${check_child_display}    Fail    Payment success, But child details doesnt appear in "My Children" tab
