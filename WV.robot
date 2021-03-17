@@ -3381,7 +3381,7 @@ To verify payment failure for HDFC payment gateway - For other passport holder
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     ${camp_amt_int}=    Convert to price    ${camp_amt}
-    Sleep    10s    
+    Sleep    15s    
     Element Status Check    xpath=//span[contains(text(),'POWERED BY HDFC BANK')]    HDFC payment gateway is visible    HDFC payment gateway is not visible        
     Element Status Check    class=netbanking    CREDIT CARD is visible    CREDIT CARD is not visible
     HDFC payment failure flow    
