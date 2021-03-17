@@ -3185,35 +3185,40 @@ To Verify First name Enter a valid String of Character with minimum length of 2
 To Verify Last name Enter a valid String of Character with minimum length of 2
     [Tags]    Registration Page
     
-    Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Register')]     
-    Sleep    10s                         
+    Jenkins browser launch    
+    Click Register  
+       
+    ${title}=    Get Title                        
+    Should Contain    ${title}    Create new account                      
         
-    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    tes    
+    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    te    
     Sleep    3s
-    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//strong[@id='edit-field-last-name-0-value-error']        
-    Run Keyword If    '${status}'!='True'    Fail    Minimun character number was not visible
-
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//input[@id='edit-field-last-name-0-value']/parent::div//strong        
+    Run Keyword If    '${status}'!='True'    Fail    Minimun character number error was not visible
+    
     Clear Element Text    xpath=//input[@id='edit-field-last-name-0-value']
     Input Text    xpath=//input[@id='edit-field-last-name-0-value']    a b
     Sleep    3s            
-    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//strong[@id='edit-field-last-name-0-value-error']        
-    Run Keyword If    '${status}'!='True'    Fail    Minimun character number was not visible
-
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//input[@id='edit-field-last-name-0-value']/parent::div//strong        
+    Run Keyword If    '${status}'!='True'    Fail    Minimun character number error was not visible
+    
     Clear Element Text    xpath=//input[@id='edit-field-last-name-0-value']
-    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    ab    
+    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    a
+    Press Keys    //label[@for='edit-field-last-name-0-value']    TAB    
     Sleep    3s            
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//strong[@id='edit-field-last-name-0-value-error']        
-    Run Keyword If    '${status}'!='True'    Fail    Minimun character number was not visible
-
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//input[@id='edit-field-last-name-0-value']/parent::div//strong       
+    Run Keyword If    '${status}'!='True'    Fail    Minimun character number error was not visible
+    
     Clear Element Text    xpath=//input[@id='edit-field-last-name-0-value']
-    Input Text    xpath=//input[@id='edit-field-last-name-0-value']    aswyasdlasdlaishasdgaksdgalsidgaskuydtoasydutasodytsoady    
-    Sleep    3s        
+    Sleep    3s
+    ${errorMsg}=    Get Text    xpath=//input[@id='edit-field-last-name-0-value']/parent::div//strong
+    Run Keyword If    '${errorMsg}'!='${MandatoryField}'    Fail    This field is mandatory error doesnt appear
 
+    ${LastNameMax}=    Generate Random String    length=54
+    Input Text    xpath=//input[@id='edit-field-first-name-0-value']    ${LastNameMax}    
+    Sleep    3s        
     ${lastname}=    Get Element Attribute    xpath=//input[@id='edit-field-last-name-0-value']    value
     ${length}=    Get Length    ${lastname}
-
     Run Keyword If    ${length}>30    Fail    Maximum character exceeded in firstname field
 
 To verify Tax Receipt banner is not appear for Register user after May 1st
