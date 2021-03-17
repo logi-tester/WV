@@ -6451,7 +6451,7 @@ Success text in shadow window
     ${child_sponsor_msg}=    Get Text    xpath=//h2[@class='chat-text']
     Run Keyword If    '${child_sponsor_msg}'!='Success !'    Fail    "After child selected 'Sponsor Successfull' text not display"
 
-Rotator Proceed To Payment Button Text Check
+Rotator Proceed To Autopay Text Check
     ${status}=    Run Keyword And Return Status    Element Should Contain    xpath=//div[@class='item active childRotator' or @class='item childRotator active']//button[contains(@class,'si_modal_btn')]    PROCEED TO AUTOPAY
     Run Keyword If    '${status}'!='True'    Fail    Button Text is not displayed as Proceed To Autopay
 
