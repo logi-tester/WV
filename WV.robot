@@ -4019,7 +4019,7 @@ To verify Footer rotator functionality
     ${child_name}    ${sel_child_amt}    ${sel_child_imgsrc}    Rotator Child Details
     Log    Child name: ${child_name} and child amount: ${sel_child_amt} and also child img src: ${sel_child_imgsrc}            
     Rotator Allow Auto Debit status check
-    Rotator Proceed To Payment Button Text Check
+    Rotator Proceed To Autopay Text Check
     Rotator SI checkbox Click    
     Rotator Add to Cart Button Text Check
     Rotator SI checkbox Click
