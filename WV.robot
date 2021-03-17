@@ -1305,7 +1305,7 @@ To verify payment gateways for other passport holder
     # ${other}=    Execute Javascript    return window.jQuery('#othctzn').prop('checked')
     # Run Keyword If    'True'!='${other}'    Fail    "By default Other passport holder should be checked but not like that"    
     Mouse hover ways to give after login    Educate Children
-    ${camp_name}    ${camp_amt}    other passport user flow
+    ${camp_name}    ${camp_amt}     Other Passport Flow
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     ${camp_amt}=    Convert to price    ${camp_amt}
@@ -2700,7 +2700,7 @@ To verify payment success for ccavenue payment gateway - For other passport hold
     Cart campaign check and delete                
     Mouse hover ways to give after login    Educate Children
     Sleep    10s
-    ${camp_name}    ${camp_amt}    other passport user flow
+    ${camp_name}    ${camp_amt}    Other Passport Flow
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button    
     Hdfc bank payment gateway check           
@@ -3377,10 +3377,11 @@ To verify payment failure for HDFC payment gateway - For other passport holder
     Banner Alert
     Cart campaign check and delete
     Mouse hover ways to give after login    Educate Children
-    ${camp_name}    ${camp_amt}    other passport user flow
+    ${camp_name}    ${camp_amt}    Other Passport Flow
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     ${camp_amt_int}=    Convert to price    ${camp_amt}
+    Sleep    10s    
     Element Status Check    xpath=//span[contains(text(),'POWERED BY HDFC BANK')]    HDFC payment gateway is visible    HDFC payment gateway is not visible        
     Element Status Check    class=netbanking    CREDIT CARD is visible    CREDIT CARD is not visible
     HDFC payment failure flow    
@@ -3610,7 +3611,7 @@ To verify other passport holder SI payment is disabled - PreLogin
     Gift Cart Click      
     Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children  
-    ${camp_name}    ${camp_amt}    other passport user flow
+    ${camp_name}    ${camp_amt}    Other Passport Flow
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button
     ${camp_amt}=    Convert to price    ${camp_amt}
@@ -5930,24 +5931,23 @@ Welcome user banner text
     END            
     Run Keyword If    '${status}'!='True'    Fail    Welcome user banner was not visible
 
-other passport user flow
+Other Passport Flow
     Click Element    xpath=.//div[@class='item-image']//img
     Sleep    5s    
-    ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div   
-    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]
+    ${camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div/p
+    ${label_val}=    Get Text    xpath=//label[contains(text(),'3 Months')]     
     ${Camp_amt}=    Get Substring    ${label_val}    9    16
-    Log To Console    Final val is: ${camp_amt}    
+    Log    Campaign val is: ${camp_amt}
     SI Payment disable check
-    Sleep    15s    
-    Wait Until Element Is Visible    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label    15s    
-    Click Element    xpath=(//div[@class='price save-malnourished-cart-sec'])[2]/label
-    Sleep    10s           
+    
+    Wait Until Element Is Visible    xpath=//label[contains(text(),'3 Months')]    30s    
+    Click Element    xpath=//label[contains(text(),'3 Months')]
+    Sleep    10s    
+    
     Add to cart text change
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
-    Sleep    3s        
-    ${success_mgs}=    Get Text    xpath=//h2[@class='chat-text']
-    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
-    Click Element    xpath=//a[@class='view_cart']        
+    Click Add To Cart
+    Success text in shadow window
+    Click Proceed To Checkout Button
     
     [Return]    ${camp_name}    ${camp_amt}
 
