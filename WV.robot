@@ -4824,24 +4824,18 @@ SI login
     ${si_postlogin_chck}=    Run Keyword And Return Status    Element Should Be Visible    class=safeNsecure
     Run Keyword If    'True'!='${si_postlogin_chck}'    Fail    "SI flow Postlogin page not display"
 
-CCavenue payment success flow    
-    #Wait Until Element Is Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by AXIS BANK')]
-    #Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by AXIS BANK')]/preceding-sibling::input
-    #Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/preceding-sibling::input
-    #Sleep    4s
+CCavenue payment success flow
     ${chck_ccaveneu_click}=    Get Element Attribute    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div    class
     Run Keyword If    '${chck_ccaveneu_click}'!='js-form-item form-item js-form-type-radio form-item-payment-information-payment-method js-form-item-payment-information-payment-method active'    Click Element    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'Powered by CC Avenue')]/parent::div
     Sleep    15s
-    Click Element    //button[text()='pay my contribution']    
-    #Click Element    xpath=.//input[@id='edit-actions-next']
-    #${order_id}=    Get Text    xpath=.//span[@class='order-value']
-    #Log To Console    Order id:${order_id}
-    Wait Until Element Is Visible    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]    15s    
-    Click Element    xpath=(.//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
+    Click Element    //button[text()='pay my contribution']        
+    Wait Until Element Is Visible    xpath=(//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]    15s    
+    Click Element    xpath=(//div[@id='OPTNBK']//span[2][contains(text(),'Net Banking')])[1]
     Select From List By Value    id=netBankingBank    AvenuesTest
-    Click Element    xpath=(.//span[starts-with(text(),'Make')])[3]
-    Click Element    xpath=.//input[@type='submit']      
+    Click Element    xpath=(//span[starts-with(text(),'Make')])[3]
+    Click Element    xpath=//input[@type='submit']      
     Banner Alert
+    Sleep   5s
     ${payment_success_msg}=    Get Text    xpath=//div[@id='edit-completion-message']//h3
     Run Keyword If    'PAYMENT SUCCESSFULL'!='${payment_success_msg}'    Fail    "Payment successful page not display"
     
