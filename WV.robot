@@ -6522,8 +6522,8 @@ CCavenue payment - cart verification sponsor a child
     END    
     
 BySpecific Selected By Default
-    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
-    Run Keyword If    '${by_specific}'=='True'    Log    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
+    ${by_specific}=    Get Element Attribute    xpath=//a[text()='By specifics']/parent::span    class   
+    Run Keyword If    '${by_specific}'=='checkmark checked'    Log    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
     
 Most Needed Child Selected By Default
     ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
