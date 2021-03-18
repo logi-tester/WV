@@ -2193,11 +2193,9 @@ To verify offline - Cheque & DD acknowledgement page
     [Tags]    Payment Acknowlodgement for Indian Passport Holder
         
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Sleep    30s    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children     
@@ -2207,8 +2205,7 @@ To verify offline - Cheque & DD acknowledgement page
     Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
-    Sleep    10        
-    Click Element    xpath=//label[@class='off-container' and contains(text(),'Cheque & DD')]/span
+    Offline Payment Option    Cheque & DD        
     Sleep    10s 
     Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
@@ -2217,11 +2214,9 @@ To verify offline - UPI acknowledgement page
     [Tags]    Payment Acknowlodgement for Indian Passport Holder
         
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Sleep    30s    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children     
@@ -2230,9 +2225,8 @@ To verify offline - UPI acknowledgement page
     View cart proceed button 
     Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
-    Scroll Element Into View    class=upihead
-    Sleep    10        
-    Click Element    xpath=//label[@class='off-container' and contains(text(),'UPI')]/span
+    Scroll Element Into View    class=upihead        
+    Offline Payment Option    UPI
     Sleep    10s 
     Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
@@ -2241,11 +2235,9 @@ To verify offline - Paytm acknowledgement page
     [Tags]    Payment Acknowlodgement for Indian Passport Holder
     
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Sleep    30s    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children     
@@ -2255,8 +2247,7 @@ To verify offline - Paytm acknowledgement page
     Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
     Scroll Element Into View    class=upihead
-    Sleep    10        
-    Click Element    xpath=//label[@class='off-container' and contains(text(),'Paytm')]/span
+    Offline Payment Option    Paytm
     Sleep    10s 
     Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
@@ -2265,11 +2256,9 @@ To verify offline - Bank transfer acknowledgement page
     [Tags]    Payment Acknowlodgement for Indian Passport Holder
     
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Sleep    30s    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children     
@@ -2278,9 +2267,8 @@ To verify offline - Bank transfer acknowledgement page
     View cart proceed button 
     Sleep    10s   
     Click Element    xpath=//input[@id='edit-payment-information-payment-method-offline-payment']    
-    Scroll Element Into View    class=upihead
-    Sleep    10        
-    Click Element    xpath=//label[@class='off-container' and contains(text(),'Bank Transfer')]/span
+    Scroll Element Into View    class=upihead        
+    Offline Payment Option    Bank Transfer
     Sleep    10s 
     Click Element    id=off-edit-actions-next    
     CCavenue payment - cart verification    ${camp_name}    ${camp_val}    ${cart_quanity}
@@ -6815,3 +6803,9 @@ Rotator Sponsor Now Text Check
 
 Rotator Proceed to Checkout
     Click Element    xpath=//a[text()='Proceed to Checkout']
+
+Offline Payment Option
+    [Arguments]    ${option}
+    
+    Sleep    10s    
+    Click Element    xpath=//label[@class='off-container' and contains(text(),'${option}')]/span
