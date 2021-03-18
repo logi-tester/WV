@@ -1938,11 +1938,11 @@ To verify child profile
     Log To Console    Area development details: ${adp}    
 
 To verify schedule a call
-    [Tags]    MyChild Page    
-
+    [Tags]    MyChild Page
+        
     Jenkins browser launch
     Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
     Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
     Click Element    xpath=(//div[@class='child_title'])[1]    
@@ -1950,12 +1950,13 @@ To verify schedule a call
     Run Keyword If    'Schedule a Call'=='${schedule_call}'    Log To Console    "Schedule call option is enabled"    ELSE    Fail    "Schedule call options is not enabled"
     Click Element    xpath=//div[contains(@class,'call-schedule')]/a/p
     
-    ${CurrentDate}=    Get Current Date    result_format=%Y-%m-%d
-    ${datetime}=    Convert Date    ${CurrentDate}    datetime
+    ${CurrentDate}=    Get Current Date    result_format=%Y-%b-%d
+    ${month}=    Get Substring    ${CurrentDate}    5    8
+    
     Sleep    5s    
     Click Element    xpath=//input[@class='scheduleavcdate hasDatepicker']
     Sleep    5s        
-    Select From List By Label    class=ui-datepicker-month    Feb
+    Select From List By Label    class=ui-datepicker-month    ${month}
     Select From List By Label    class=ui-datepicker-year    2021
     Click Element    xpath=//td[contains(@class,' ui-datepicker-days-cell-over ')]/a    
     #Click Element    xpath=//table[@class='ui-datepicker-calendar']//tbody/tr/td/a[text()='${datetime.day}']        
