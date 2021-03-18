@@ -463,9 +463,7 @@ SI flow login with exit user
     #Local browser launch
     Jenkins browser launch
     Rescue child campaign
-    SI login
-    ${check_SI_postlogin_page}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//form[@class='payment_selection_form']
-    Run Keyword If    'True'!='${check_SI_postlogin_page}'    Fail    "Exist user can't able to login for SI Flow"    
+    SI login    
  
 To verify child rotator
     [Tags]    Rotator    
