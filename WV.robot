@@ -6803,3 +6803,10 @@ Offline Payment Option
     
     Sleep    10s    
     Click Element    xpath=//label[@class='off-container' and contains(text(),'${option}')]/span
+
+Child Menus Verify
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log To Console    Details enabled for child:    ${text}    
+    END
