@@ -3041,23 +3041,18 @@ To verify download tax receipt should not reflect in offline success page
     Run Keyword If    '${status}'!='True'    Fail    Receipt available for offline payment
 
 To verify child timeline
-    [Tags]    MyChild Page    
-
+    [Tags]    MyChild Page
+        
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]    
     Click Element    xpath=(//div[@class='child_title'])[1]
-    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
-    
-    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
-    FOR    ${element}    IN    @{child_details}
-        ${text}=    Get Text    ${element}
-        Log To Console    Details enabled for child:    ${text}    
-    END    
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]    
+    Child Menus Verify   
+    Sleep    5s    
     ${timeline}=    Get Element Attribute    xpath=//ul[@class='tab-mnu']/li[1]    class
-    Run Keyword If    '${timeline}'!='Active'    Fail    Cannot able to view timeline
+    Run Keyword If    '${timeline}'!='active'    Fail    Cannot able to view timeline
 
 To verify banner should appear for Donator at the month of March 1st and April 31st
     [Tags]    Tax Receipt Banner    
