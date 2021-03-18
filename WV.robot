@@ -69,6 +69,7 @@ ${yellow}    (253, 212, 94, 1)
 ${SICartColour}    (80, 189, 189)
 ${MandatoryField}    This field is mandatory.
 ${NewPrice}    ₹ 2400
+${NewCampaignPrice}    ₹ 3000
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
