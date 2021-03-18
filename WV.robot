@@ -2011,41 +2011,22 @@ To sponsor single child - SI flow - By specific section
     Sleep    10s    
     SI payment gateway check
 
-
 To Sponsor a child-SI flow - Any child section
     [Tags]    Sponsor a Child
     
     Jenkins browser launch
     Banner Alert
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
-    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
-    
-    Sleep    15s    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
-    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
-    
-    Click Element    xpath=//span[@class='checkmark']/a     
-      
-    ${child_name}=    Get Text    xpath=(//div[@class='overall_banner_pledge'])[3]/div[2]/h2    
-    
-    ${Amount_button}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='price save-malnourished-cart-sec current'])[3]
-    Run Keyword If    'True'=='${Amount_button}'    Log To Console    "1 year Rs.9600 is selected by default"    ELSE    Fail    "1 year Rs.9600 is not selected by default"
-    
-    ${recurring_payments}=    Run Keyword And Return Status    Checkbox Should Be Selected    xpath=(//input[@id='ChkForSI'])[3]
-    Run Keyword If    'True'=='${recurring_payments}'    Log To Console    "Please use my card details for recurring payments is selected by default"    ELSE    Fail    "Please use my card details for recurring payments is not selected by default"
-    
-    ${more_childrens}=    Get Element Attribute    xpath=(//input[@id='SIPopBlock_qty'])[3]    value
-    Run Keyword If    '0'=='${more_childrens}'    Log To Console    "Sponsor More Children is 0 by default "    ELSE    Fail    "Sponsor More Children is not 0 by default"
-   
-    Click Element    xpath=(//button[contains(@class,'si_modal_btn')])[3]
-    
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child
+    Sleep    15s
+    Click Any Child BySpecific Page
+    ${child_name}=    Get Text    xpath=(//div[@class='overall_banner_pledge'])[3]/div[2]/h2  
+    9600 Amount Button Verify BySpecific page  
+    SI Checkbox verify BySpecific page
+    Child Quantity default verify BySpecific page
+    Proceed to Pay Button
     SI login
     Sleep    10s    
-    FOR    ${element}    IN    @{SI_payment_list_text}
-        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
-        Run Keyword If    '${status}'!='True'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} are displayed"    
-    END  
-
+    SI payment gateway check
 
 To verify increment/decrement functionality
     Jenkins browser launch
