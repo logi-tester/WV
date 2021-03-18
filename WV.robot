@@ -5949,7 +5949,8 @@ SI Payment disable check
     ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    id=ChkForSI
     Run Keyword If    '${status}'!='True'    Fail    SI Payment is enabled for Other passport user    ELSE    Log    SI Payment is disabled for Other Passport Users
 
-Hdfc bank payment gateway check    
+Hdfc bank payment gateway check
+    Sleep   10s
     ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'POWERED BY HDFC BANK')]
     Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    HDFC payment gateway doesnt appear    ELSE    Log To Console    HDFC payment gateway is visible
 
