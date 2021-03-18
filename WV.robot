@@ -3342,26 +3342,22 @@ To verify cart data is maintaining for existing user
     
     Jenkins browser launch
     Banner Alert        
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login        
-    Click Element    xpath=.//a[contains(.,'My Gifts')]    
+    Click Cart    
     Cart campaign check and delete
     Sleep    10s       
     Mouser hover ways to give campaign    Educate Children
     ${camp_name}    ${camp_amt}    Checkout flow campaign
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
-    
     Sleep    10s        
-    Mouse Over    xpath=.//li[@class='welcomesponsor']
-    Click Element    xpath=.//ul[@class='mypro-lgot']/li/a[contains(.,'Logout')]
-    Click Element    class=close-survey    
-    
+    Logout
+    Click Element    class=close-survey        
     ${title}=    Get Title    
-    Run Keyword If    '${title}'=='Log in | World vision'    Log To Console    User logged out and redirected to login page    ELSE    Fail    User does not logged out    
-    
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Run Keyword If    '${title}'=='Log in | World vision'    Log    User logged out and redirected to login page    ELSE    Fail    User does not logged out    
+    Click Login
     Direct login
-    Click Element    xpath=.//a[contains(.,'My Gifts')]             
+    Click Cart             
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
 
 To verify payment failure for HDFC payment gateway - For other passport holder
@@ -4852,7 +4848,7 @@ Login
     
   
 Direct login
-    Sleep   5s
+    Sleep   8s
     Click Element    id=edit-name
     Input Text    id=edit-name    ${user_name}
     Click Element    id=edit-pass
