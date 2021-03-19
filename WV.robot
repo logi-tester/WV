@@ -1635,34 +1635,26 @@ To select children through age filter
     
     Jenkins browser launch
     Banner Alert
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
-    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
-    
-    Sleep    15s    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
-    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
-    
-    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
-    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
-    
-    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
-    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child 
+    Wait Until Element Is Visible    class=gbl_banner_content    60s  
+    BySpecific Selected By Default  
+    Most Needed Child Selected By Default
     
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]    
-    Run Keyword If    'True'!='${status}'    Fail    'Currently there are no childrens or Childrens age are below 12 years"    ELSE    Log To Console    "Children's are found"
+    Run Keyword If    'True'!='${status}'    Fail    Currently there are no childrens or Childrens age are below 12 years    ELSE    Log    Children's are found
+    
     ${age}=    Get Text    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')]
-    ${age}=    Remove String Using Regexp    ${age}    \\D
-    #Log To Console    ${age}    
-    ${age}=    Convert To Integer    ${age}            
+    ${ChildAge}=    Convert to price    ${age}
+               
     Click Element    xpath=//label[@for='age-range-above-12-years']//span[contains(text(),'Above 12 Years')] 
-    Sleep    15s         
+    Sleep    5s         
     ${age_count}=    Get Element Count    xpath=//div[@class='bySpecinfo']//span[1]
     Log To Console    No of childrens found: ${age_count}
     FOR    ${element}    IN RANGE    1    ${age_count}+1    
         Mouse Over    xpath=(//div[@class='bySpecHoverContent'][1])[${element}]        
         ${Text}=    Get Text    xpath=(//div[@class='bySpecinfo']//span[1])[${element}]
         ${element_age}=    Convert To Integer    ${Text}
-        Run Keyword If    ${element_age}>${age}    Log To Console    "Sorted children age is : ${element_age}'    ELSE    Fail    "Site show children out of filter applied"        
+        Run Keyword If    ${element_age}>${ChildAge}    Log    Sorted children age is : ${element_age}    ELSE    Fail    Site show children out of filter applied        
     END
 
 To select children through gender filter
