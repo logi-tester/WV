@@ -3241,24 +3241,18 @@ To verify payment failure for Axis bank payment gateway - For indian passport ho
     [Tags]    Payment Acknowlodgement for Indian Passport Holder          
       
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login    
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
     Cart campaign check and delete            
     #Select Hunger free campaign
-    Mouse Over    xpath=//li/span[contains(text(),'Ways to Give')]
-    Click Element    xpath=//li/a[contains(.,'Educate Children')]
+    Mouse hover ways to give after login    Educate Children    
     Sleep    10s
     ${camp_name}    ${camp_amt}    Checkout flow campaign
     ${cart_quanity}    check in view cart page - Checkout flow    ${camp_name}    ${camp_amt}
     View cart proceed button    
-    ${checkout_payment_list}=    Get Element Count    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
-    Run Keyword If    4!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
-    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
-        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
-        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    'Checkout Flow Other passport holder Payment Gateway ${bank_txt} text is mismatch'    ELSE    Log To Console    Payment gateway lists are matching    
-    END
+    Indian Checkout Flow Payment Gateway Verify
     ${camp_amt}=    Convert to price    ${camp_amt}
     Axis payment failure flow    
     CCavenue payment - failure cart verification    ${camp_name}    ${camp_amt}    ${cart_quanity}
@@ -4718,7 +4712,8 @@ Calculation amount
     [Return]    ${total_amt}
     
 View cart proceed button
-    Click Element    xpath=.//input[@id='edit-checkout']
+    Sleep    5s    
+    Click Element    xpath=//input[@id='edit-checkout']
 
 Mouser hover ways to give campaign
     [Arguments]    ${edu_child}
@@ -6734,4 +6729,15 @@ Child Menus Verify
     FOR    ${element}    IN    @{child_details}
         ${text}=    Get Text    ${element}
         Log To Console    Details enabled for child:    ${text}    
+    END
+
+Indian Checkout Flow Payment Gateway Verify
+    Sleep    15s    
+    ${pageTitle}=    Get Title
+    Should Contain    ${pageTitle}    Order information        
+    ${checkout_payment_list}=    Get Element Count    xpath=//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div
+    Run Keyword If    4!=${checkout_payment_list}    Fail    "Checkout flow Other passport holder payment list are mismatch"
+    FOR    ${bank_txt}    IN    @{checkout_payment_list_text}
+        ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
+        Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    Indian Payment Gateway ${bank_txt} is mismatching    ELSE    Log    ${bank_txt} Payment gateway is matching    
     END
