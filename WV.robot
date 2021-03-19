@@ -6709,3 +6709,7 @@ Indian Checkout Flow Payment Gateway Verify
         ${checkout_banklist_name_check}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@id='block-paymentmode']//div[@id='edit-payment-information-payment-method']/div/span[contains(.,'${bank_txt}')]
         Run Keyword If    'True'!='${checkout_banklist_name_check}'    Fail    Indian Payment Gateway ${bank_txt} is mismatching    ELSE    Log    ${bank_txt} Payment gateway is matching    
     END
+
+Proceed To Autopay Text Check
+    ${button_text}=    Get Text    xpath=//div[@class='SIPopBlock']//button
+    Run Keyword If    'PROCEED TO AUTOPAY'=='${button_text}'    Log    Button text changed to PROCEED TO AUTOPAY    ELSE    Fail    Button text was not changed to PROCEED TO AUTOPAY
