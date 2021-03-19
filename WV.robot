@@ -3,7 +3,7 @@ Test Teardown     Close Browser
 Library           SeleniumLibrary
 Library           String
 Library           DateTime
-Library     RequestsLibrary
+Library           RequestsLibrary
 Library           BuiltIn
 Library           Collections
 
@@ -1613,28 +1613,22 @@ To select children through location filter
     
     Jenkins browser launch
     Banner Alert
-    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child
-    
-    Sleep    15s    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
-    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
-    
-    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
-    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
-    
-    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
-    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
-    
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child    
+    Wait Until Element Is Visible    class=gbl_banner_content    60s
+    BySpecific Selected By Default
+    Most Needed Child Selected By Default
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]           
-    Run Keyword If    ${status}!='True'    Fail    Currently childrens are not available
-    
+    Run Keyword If    '${status}'!='True'    Fail    Currently there are no childrens available    
     ${state}=    Get Text    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]
-    Click Element    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]  
-    
-    Scroll Element Into View    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]
-    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='bySpecContHolder']//p[contains(text(),'${state}')]        
-    Run Keyword If    'True'!='${status}'    Fail    "Childrens are not available on the state you selected"    ELSE    Log To Console    "Childrens are available on the selected state"           
+    Click Element    xpath=(//label[contains(@for,'locality-the-top-level-administrative-subdivision')])[1]/span[1]    
+    Scroll Element Into View    xpath=//span[text()='Month']
+    Sleep    5s    
+    ${AvailableChild}=    Get Element Count    xpath=//div[@class='bySpecLocation']/p
+    FOR    ${Index}    IN RANGE    1    ${AvailableChild}+1
+        Sleep    5s    
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='bySpecLocation']/p[contains(text(),'${state}')])[${Index}]
+        Run Keyword If    'True'!='${status}'    Fail    "Childrens state is mismatching"    ELSE    Log    "Childrens state is matching"
+    END
 
 To select children through age filter
     [Tags]    Sponsor a Child
