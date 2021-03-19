@@ -1662,33 +1662,19 @@ To select children through gender filter
     
     Jenkins browser launch
     Banner Alert
-    Mouse Over    xpath=//div[@class='main-menu-inner']//li/span[contains(.,'Child Sponsorship')]
-    Click Element    xpath=//div[@class='main-menu-inner']//a[contains(.,'Sponsor a Child')]
-    
-    Sleep    15s    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='modal-content-survey2']/span
-    Run Keyword If    'True'=='${status}'    Click Element    xpath=//div[@class='modal-content-survey2']/span    ELSE    Log To Console    "Alert was not present"
-    
-    ${by_specific}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//span[contains(@class,'checked')]   
-    Run Keyword If    '${by_specific}'=='True'    Log To Console    "By specific is selected by default"    ELSE    Fail    "By specific was not selected by default"
-    
-    ${most_needed}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='gbl_tabbed_menu']//li[contains(@class,'most-needed active')]
-    Run Keyword If    '${most_needed}'=='True'    Log To Console    "Most Needed is selected by default"    ELSE    Fail    "Most Needed was not selected by default"
-    
+    Mouse Hover main menu and click submenu    Child Sponsorship    Sponsor a Child 
+    Wait Until Element Is Visible    class=gbl_banner_content    60s  
+    BySpecific Selected By Default  
+    Most Needed Child Selected By Default
     Execute JavaScript    window.scrollTo(0, 400)
-    
-    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//label[@for='gender-boy']/span[1]        
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//label[@for='gender-boy']/span[1] 
     Run Keyword If    '${status}'!='True'    Fail    There is no child currently or Boy gender is not available
-
     ${gender}=    Get Text    xpath=//label[@for='gender-boy']/span[1]
     ${gender}=    Replace String    ${gender}    B    b
     Click Element    xpath=//label[@for='gender-boy']/span[1]      
     Sleep    15s
-        
-    Wait Until Element Is Visible    xpath=//li[@class='pager__item']/a    60s
-    Click Element    xpath=//li[@class='pager__item']/a            
-    
-    Sleep    10s        
+    # Wait Until Element Is Visible    xpath=//li[@class='pager__item']/a    60s
+    # Click Element    xpath=//li[@class='pager__item']/a                
     ${gender_count}=    Get Element Count    xpath=//div[@class='bySpecContHolder']//p/span[contains(text(),'${gender}')]
     Log To Console    No of childrens found: ${gender_count}
     FOR    ${element}    IN RANGE    1    ${gender_count}+1
