@@ -332,7 +332,7 @@ To Sponsor a child by SI payment flow from search page
     SI Payment Check Verify
     Proceed to Pay Button
     SI login
-    SI payment gateway check New
+    SI payment gateway check
 
 To Sponsor a child by Checkout payment flow from search page
     [Tags]    To Sponsor a Child
@@ -1577,19 +1577,13 @@ To sponsor a Educate Children Campaign using Si payment Flow from Educate Childr
     [Tags]    Educate Children Campaign
     
     Jenkins browser launch
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Cart campaign check and delete
     Mouser hover ways to give campaign    Educate Children
     SI flow campaign
-    SI login
-    Sleep    15s    
-    FOR    ${element}    IN    @{SI_payment_list_text}
-        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='payment-main-content']/div[contains(text(),'${element}')]
-        Run Keyword If    '${status}'!='True'    Fail    'Payment type was not displayed"    ELSE    Log To Console    "payment types are displayed"    
-    END
+    SI login    
+    SI payment gateway check
 
 To sponsor a Protect Girl Children Campaign as a one time donation using Checkout flow
     [Tags]    Protect Girl Children Campaign
@@ -6252,16 +6246,6 @@ SI Payment Uncheck Verify
 
 Proceed to Pay Button
     Click Element    xpath=(//button[contains(@class,'si_modal_btn')])[1]            
-
-SI payment gateway check New
-    Sleep    15s    
-    ${price_SI}=    Get Text    id=TotalAmtOfOrder
-    ${price_SI}=    Convert to price    ${price_SI}
-    Log To Console    campaign amount is: ${price_SI}         
-    FOR    ${element}    IN    @{SI_payment_list_text}
-        ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=(//div[@class='payment-main-content'])[1]/div[contains(text(),'${element}')]
-        Run Keyword If    '${status}'!='true'    Fail    '${element} was not displayed"    ELSE    Log To Console    "${element} is displayed"    
-    END
     
 Click SI CheckBox
     Click Element    id=ChkForSI    
