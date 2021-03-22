@@ -37,6 +37,7 @@ ${checkout_payment_list_no}    4
 @{HungerFree_alert}    edit-name-error    edit-date-of-birth-error    edit-email-error    edit-mobile-number-error
 @{alert_list}    edit-name--error    edit-email--error    edit-contact--error    edit-query-type-error    edit-message-error
 @{RegisterFields}    signUpfnameErr    signUplnameErr    signUpEmailErr    signInPhoneErr    signUpPassErr    signUpConPassErr    signUpaddrErr    signUpaddrErr1    signUpaddrErr3    signUpPscodeErr    signUpCityErr    signUpStateErr
+@{RegisterFieldCheck}    edit-field-title    edit-field-first-name-0-value    edit-field-last-name-0-value    edit-mail    edit-field-mobile-verify-0-mobile    edit-pass-pass1    edit-pass-pass2    edit-field-registeraddress-0-value    edit-field-address-2-0-value    edit-field-address-3-0-value    edit-field-pin-code-0-value    edit-field-city-0-value    edit-field-regstate-0-value    edit-field-country    edit-field-how-do-you-know-about-worl    edit-field-date-of-birth-0-value  
 @{Sponcer_List}    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children    Educate Children
 #@{Sponcer_List}    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children    Educate Children    HIV & AIDS    End Child Sexual Abuse    Childhood Rescue    Save Malnourished Children
 @{homepage_header_menu_txt}    About Us    Child Sponsorship    Ways to Give    Get Involved    Partnerships    Media
@@ -4624,6 +4625,22 @@ To verify gift all child using default amount in make my payment page
         CCavenue payment - cart verification - dynamic    ${element}    ${GiftAmt}    ${cart_quanity}
     END    
 
+To verify all fields are loading properly in registration page
+    [Tags]    Registration Pages
+        
+    Jenkins browser launch
+    Click Register
+    FOR    ${element}    IN    @{RegisterFieldCheck}
+        Scroll Element Into View    ${element}
+        ${status}=    Run Keyword And Return Status    Element Should Be Visible    id=${element}
+        Run Keyword If    '${status}'!='True'    Fail    Element is not visible    ELSE    Log    Element is visible
+    END
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    //label[@for='indctzn']
+    Run Keyword If    '${status}'!='True'    Fail    Element is not visible    ELSE    Log    Element is visible
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    //label[@for='othctzn']
+    Run Keyword If    '${status}'!='True'    Fail    Element is not visible    ELSE    Log    Element is visible
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    class=singUpRegister
+    Run Keyword If    '${status}'!='True'    Fail    Element is not visible    ELSE    Log    Element is visible
 
 
 *** Keywords ***
