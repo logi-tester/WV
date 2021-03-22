@@ -1693,11 +1693,9 @@ To sponsor a Help HIV aids Campaign as a one time donation using Checkout flow
     [Tags]    Help Hiv aids Campaign
     
     Jenkins browser launch
-    Click Element    xpath=.//a[contains(.,'My Gifts')]
+    Click Cart
     Banner Alert
-    ${get_viewcart_list_count}=    Get Element Count    xpath=//tbody/tr/td[starts-with(@headers,'view-product-')]        
-    ${get_viewcart_list_count}=    Convert To Integer    ${get_viewcart_list_count}            
-    Run Keyword If    ${get_viewcart_list_count} < 1    Log To Console    "No campaign in view cart page"    ELSE    Notification deletion    ${get_viewcart_list_count}            
+    Cart campaign check and delete
     Mouser hover ways to give campaign    HIV & AIDS
     ${camp_name}    ${Camp_val}    one time campaign - Help HIV aids Campaign
     ${cart_quanity}    check in view cart page - One time donation flow    ${camp_name}    ${Camp_val}  
@@ -5322,6 +5320,7 @@ one time campaign - Where Most Needed Campaign
     
 one time campaign - Help HIV aids Campaign
     Click Element    xpath=.//div[@class='item-image']//img
+    Sleep    10s    
     ${camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
     ${camp_name}=    Replace String    ${camp_name}    F    f
     ${camp_name}=    Replace String    ${camp_name}    a    A
@@ -5333,19 +5332,17 @@ one time campaign - Help HIV aids Campaign
     
     Add to cart text change
     Add to cart functionality
-
     Clear Element Text    xpath=//input[@class='commerce_manual_input realgift_inputvalue realgift_input']
     Click Element    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    
     Input Text    xpath=.//input[@class='commerce_manual_input realgift_inputvalue realgift_input']    ${edu_child_amt}
     Sleep    5s    
-
     Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
     
     ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
     Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"    
-
     Click Element    xpath=//a[@class='view_cart']
     ${camp_val}=    Replace String    ${edu_child_amt}    4    4,
+    
     [Return]    ${camp_name}    ${camp_val}
     
 one time campaign - Hunger Free campaign
