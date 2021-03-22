@@ -4770,7 +4770,8 @@ CCavenue payment success flow
     Click Element    xpath=(//span[starts-with(text(),'Make')])[3]
     Click Element    xpath=//input[@type='submit']      
     Banner Alert
-    Sleep   5s
+    ${title}=    Get Title
+    Should Contain    ${title}    Complete
     ${payment_success_msg}=    Get Text    xpath=//div[@id='edit-completion-message']//h3
     Run Keyword If    'PAYMENT SUCCESSFULL'!='${payment_success_msg}'    Fail    "Payment successful page not display"
     
