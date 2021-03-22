@@ -4844,27 +4844,29 @@ one time campaign
     [Return]    ${camp_name}    ${camp_val}
     
 One time Hunger Free campaign
-    Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
-    Click Element    xpath=(.//li/a[contains(.,'Hungerfree')])[1]
+    Mouser hover ways to give campaign    Hungerfree
     Sleep    10s
     Click Element    xpath=.//div[@class='add-to-cart-section']
-    ${hunger_camp_name}=    Get Text    xpath=.//div[@class='inner_banner_pledge_content']/h2/div
-    ${hunger_camp_name}=    Remove String    ${hunger_camp_name}    Free
-    Log To Console    ${hunger_camp_name}    
-    #${split_Hunger_name_with_rightside}=    Split String From Right    ${hunger_camp_name}    ${EMPTY}
+    Sleep    5s    
+    ${hunger_camp_name}=    Get Text    xpath=//div[@class='inner_banner_pledge_content']/h2/div
+    ${campName}=    Remove String    ${hunger_camp_name}    Free
+    Log    Campaign Name: ${campName}    
     ${input_val}=    Get Element Attribute    xpath=.//input[@name='manualCart[0][amount]']    value
-    Click Element    xpath=//div[@class='kl_flood_sub_or_sec']
+    ${replace_val}=    Replace String    ${input_val}    1    1,   
+    Log    Campaign Amount: ${replace_val}
+    Click Add To Cart
     Sleep   5s
-    ${success_mgs}=    Get Text    xpath=.//h2[@class='chat-text']
-    Run Keyword If    '${success_mgs}'!='Success !'    Fail    "Success ! msg not found"
-    Click Element    xpath=//a[@class='view_cart']
-    ${hunger_camp_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${hunger_camp_name}')]
-    Run Keyword If    'True'!='${hunger_camp_viewcart}'    Fail    "Hunger Free campaign not display in view cart page"    
-    ${replace_val}=    Replace String    ${input_val}    1    1,    
+    Success text in shadow window
+    Click Proceed To Checkout Button
+    
+    ${status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-product-id'][contains(.,'${campName}')]
+    Run Keyword If    'True'!='${status}'    Fail    "Hunger Free campaign not display in view cart page"    
+     
     ${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'${replace_val}')]    
     #${hunger_camp_amt_viewcart}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//td[@class='views-field views-field-total-price__number views-align-center'][contains(.,'â‚¹${replace_val}')]
     Run Keyword If    'True'!='${hunger_camp_amt_viewcart}'    Fail    "Hunger Free campaign amount are not display/mismatch in view cart page"
-    [Return]    ${input_val}
+    
+    [Return]    ${input_val}    ${campName}
     
 Rescue child campaign
     Mouse Over    xpath=//div[@id='block-tbmegamenu-2']//ul[@class='we-mega-menu-ul nav nav-tabs']/li/span[contains(.,'Ways to Give')]
