@@ -793,40 +793,32 @@ Just post login check hungerfree campaign
    
 Just pre login check hungerfree campaign
     [Tags]    PreLogin
-
+    
     Jenkins browser launch
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
     My Next Payment
+    Wait Until Element Is Visible    xpath=//ul[@class='nav nav-tabs gift-donation']/li[contains(.,'Donation')]    60s
     My Next Payment Gift Menu Check and Select Submenu    My Donations
-    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
-    ${Hungerfree_label_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
-    ${split_amt_label}=    Fetch From Right    ${Hungerfree_label_amt}    Amount Paid : ₹
-    ${final_label_amt}=    Strip String    ${SPACE}${split_amt_label}
-    Log To Console    Before hunger free label amount:${final_label_amt}    
-    Logout    
-    Click Element    class=close-survey    
-    ${check_success_logout}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//li[@class='pre_lgn']
-    Run Keyword If    'True'!='${check_success_logout}'    Fail    "Site not getting proper logout"
-    ${hunger_get_input_val}    One time Hunger Free campaign
-    Log To Console    Hunger campaign get input amount:${hunger_get_input_val}
+    Sleep    5s
+    ${hunger_free_label_chck}=    Run Keyword And Return Status    Page Should Contain Element    xpath=//p[contains(.,'Nutrition for every child-Hungerfree campaign')]
+    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not found"
+    Logout
+    Click Element    class=close-survey
+    ${title}=    Get Title
+    Should Contain    ${title}    Log in
+    Mouser hover ways to give campaign    Hungerfree
+    ${CampAmt}    ${camp_name}    One time Hunger Free campaign
+    Log To Console    Hunger campaign get input amount:${CampAmt}
     View cart proceed button
     Login
     CCavenue payment success flow
     My Next Payment
-    Why do you want to leave - PopUp
-    My Next Payment
-    My Next Payment Gift Menu Check and Select Submenu    My Donations
-    ${hunger_free_label_chck}=    Run Keyword And Return Status    Element Should Be Visible    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]
-    Run Keyword If    'True'!='${hunger_free_label_chck}'    Fail    "Hunger free label not display"
-    ${add_label_amt+input_amt}=    Evaluate    ${final_label_amt}+${hunger_get_input_val}
-    Log To Console    Before hunger label amount + hunger free input value:${add_label_amt+input_amt}
-    ${get_hungerfree_amt}=    Get Text    xpath=.//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'HungerFree')]/parent::div/following-sibling::div/p[1]
-    ${get_split_label_amt}=    Fetch From Right    ${get_hungerfree_amt}    Amount Paid : ₹
-    ${get_final_amt}=    Strip String    ${SPACE}${get_split_label_amt}
-    Log To Console    Overall final hunger free label val:${get_final_amt}
-    Run Keyword If    ${add_label_amt+input_amt}!=${get_final_amt}    Fail    "After success Hunger free campaign recent amount not added in label"
-
+    My Next Payment MainMenu and SubMenu    Donation    My Donations
+    Page Should Contain Element    xpath=//div[@class='childData']/following-sibling::div//div[@class='cld-nme']/p[contains(.,'Nutrition for every child-${campName}free campaign')]
+    ${today_date}=    Get Current Date    result_format=%Y-%m-%d
+    ${today_date}=    Convert Date    ${today_date}    result_format=%d-%m-%Y
+    Element Should Be Visible    xpath=//p[contains(.,'Nutrition for every child-${campName}free campaign')]/parent::div/following-sibling::div/p[3][contains(text(),'${today_date}')]    60s   
 
 To download tax receipt 
     [Tags]    Tax Receipt Page
