@@ -4640,6 +4640,96 @@ To verify all fields are loading properly in registration page
     ${status}=    Run Keyword And Return Status    Element Should Be Visible    class=singUpRegister
     Run Keyword If    '${status}'!='True'    Fail    Element is not visible    ELSE    Log    Element is visible
 
+To verify functionality of passport upload for other passport holder
+    [Tags]    My Profile
+    
+    Jenkins browser launch
+    Click Login
+    Direct login - Other passport user
+    MyProfile Edit
+    ${title}=    Get Title
+    Should Contain    ${title}    TestFname
+    MyProfile Passport Photo Check
+    Upload Passport Photo
+    Verify Image is uploaded
+    MyProfile Submit Button
+    MyProfile Success Message
+    MyProfile Passport Image Remove
+    
+To verify functionality of passport upload for Indian passport holder
+    [Tags]    My Profile
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    MyProfile Edit
+    ${title}=    Get Title
+    Should Contain    ${title}    Tester
+    Verify Upload Passport Photo Disabled
+    
+To verify functionality of passport upload for other passport holder in registration page
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Register
+    #Click Other Passport
+    Scroll Element Into View    xpath=//label[@for='othctzn']
+    Click Element    xpath=//label[@for='othctzn']    
+    Upload Passport Photo
+    Verify Image is uploaded
+    Click Element    xpath=//input[contains(@id,'edit-field-passport-photo-0-remove-button')]     
+
+To verify functionality of passport upload for indian passport holder in registration page
+    [Tags]    Registration Page
+    
+    Jenkins browser launch
+    Click Register
+    #Click Other Passport
+    Scroll Element Into View    xpath=//label[@for='indctzn']
+    Click Element    xpath=//label[@for='indctzn']
+    Verify Upload Passport Photo Disabled
+
+To verify MyCampaign in Next Payment page is added in MyCampaign Page
+    [Tags]    My Campaign Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    
+    ${mylist} =    Create List    
+    @{campaigns}=    Get WebElements    xpath=//div[contains(@class,'campaign chld-items')]//div[@class='cld-nme']/p
+    FOR    ${element}    IN    @{campaigns}
+        ${campaign}=    Get Text    ${element}
+        Append To List    ${mylist}    ${campaign}
+    END
+    Click Element    xpath=//div[@class='main-menu-inner']//li/a[contains(text(),'My Campaign')]
+    FOR    ${element}    IN    @{mylist}                 
+        ${list_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@class='user_campheading']/a[contains(text(),'${element}')]    
+        Run Keyword If    ${True}==${list_status}    Log    "My next payment camapigns are visible in My campaign page"    ELSE    Fail    "My next payment camapigns are not visible in My campaign page"
+    END
+
+To verify child project meter
+    [Tags]    MyChild Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    Click MyChild
+    Wait Until Element Is Visible    xpath=(//div[@class='child_name heartbeat'])[1]    60s
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
+    Child Details 3 Menus
+    Click Project Meter
+    ${location}=    Get Text    xpath=//div[@class='proj_id']
+    Should Not Be Empty    ${location}    
+    ${from_date}=    Get Text    xpath=//div[contains(@class,'projmeter-date')]/p[2]    
+    Should Not Be Empty    ${from_date}
+    ${to_date}=    Get Text    xpath=//div[contains(@class,'projmeter-unit')]/p[2]    
+    Should Not Be Empty    ${to_date}
+    Log To Console    Location is: ${location}, From date is: ${from_date} and To date is: ${to_date}
+
+
 
 *** Keywords ***
 Jenkins browser launch
@@ -6718,5 +6808,48 @@ Click MyChild
 Click Project Meter
     Click Element    xpath=//p[contains(text(),'PROJECT METER')]
     
+Click Upload Passport
+    Sleep    5s    
+    Click Element    id=edit-field-passport-photo-0-upload    
+    
+MyProfile Submit Button
+    Sleep    2s    
+    Click Element    id=edit-submit    
+    
+MyProfile Success Message
+    Sleep    5s    
+    Scroll Element Into View    xpath=//div[@class='success_msg']//h2
+    ${Success}=    Get Text    xpath=//div[@class='success_msg']//h2
+    Run Keyword If    '${Success}'!='Success!'    Fail    Success Message wasnt displayed
+    
+    ${changesMadeMsg}=    Get Text    class=messages__item
+    Run Keyword If    '${changesMadeMsg}'!='The changes have been saved.'    Fail    Changes made message wasnt displayed
+    
+MyProfile Passport Image Remove
+    Scroll Element Into View    xpath=//input[contains(@id,'edit-field-passport-photo-0-remove-button')]
+    Click Element    xpath=//input[contains(@id,'edit-field-passport-photo-0-remove-button')]   
+    MyProfile Submit Button 
+    
+MyProfile Passport Photo Check
+    ${status}=    Run Keyword And Return Status    Element Should Not Be Visible    xpath=//input[contains(@id,'edit-field-passport-photo-0-remove-button')]        
+    Run Keyword If    '${status}'!='True'    MyProfile Passport Image Remove
+    MyProfile Success Message
+    
+Upload Passport Photo
+    Scroll Element Into View    id=edit-field-passport-photo-0-upload
+    Element Status Check    id=edit-field-passport-photo-0-upload    Upload Passport Field is visible    Upload Passport Field is not visible
+    Choose File    id=edit-field-passport-photo-0-upload    D://TestLeaf/Maven/WorldVisionWeb/Utils/testjpgfile.jpg
+    
+Verify Image is uploaded
+    Scroll Element Into View    xpath=//span[contains(@class,'file--mime-image-jpeg')]/a
+    ${jpgFile}=    Get Text    xpath=//span[contains(@class,'file--mime-image-jpeg')]/a
+    Should Contain    ${jpgFile}    testjpgfile
+    
+Verify Upload Passport Photo Disabled
+    ${status}=    Run Keyword And Return Status    Page Should Contain Element    id=edit-field-passport-photo-0-upload        
+    Run Keyword If    '${status}'!='True'    Fail    Upload passport is visible for Indian User    ELSE    Log    Upload passport is not visible for Indian User
+    
+Click MyChild
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]    
     
 
