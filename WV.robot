@@ -2264,21 +2264,19 @@ To verify child project meter
     [Tags]    MyChild Page
     
     Jenkins browser launch
-    Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
-    Sleep    20s    
+    Click MyChild
+    Wait Until Element Is Visible    xpath=(//div[@class='child_name heartbeat'])[1]    60s
     Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
-    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
-    FOR    ${element}    IN    @{child_details}
-        ${text}=    Get Text    ${element}
-        Log To Console    Details enabled for child:    ${text}    
-    END    
-    Click Element    xpath=//p[contains(text(),'PROJECT METER')]
+    Child Details 3 Menus
+    Click Project Meter
     ${location}=    Get Text    xpath=//div[@class='proj_id']
+    Should Not Be Empty    ${location}    
     ${from_date}=    Get Text    xpath=//div[contains(@class,'projmeter-date')]/p[2]    
+    Should Not Be Empty    ${from_date}
     ${to_date}=    Get Text    xpath=//div[contains(@class,'projmeter-unit')]/p[2]    
+    Should Not Be Empty    ${to_date}
     Log To Console    Location is: ${location}, From date is: ${from_date} and To date is: ${to_date}
 
 To Verify User should submit the form Using Invalid Email ID
@@ -6706,3 +6704,19 @@ Indian Checkout Flow Payment Gateway Verify
 Proceed To Autopay Text Check
     ${button_text}=    Get Text    xpath=//div[@class='SIPopBlock']//button
     Run Keyword If    'PROCEED TO AUTOPAY'=='${button_text}'    Log    Button text changed to PROCEED TO AUTOPAY    ELSE    Fail    Button text was not changed to PROCEED TO AUTOPAY
+
+Child Details 3 Menus
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log    Details enabled for child:${text}    
+    END
+    
+Click MyChild
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+
+Click Project Meter
+    Click Element    xpath=//p[contains(text(),'PROJECT METER')]
+    
+    
+
