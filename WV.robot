@@ -1841,19 +1841,16 @@ To Verify User should submit the form without entering any details - HungerFree 
     
 To verify child profile
     [Tags]    MyChild Page
+    
     Jenkins browser launch
     Navigation banner close
-    Click Element    xpath=//a[contains(text(),'Login')]
+    Click Login
     Direct login
-    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]
+    Click MyChild
     Sleep    20s    
     Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
-    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
-    FOR    ${element}    IN    @{child_details}
-        ${text}=    Get Text    ${element}
-        Log To Console    Details enabled for child:    ${text}    
-    END    
-    Click Element    xpath=//p[contains(text(),'PROFILE')]
+    Verify MyChild Menu 
+    Click MyProfile In MyChild Page
     ${sponsor_amt}=    Get Text    xpath=//div[contains(@class,'sponsorship-amount')]/p
     ${Payment_Frequency}=    Get Text    xpath=//div[contains(@class,'Payment-period')]/p[1]
     ${Child_Image}=    Get Element Attribute    xpath=//div[@class='child-image']/img    src        
@@ -6801,4 +6798,16 @@ Verify Upload Passport Photo Disabled
 Click MyChild
     Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Child')]    
     
+Verify Page Title
+    [Arguments]    ${page}
+    
+    ${title}=    Get Title
+    Should Contain    ${title}    ${page}
+    
+Verify MyChild Menu
+    @{child_details}=    Get WebElements    xpath=//ul[@class='tab-mnu']/li/p
+    FOR    ${element}    IN    @{child_details}
+        ${text}=    Get Text    ${element}
+        Log To Console    Details enabled for child:    ${text}    
+    END    
 
