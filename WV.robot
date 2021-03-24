@@ -4710,27 +4710,6 @@ To verify MyCampaign in Next Payment page is added in MyCampaign Page
         Run Keyword If    ${True}==${list_status}    Log    "My next payment camapigns are visible in My campaign page"    ELSE    Fail    "My next payment camapigns are not visible in My campaign page"
     END
 
-To verify child project meter
-    [Tags]    MyChild Page
-    
-    Jenkins browser launch
-    Click Login
-    Direct login
-    Click MyChild
-    Wait Until Element Is Visible    xpath=(//div[@class='child_name heartbeat'])[1]    60s
-    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
-    Child Details 3 Menus
-    Click Project Meter
-    ${location}=    Get Text    xpath=//div[@class='proj_id']
-    Should Not Be Empty    ${location}    
-    ${from_date}=    Get Text    xpath=//div[contains(@class,'projmeter-date')]/p[2]    
-    Should Not Be Empty    ${from_date}
-    ${to_date}=    Get Text    xpath=//div[contains(@class,'projmeter-unit')]/p[2]    
-    Should Not Be Empty    ${to_date}
-    Log To Console    Location is: ${location}, From date is: ${from_date} and To date is: ${to_date}
-
-
-
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
