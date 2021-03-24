@@ -4677,6 +4677,28 @@ To verify MyCampaign in Next Payment page is added in MyCampaign Page
         Run Keyword If    ${True}==${list_status}    Log    "My next payment camapigns are visible in My campaign page"    ELSE    Fail    "My next payment camapigns are not visible in My campaign page"
     END
 
+To verify Paid date for child in MyChild page
+    [Tags]    MyChild Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Children
+    ${childName}=    Get Text    xpath=(//div[contains(@class,'child chld-items')])[1]//div[@class='cld-nme']/p
+    ${DueDate}=    Get Text    xpath=(//div[contains(@class,'child chld-items')])[1]//span
+    Click MyChild
+    Select Child in MyChild Page    ${childName}
+    ${month}=    Get Substring    ${DueDate}    3    6
+    ${NewMonth}=    Convert Text Month To Numbers    ${month}       
+    ${DueDateMyNextPayment}=    Replace String    ${Duedate}    ${month}    ${NewMonth}
+    Log To Console    ${DueDateMyNextPayment}  
+    Click MyProfile In MyChild Page 
+    Sleep    5s    
+    ${DueDateChildPage}=    Get Text    xpath=//span[@class='choosen_month_quarter']
+    Should Not Be Empty    ${DueDateChildPage}    
+    Should Be Equal    ${DueDateMyNextPayment}    ${DueDateChildPage}
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -6813,3 +6835,87 @@ Verify MyChild Menu
 
 Click MyProfile In MyChild Page
     Click Element    xpath=//p[contains(text(),'PROFILE')]   
+
+Select Child in MyChild Page
+    [Arguments]    ${child}
+    
+    Click Element    xpath=//div[@class='child_title' and contains(text(),'${child}')]
+    
+
+Convert Text Month To Numbers
+    [Arguments]    ${Month}
+    
+    ${ReturnValue}=        Run Keyword If    '${Month}'=='Jan'    Return Jan Month
+    ...    ELSE IF    '${Month}'=='Feb'    Return Feb Month
+    ...    ELSE IF    '${Month}'=='Mar'    Return Mar Month
+    ...    ELSE IF    '${Month}'=='Apr'    Return Apr Month
+    ...    ELSE IF    '${Month}'=='May'    Return May Month
+    ...    ELSE IF    '${Month}'=='Jun'    Return Jun Month
+    ...    ELSE IF    '${Month}'=='Jul'    Return Jul Month
+    ...    ELSE IF    '${Month}'=='Aug'    Return Aug Month
+    ...    ELSE IF    '${Month}'=='Sep'    Return Sep Month
+    ...    ELSE IF    '${Month}'=='Oct'    Return Oct Month
+    ...    ELSE IF    '${Month}'=='Nov'    Return Nov Month
+    ...    ELSE    Return Dec Month
+
+    [Return]    ${ReturnValue}    
+
+Return Jan Month
+    ${var}=    Set Variable    01
+    
+    [Return]    ${var}
+    
+Return Feb Month
+    ${var}=    Set Variable    02
+    
+    [Return]    ${var}
+   
+Return Mar Month
+    ${var}=    Set Variable    03
+    
+    [Return]    ${var}
+    
+Return Apr Month
+    ${var}=    Set Variable    04
+    
+    [Return]    ${var}
+
+Return May Month
+    ${var}=    Set Variable    05
+    
+    [Return]    ${var}
+
+Return Jun Month
+    ${var}=    Set Variable    06
+    
+    [Return]    ${var}
+
+Return Jul Month
+    ${var}=    Set Variable    07
+    
+    [Return]    ${var}
+
+Return Aug Month
+    ${var}=    Set Variable    08
+    
+    [Return]    ${var}
+
+Return Sep Month
+    ${var}=    Set Variable    09
+    
+    [Return]    ${var}
+
+Return Oct Month
+    ${var}=    Set Variable    10
+    
+    [Return]    ${var}
+
+Return Nov Month
+    ${var}=    Set Variable    11
+    
+    [Return]    ${var}
+
+Return Dec Month
+    ${var}=    Set Variable    12
+    
+    [Return]    ${var} 
