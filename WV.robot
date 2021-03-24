@@ -6811,3 +6811,5 @@ Verify MyChild Menu
         Log To Console    Details enabled for child:    ${text}    
     END    
 
+Click MyProfile In MyChild Page
+    Click Element    xpath=//p[contains(text(),'PROFILE')]   
