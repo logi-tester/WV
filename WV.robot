@@ -7032,3 +7032,5 @@ Password Updated Message
     # ${ChangesNotUpdatedMsg}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='messages__list']/li[3]
     # Run Keyword If    '${ChangesNotUpdatedMsg}'=='True'    Fail    Password Not changed alert appeared
         
+Click Gift Menu
+    Click Element    xpath=//a[text()='Gifts'] 
