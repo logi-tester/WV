@@ -4699,6 +4699,69 @@ To verify Paid date for child in MyChild page
     Should Not Be Empty    ${DueDateChildPage}    
     Should Be Equal    ${DueDateMyNextPayment}    ${DueDateChildPage}
 
+To verify sponsorship history in campaign page
+    [Tags]    My campaign
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    Mouse hover ways to give after login    Educate Children
+    Element Status Check    class=timeline__wrap    Campaign Payment history is visible    Campaign Payment history is not visible
+    
+To verify gift section in my next payment page
+    [Tags]    Make Payment Page - GIFT TAB
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    Click Gift Menu
+    Gift Submenu list verify
+
+To verify make payment button in my child page
+    [Tags]    My child Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    Click MyChild
+    Wait Until Element Is Visible    xpath=(//div[@class='child_name heartbeat'])[1]    60s
+    Click Element    xpath=(//div[@class='child_name heartbeat'])[1]
+    Sleep    10s    
+    Verify MyChild Menu 
+    Click MyProfile In MyChild Page 
+    Element Status Check    id=makePayment    Make Payment Button is visible    Make Payment Button is not visible
+    ${status}=    Run Keyword And Return Status    Element Should Be Enabled    id=makePayment
+    Run Keyword If    '${status}'!='True'    Fail    Make Payment Button is Disabled    ELSE    Log    Make Payment Button is Enabled
+
+To verify ilustration functionality if campaign is not available in mycampaign page
+    [Tags]    My Campaign Page
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    My Next Payment
+    My Next Payment MainMenu and SubMenu    Donation    My Campaigns
+    ${count}=    Get Element Count    xpath=//div[contains(@class,'campaign chld-items')]//div[@class='cld-nme']/p
+    Run Keyword If    ${count}>0    Log    Campaigns are available in my campagin section    ELSE    Verify Illustartion in my campaign page
+    
+Verify user should able to change and update password
+    [Tags]    My Profile
+    
+    Jenkins browser launch
+    Click Login
+    Direct login
+    MyProfile Edit
+    ${newUpdatedPasswd}=    Change Password in My profile Page    ${newPassword}    ${newPassword}
+    MyProfile Submit Button
+    Password Updated Message
+    Logout
+    Enter Username and Password    9999999995    ${newUpdatedPasswd}
+    Verify Page Title    My World
+    MyProfile Edit
+    Reset Password in My profile Page    ${newPassword}    ${newPassword}
+    MyProfile Submit Button
+
 *** Keywords ***
 Jenkins browser launch
     Set Selenium Speed    .5s
@@ -6919,3 +6982,53 @@ Return Dec Month
     ${var}=    Set Variable    12
     
     [Return]    ${var} 
+    
+Gift Submenu list verify
+    FOR    ${element}    IN    @{GiftSubmenus}
+        Element Status Check    xpath=//div[@class='makepaymentnew']/ul//a[contains(text(),'${element}')]    ${element} is visible in Gift menu    ${element} is not visible in Gift menu
+        Click Element    xpath=//div[@class='makepaymentnew']/ul//a[contains(text(),'${element}')]
+    END
+
+Click My campaign
+    Click Element    xpath=//div[@class='main-menu-inner']//*[contains(text(),'My Campaign')]        
+
+Verify Illustartion in my campaign page
+    Click My campaign
+    Sleep    5s    
+    ${NoCampaignText}=    Get Text    xpath=//div[@class='Empty_basket_Content']/h1
+    Run Keyword If    '${NoCampaignText}'!='You Have Not Supported Any Cause'    Fail    Illustration is not visible in Mycampaign page    ELSE    Log    Illustration is visible in Mycampaign page    
+    
+Change Password in My profile Page
+    [Arguments]    ${newPassword}    ${NewConfirmPassword}
+    
+    ${number}=    Generate Random String    length=3    chars=[NUMBERS]
+    ${newUpdated}    Set Variable    ${newPassword}${number}
+
+    Input Text    id=edit-pass-pass1    ${newPassword}${number}
+    Input Text    id=edit-pass-pass2    ${NewConfirmPassword}${number}
+    
+    [Return]    ${newUpdated}
+    
+Reset Password in My profile Page
+    [Arguments]    ${newPassword}    ${NewConfirmPassword}
+    
+    Sleep    10s    
+    Input Text    id=edit-pass-pass1    ${newPassword}
+    Input Text    id=edit-pass-pass2    ${NewConfirmPassword}
+
+Password Updated Message
+    Sleep    5s    
+    
+    Scroll Element Into View    xpath=//div[@class='success_msg']//h2
+    ${Success}=    Get Text    xpath=//div[@class='success_msg']//h2
+    Run Keyword If    '${Success}'!='Success!'    Fail    Success Message wasnt displayed
+    
+    ${pswdChangedMsg}=    Get Text    xpath=//ul[@class='messages__list']/li[1]
+    Run Keyword If    '${pswdChangedMsg}'!='Changed password recently'    Fail    Password changed alert wasn't appeared    ELSE    Log    Password changed alert appeared
+    
+    ${ChangesUpdatedMsg}=    Get Text    xpath=//ul[@class='messages__list']/li[2]
+    Run Keyword If    '${ChangesUpdatedMsg}'!='The changes have been saved.'    Fail    Password changed alert wasn't appeared    ELSE    Log    Password changed alert appeared
+    
+    # ${ChangesNotUpdatedMsg}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//ul[@class='messages__list']/li[3]
+    # Run Keyword If    '${ChangesNotUpdatedMsg}'=='True'    Fail    Password Not changed alert appeared
+        
