@@ -71,6 +71,8 @@ ${SICartColour}    (80, 189, 189)
 ${MandatoryField}    This field is mandatory.
 ${NewPrice}    ₹ 2400
 ${NewCampaignPrice}    ₹ 3000
+${GiftSubmenus}     Birthday Gift    Festival Gift   Gift for the Family    Gift for the Child
+${newPassword}     password
 
 *** Test Cases ***
 Verify user should able to save the profile without entering any Mandatory details
