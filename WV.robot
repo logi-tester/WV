@@ -7036,3 +7036,13 @@ Password Updated Message
         
 Click Gift Menu
     Click Element    xpath=//a[text()='Gifts'] 
+
+Enter Username and Password
+    [Arguments]    ${usrname}    ${passwd}
+    
+    Sleep   8s
+    Click Element    id=edit-name
+    Input Text    id=edit-name    ${usrname}
+    Click Element    id=edit-pass
+    Input Text    id=edit-pass    ${passwd}
+    Click Element    xpath=(//div[@class='login-form__submit']/button)[1]
